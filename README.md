@@ -8,7 +8,7 @@ Institut Teknologi Bacharuddin Jusuf Habibie — 2026
 
 | Nama | NIM | Peran | Branch |
 |---|---|---|---|
-| Alexander Dzulfakar | 241011064 | Ketua / Git Master | `develop` + review semua |
+| Alexander Zulfakar | 241011064 | Ketua / Git Master | `develop` + review semua |
 | Christiano Samuel Sapan | 241011063 | Developer | `feature/auth` + `feature/admin-panel` |
 | Muhammad Alif Al Fathir | 241011075 | Developer | `feature/pelaporan` + `feature/status-riwayat` |
 | Abrar Basri | 241011048 | Developer | `feature/dashboard` + `feature/faq-kontak` |
