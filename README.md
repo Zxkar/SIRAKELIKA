@@ -33,9 +33,8 @@ Download di https://www.apachefriends.org — pilih versi PHP 8.x
 ### 2. Clone Repository
 Buka **Git Bash** atau **terminal**, jalankan:
 ```bash
-git clone https://github.com/USERNAME/sirakelika.git
+git clone https://github.com/Zxkar/sirakelika.git
 ```
-> Ganti `USERNAME` dengan username GitHub ketua (Alexander)
 
 Lalu pindahkan folder hasil clone ke:
 ```
@@ -162,4 +161,4 @@ sirakelika/
 ---
 
 ## 📞 Kontak Tim
-Hubungi ketua **Alexander Dzulfakar** jika ada masalah teknis terkait GitHub atau integrasi antar fitur.
+Hubungi ketua **Alexander Zulfakar** jika ada masalah teknis terkait GitHub atau integrasi antar fitur.
