@@ -96,11 +96,19 @@ foreach ($all_articles as $article) {
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Menu Utama</span>
                 <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-th-large"></i> Dashboard</a>
                 <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-file-alt"></i> Laporan Saya</a>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Pengelolaan</span>
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"> Manajemen Kasus</a>
                 <a href="edukasi.php" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-600 rounded-lg text-sm font-semibold"><i class="fa fa-graduation-cap"></i> Edukasi & Informasi</a>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Akun</span>
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"> Profil</a>
+                 <a href="#" class="flex items-center gap-3 p-3 text-red-600 hover:bg-gray-100 rounded-lg text-sm"> Keluar</a>
+
             </nav>
         </aside>
 
+
         <main class="flex-1 p-4 md:p-8">
+            
             
             <div class="bg-gradient-to-r from-blue-600 to-sky-500 rounded-2xl p-6 md:p-8 text-white mb-8 shadow-md">
                 <h1 class="text-xl md:text-2xl font-bold mb-2">📚 Edukasi & Informasi Kekerasan Kampus</h1>
@@ -194,12 +202,15 @@ foreach ($all_articles as $article) {
                 </div>
 
                 <div class="space-y-6">
-                    <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm">
-                        <h3 class="font-bold text-sm mb-1">Butuh Bantuan Segera?</h3>
-                        <p class="text-[11px] text-blue-100 mb-4 opacity-90">Tim konselor siap mendampingi Anda 24/7</p>
-                        <a href="tel:1500YTA" class="block text-center w-full bg-blue-950 py-2.5 rounded-xl text-xs font-bold mb-2 hover:bg-black transition"><i class="fa fa-phone-alt mr-1"></i> +6285-000-000</a>
-                        <button class="w-full bg-white text-blue-600 py-2 rounded-xl text-xs font-semibold hover:bg-blue-50 transition"><i class="fa fa-comments mr-1"></i> Chat dengan Konselor</button>
-                    </div>
+                   <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm">
+                    <h3 class="font-bold text-sm mb-1">Butuh Bantuan Segera?</h3>
+                    <p class="text-[11px] text-blue-100 mb-4 opacity-90">Tim konselor siap mendampingi Anda 24/7</p>
+                    
+                    <a href="bantuan.php" 
+                    class="block text-center w-full bg-white text-blue-600 py-2 rounded-xl text-xs font-semibold hover:bg-blue-50 transition">
+                    <i class="fa fa-comments mr-1"></i> Hubungi Ruang Konsultasi
+                    </a>
+                </div>
 
                     <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
                         <h3 class="font-bold text-gray-800 mb-4 text-xs uppercase tracking-wider text-gray-400">FAQ Populer</h3>
@@ -214,15 +225,15 @@ foreach ($all_articles as $article) {
                             </li>
                             <li class="flex gap-2">
                                 <span class="font-bold text-blue-600">3</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Hak-hak Korban yang Dijamin Oleh Peraturan Kampus</a></div>
+                                <div><a href="#" class="hover:text-blue-600 font-medium block">Hak-hak Koran Dijamin oleh Peraturan Kampus</a></div>
                             </li>
-                             <li class="flex gap-2">
+                            <li class="flex gap-2">
                                 <span class="font-bold text-blue-600">4</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Peran Teman Sebaya Dalam Pencegahan Kekerasan</a></div>
+                                <div><a href="#" class="hover:text-blue-600 font-medium block">Mengenali Tanda-tanda Kampus Yang Tidak Aman</a></div>
                             </li>
-                             <li class="flex gap-2">
+                            <li class="flex gap-2">
                                 <span class="font-bold text-blue-600">5</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Mengenali Tanda-tanda Lingkungan Kampus Yang Tidak Aman</a></div>
+                                <div><a href="#" class="hover:text-blue-600 font-medium block">Peran Teman Sebaya Dalam Pencegahan Kekerasan</a></div>
                             </li>
                         </ol>
                     </div>
@@ -266,4 +277,130 @@ foreach ($all_articles as $article) {
     </div>
 
 </body>
+<!-- ========================================================================= -->
+<!-- CONTAINER POP-UP (MODAL) BACKGROUND                                       -->
+<!-- Letakkan kode di bawah ini tepat di atas tag </body> pada file edukasi.php -->
+<!-- ========================================================================= -->
+<div id="bantuan-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 hidden backdrop-blur-sm p-4">
+    
+    <!-- Kotak Form Pengaduan -->
+    <div class="max-w-md w-full bg-white border border-gray-100 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto relative animate-fade-in">
+        
+        <!-- Tombol Close (X) di Pojok Kanan Atas Modal -->
+        <button type="button" id="close-modal-btn" class="absolute top-4 right-4 text-white/80 hover:text-white text-sm bg-black/20 hover:bg-black/40 w-7 h-7 rounded-full flex items-center justify-center transition z-10">
+            <i class="fa fa-times"></i>
+        </button>
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-sky-500 p-6 text-white text-center relative">
+            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+                <i class="fa fa-file-alt text-xl"></i>
+            </div>
+            <h1 class="text-lg font-bold">Formulir Layanan Bantuan</h1>
+            <p class="text-[11px] text-blue-100 mt-1 opacity-90">Kerahasiaan identitas dan data Anda sepenuhnya terjamin.</p>
+        </div>
+
+        <!-- Formulir Pengaduan -->
+        <form action="" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+            
+            <!-- Input Nama -->
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Nama <span class="text-gray-400 font-normal text-[10px]">(Opsional)</span></label>
+                <input type="text" name="nama" placeholder="Masukkan nama Anda atau kosongkan" 
+                       class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+            </div>
+
+            <!-- Input Email -->
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Email <span class="text-red-500">*</span></label>
+                <input type="email" name="email" required placeholder="contoh@mahasiswa.ac.id" 
+                       class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+            </div>
+
+            <!-- Input NIM -->
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">NIM <span class="text-red-500">*</span></label>
+                <input type="text" name="nim" required placeholder="Masukkan NIM Anda" 
+                       class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+            </div>
+
+            <!-- Input Kolom Deskripsi -->
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Apa yang bisa kami bantu? <span class="text-red-500">*</span></label>
+                <textarea name="pesan" required rows="4" placeholder="Ceritakan situasi atau kendala yang sedang Anda hadapi..." 
+                          class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition resize-none"></textarea>
+            </div>
+
+            <!-- Input Lampiran File (Opsional) -->
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Lampiran <span class="text-gray-400 font-normal text-[10px]">(Opsional - Bukti/Dokumen pendukung)</span></label>
+                <div class="border border-dashed border-gray-200 rounded-xl p-3 bg-gray-50 flex items-center justify-between">
+                    <input type="file" name="lampiran" id="file-upload" class="hidden">
+                    <label for="file-upload" class="bg-white border border-gray-200 px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 cursor-pointer shadow-sm hover:bg-gray-100 transition">
+                        Pilih File
+                    </label>
+                    <span id="file-name" class="text-[11px] text-gray-400 truncate max-w-[200px]">Belum ada file dipilih</span>
+                </div>
+            </div>
+
+            <!-- Tombol Kirim -->
+            <div class="pt-2">
+                <button type="submit" name="kirim" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md shadow-blue-200 transition flex items-center justify-center gap-2">
+                    <i class="fa fa-paper-plane text-[10px]"></i> Kirim Pengaduan
+                </button>
+            </div>
+
+        </form>
+
+        <!-- Tombol Batal (Sebagai ganti tombol kembali) -->
+        <div class="px-6 pb-5 pt-2 bg-gray-50 border-t flex justify-center">
+            <button type="button" id="cancel-modal-btn" class="text-xs font-semibold text-gray-500 hover:text-gray-800 transition flex items-center gap-1">
+                 Batal dan Kembali
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- JAVASCRIPT PENGONTROL MODAL & FILE UPLOAD -->
+<script>
+    // Ambil element pendukung
+    const modalBantuan = document.getElementById('bantuan-modal');
+    const btnCloseX = document.getElementById('close-modal-btn');
+    const btnCancel = document.getElementById('cancel-modal-btn');
+    const fileInputForm = document.getElementById('file-upload');
+    const fileNameText = document.getElementById('file-name');
+    
+    // Cari semua tombol pemicu yang ada di card bantuan pertama
+    const tombolPemicu = document.querySelectorAll('.open-modal-trigger');
+
+    // 1. Aksi Membuka Pop-up ketika tombol di card diklik
+    tombolPemicu.forEach(tombol => {
+        tombol.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalBantuan.classList.remove('hidden');
+        });
+    });
+
+    // 2. Aksi Menutup Pop-up (Melalui tombol X, Batal, atau klik area luar)
+    const tutupModal = () => modalBantuan.classList.add('hidden');
+    
+    btnCloseX.addEventListener('click', tutupModal);
+    btnCancel.addEventListener('click', tutupModal);
+    modalBantuan.addEventListener('click', (e) => {
+        if (e.target === modalBantuan) tutupModal();
+    });
+
+    // 3. Script deteksi nama file saat diunggah
+    fileInputForm.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+            fileNameText.textContent = this.files[0].name;
+            fileNameText.classList.remove('text-gray-400');
+            fileNameText.classList.add('text-gray-700', 'font-medium');
+        } else {
+            fileNameText.textContent = 'Belum ada file dipilih';
+        }
+    });
+</script>
 </html>
