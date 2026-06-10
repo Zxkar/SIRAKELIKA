@@ -1,0 +1,42 @@
+
+.welcome-banner-investigasi {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    padding: 32px;
+    border-radius: 16px;
+    color: white;
+    margin-bottom: 28px;
+}
+
+.welcome-banner-investigasi h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.welcome-banner-investigasi p {
+    font-size: 14px;
+    color: #cbd5e1;
+    line-height: 1.6;
+    max-width: 700px;
+}
+
+/* Tombol Kelola Kasus pada tabel antrean investigasi */
+.btn-action-investigasi {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-action-investigasi:hover {
+    background-color: #2563eb;
+}
+
+.btn-action-investigasi:active {
+    transform: scale(0.97);
+}
