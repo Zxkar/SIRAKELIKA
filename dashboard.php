@@ -1,292 +1,141 @@
 <?php
-session_start();
-
-if(!isset($_SESSION['username'])){
-    header("Location: login.php");
-    exit;
-}
-
-$username = $_SESSION['username'];
-$email = $_SESSION['email'];
+include "connection.php"
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard SIRAKELIKA</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
-
-body{
-    background:#f1f5f9;
-}
-
-/* TOPBAR */
-
-.topbar{
-    width:100%;
-    background:#1e3a8a;
-    color:white;
-    padding:15px 30px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.logo{
-    font-size:22px;
-    font-weight:bold;
-}
-
-.user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.avatar{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    background:white;
-    color:#1e3a8a;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:bold;
-}
-
-/* CONTENT */
-
-.container{
-    padding:30px;
-}
-
-.welcome{
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    margin-bottom:25px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.welcome h2{
-    margin-bottom:10px;
-    color:#1e293b;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:20px;
-    margin-bottom:25px;
-}
-
-.card{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.card h3{
-    font-size:30px;
-    color:#1e3a8a;
-    margin-bottom:10px;
-}
-
-.card p{
-    color:#475569;
-}
-
-/* TABLE */
-
-.table-box{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-}
-
-table th,
-table td{
-    padding:12px;
-    border-bottom:1px solid #ddd;
-    text-align:left;
-}
-
-table th{
-    background:#f8fafc;
-}
-
-.status{
-    padding:5px 12px;
-    border-radius:20px;
-    color:white;
-    font-size:13px;
-}
-
-.red{
-    background:red;
-}
-
-.orange{
-    background:orange;
-}
-
-.green{
-    background:green;
-}
-
-/* BUTTON */
-
-.btn{
-    display:inline-block;
-    margin-top:20px;
-    background:#dc2626;
-    color:white;
-    padding:10px 20px;
-    text-decoration:none;
-    border-radius:10px;
-}
-
-.btn:hover{
-    background:#b91c1c;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIRAKELIKA - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="topbar">
-
-    <div class="logo">
-        🛡️ SIRAKELIKA
-    </div>
-
-    <div class="user">
-
-        <div class="avatar">
-            <?php echo strtoupper(substr($username,0,1)); ?>
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="logo-icon"></div>
+            <div>
+                <h1 class="logo-title">SIRAKELIKA</h1>
+                <p class="logo-sub">PELAPORAN KEKERASAN KAMPUS</p>
+            </div>
         </div>
 
-        <div>
-            <b><?php echo $username; ?></b>
+        <nav class="nav-container">
+    <div class="nav-group">MENU UTAMA</div>
+    <a href="dashboard.php" class="nav-link active">  
+        <span class="nav-text">Dashboard</span>
+    </a>
+    <a href="laporan.php" class="nav-link">  
+        <span class="nav-text">Laporan Saya</span>
+    </a>
+
+    <div class="nav-group">PENGELOLAAN</div>
+    <a href="manajemen.php" class="nav-link"> 
+        <span class="nav-text">Manajemen Kasus</span>
+    </a>
+    <a href="edukasi.php" class="nav-link"> 
+        <span class="nav-text">Edukasi & Informasi</span>
+    </a>
+    <a href="kenali.php" class="nav-link">
+        <span class="nav-text">Kenali Situasi Anda</span>
+    </a>
+
+    <div class="nav-group">AKUN</div>
+    <a href="profil.php" class="nav-link">
+        <span class="nav-text">Profil</span>
+    </a>
+    <a href="pengaturan.php" class="nav-link">
+        <span class="nav-text">Pengaturan</span>
+    </a>
+    <a href="logout.php" class="nav-link logout">
+        <span class="nav-text">Keluar</span>
+    </a>
+</nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <header class="topbar">
+            <div></div> 
+            <div class="user-profile">
+                <div class="notif-btn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9J M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+                <div class="avatar">MA</div>
+                <div class="user-info">
+                    <span class="user-name">M. Alif</span>
+                    <span class="user-role">Mahasiswa</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="welcome-banner">
+            <div class="banner-text">
+                <h2>Selamat Datang di SIRAKELIKA</h2>
+                <p>Sistem Pelaporan Kekerasan di Lingkungan Kampus. Laporkan dengan aman, anonim, dan terlindungi. Kami ada untuk kamu.</p>
+            </div>
+            <a href="buat_laporan.php" class="btn-report">+ Buat Laporan Baru</a>
+        </section>
+
+        <div class="content-title">
+            <h2>Dashboard</h2>
+            <p>Ringkasan aktivitas dan status laporan kekerasan kampus</p>
         </div>
 
-    </div>
+        <section class="stats-grid">
+            <div class="card card-total">
+                <span class="card-num">0</span>
+                <span class="card-title">Total Laporan</span>
+            </div>
+            <div class="card card-new">
+                <span class="card-num">0</span>
+                <span class="card-title">Laporan Baru</span>
+            </div>
+            <div class="card card-process">
+                <span class="card-num">0</span>
+                <span class="card-title">Dalam Proses</span>
+            </div>
+            <div class="card card-done">
+                <span class="card-num">0</span>
+                <span class="card-title">Selesai Ditangani</span>
+            </div>
+        </section>
 
-</div>
+        <div class="data-grid">
+            
+            <div class="table-container">
+                <div class="table-header">
+                    <div>
+                        <h3>Laporan Terbaru</h3>
+                        <p>Laporan masuk dalam 7 hari terakhir</p>
+                    </div>
+                </div>
+                
+                <div class="empty-state">
+                    <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p>Belum ada riwayat laporan yang dibuat.</p>
+                </div>
+            </div>
 
-<div class="container">
+            <div class="activity-container">
+                <h3>Aktivitas Terbaru</h3>
+                <p class="activity-sub">Update status kasus</p>
+                
+                <div class="empty-state" style="padding: 60px 20px;">
+                    <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p>Tidak ada aktivitas terbaru.</p>
+                </div>
+            </div>
 
-    <div class="welcome">
-
-        <h2>Selamat Datang, <?php echo $username; ?> 👋</h2>
-
-        <p>
-            Sistem Pelaporan Kekerasan Kampus
-        </p>
-
-        <p>
-            Email: <?php echo $email; ?>
-        </p>
-
-    </div>
-
-    <!-- CARD -->
-
-    <div class="cards">
-
-        <div class="card">
-            <h3>142</h3>
-            <p>Total Laporan</p>
         </div>
 
-        <div class="card">
-            <h3>7</h3>
-            <p>Laporan Baru</p>
-        </div>
-
-        <div class="card">
-            <h3>24</h3>
-            <p>Diproses</p>
-        </div>
-
-        <div class="card">
-            <h3>111</h3>
-            <p>Selesai</p>
-        </div>
-
-    </div>
-
-    <!-- TABLE -->
-
-    <div class="table-box">
-
-        <h2>Laporan Terbaru</h2>
-
-        <table>
-
-            <tr>
-                <th>ID</th>
-                <th>Jenis</th>
-                <th>Lokasi</th>
-                <th>Status</th>
-            </tr>
-
-            <tr>
-                <td>#KS-001</td>
-                <td>Kekerasan Verbal</td>
-                <td>Gedung A</td>
-                <td>
-                    <span class="status red">Baru</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>#KS-002</td>
-                <td>Perundungan</td>
-                <td>Kantin</td>
-                <td>
-                    <span class="status orange">Diproses</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>#KS-003</td>
-                <td>Kekerasan Fisik</td>
-                <td>Parkiran</td>
-                <td>
-                    <span class="status green">Selesai</span>
-                </td>
-            </tr>
-
-        </table>
-
-        <a href="logout.php" class="btn">
-            Logout
-        </a>
-
-    </div>
-
-</div>
+    </main>
 
 </body>
 </html>
