@@ -9,12 +9,12 @@ if(isset($_POST['reset'])){
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
     $cek = mysqli_query($conn,
-    "SELECT * FROM users WHERE email='$email'");
+    "SELECT * FROM mahasiswa WHERE email='$email'");
 
     if(mysqli_num_rows($cek) > 0){
 
         mysqli_query($conn,
-        "UPDATE users
+        "UPDATE mahasiswa
         SET password='$hash'
         WHERE email='$email'");
 
