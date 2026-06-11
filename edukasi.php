@@ -7,10 +7,12 @@ $all_articles = [
         "tag" => "Hukum & Hak",
         "slug" => "hukum-hak",
         "date" => "08 Mei 2026",
-        "views" => "1.2K",
+        "views" => "1200",
         "title" => "Memahami Permendikbudristek No. 30/2021: Hak dan Perlindungan Korban Kekerasan Seksual di Kampus",
         "desc" => "Peraturan Menteri ini menjadi landasan hukum penting yang mengatur mekanisme pencegahan dan penanganan kekerasan seksual di lingkungan perguruan tinggi. Pelajari hak-hak yang dimiliki korban.",
-        "author" => "Tim Hukum SIRAKELIKA"
+        "author" => "Tim Hukum SIRAKELIKA",
+       "url" => "https://repositori.kemendikdasmen.go.id/24916/1/Buku%20Saku%20Permendikbudristek%20No.%2030%20Tahun%202021.pdf"
+        
     ],
     [
         "id" => 2,
@@ -21,7 +23,8 @@ $all_articles = [
         "views" => "842",
         "title" => "Dampak Psikologis: Perundungan pada mahasiswa dan Cara Pemulihannya",
         "desc" => "Perundungan dapat meninggalkan luka psikologis yang mendalam. Artikel ini membahas gejala trauma dan langkah pemulihan yang efektif bagi korban perundungan di lingkungan akademis.",
-        "author" => "Dr. Psikologi"
+        "author" => "Dr. Psikologi",
+        "url" => "https://p2ptm.kemkes.go.id/infografis-p2ptm/stress/apa-saja-dampak-bullying-bagi-kesehatan-mental"
     ],
     [
         "id" => 3,
@@ -32,7 +35,8 @@ $all_articles = [
         "views" => "915",
         "title" => "Mengenali Kekerasan Verbal: Dari candaan hingga ujaran kebencian",
         "desc" => "Kekerasan verbal sering dianggap sepele. Kenali bentuk-bentuknya agar Anda bisa melindungi diri dan orang sekitar dari dampak buruk manipulasi kata-kata.",
-        "author" => "Satgas Kampus"
+        "author" => "Satgas Kampus",
+        "url" => "https://www.halodoc.com/artikel/verbal-abuse-pengertian-ciri-ciri-dan-dampaknya?srsltid=AfmBOoqjjDk5Cdv2j7eizKHJQQDlm6pCinhvKkzZTdzI30dt9IR_eNi1"
     ],
     [
         "id" => 4,
@@ -40,10 +44,11 @@ $all_articles = [
         "tag" => "Panduan",
         "slug" => "panduan",
         "date" => "02 Mei 2026",
-        "views" => "1.5K",
+        "views" => "1500",
         "title" => "Panduan Lengkap: Cara melaporkan kekerasan di lingkungan kampus",
         "desc" => "Langkah-langkah praktis yang perlu dilakukan saat menghadapi atau menyaksikan kekerasan di kampus, termasuk cara menggunakan sistem pelaporan SIRAKELIKA.",
-        "author" => "Tim SIRAKELIKA"
+        "author" => "Tim SIRAKELIKA",
+        "url" => "laporan.php"
     ]
 ];
 
@@ -83,32 +88,54 @@ foreach ($all_articles as $article) {
     <title>Edukasi & Informasi Kekerasan Kampus - SIRAKELIKA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body class="bg-[#F8FAFC] font-sans">
 
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-white border-r p-6 hidden md:block">
-            <div class="flex items-center gap-2 mb-8">
-                <div class="bg-blue-600 text-white p-2 rounded-lg font-bold">S</div>
-                <span class="text-xl font-bold text-blue-900">SIRAKELIKA</span>
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon"></div>
+                <div>
+                    <h1 class="logo-title">SIRAKELIKA</h1>
+                    <p class="logo-sub">PELAPORAN KEKERASAN KAMPUS</p>
+                </div>
             </div>
-            <nav class="space-y-2">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Menu Utama</span>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-file-alt"></i> Laporan Saya</a>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Pengelolaan</span>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"> Manajemen Kasus</a>
-                <a href="edukasi.php" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-600 rounded-lg text-sm font-semibold"><i class="fa fa-graduation-cap"></i> Edukasi & Informasi</a>
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Akun</span>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"> Profil</a>
-                 <a href="#" class="flex items-center gap-3 p-3 text-red-600 hover:bg-gray-100 rounded-lg text-sm"> Keluar</a>
 
+            <nav class="nav-container">
+                <div class="nav-group">MENU UTAMA</div>
+                <a href="dashboard.php" class="nav-link">
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Laporan Saya</span>
+                </a>
+
+                <div class="nav-group">PENGELOLAAN</div>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Manajemen Kasus</span>
+                </a>
+                <a href="edukasi.php" class="nav-link active">
+                    <span class="nav-text">Edukasi & Informasi</span>
+                </a>
+                <a href="kenali.php" class="nav-link">
+                    <span class="nav-text">Kenali Situasi Anda</span>
+                </a>
+
+                <div class="nav-group">AKUN</div>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Profil</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Pengaturan</span>
+                </a>
+                <a href="logout.php" class="nav-link logout">
+                    <span class="nav-text">Keluar</span>
+                </a>
             </nav>
         </aside>
 
-
-        <main class="flex-1 p-4 md:p-8">
-            
+        <main class="main-content" style="padding-top: 24px;">
             
             <div class="bg-gradient-to-r from-blue-600 to-sky-500 rounded-2xl p-6 md:p-8 text-white mb-8 shadow-md">
                 <h1 class="text-xl md:text-2xl font-bold mb-2">📚 Edukasi & Informasi Kekerasan Kampus</h1>
@@ -123,20 +150,17 @@ foreach ($all_articles as $article) {
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
                     <div class="bg-blue-50 text-blue-600 p-2.5 rounded-lg text-sm"><i class="fa fa-file-alt"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">48</span><span class="text-[10px] text-gray-400">Total Artikel</span></div>
+                    <div><span class="text-lg font-bold text-gray-800 block">4</span><span class="text-[10px] text-gray-400">Total Artikel</span></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
                     <div class="bg-emerald-50 text-emerald-600 p-2.5 rounded-lg text-sm"><i class="fa fa-video"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">12</span><span class="text-[10px] text-gray-400">Video Edukasi</span></div>
+                    <div><span class="text-lg font-bold text-gray-800 block">2</span><span class="text-[10px] text-gray-400">Video Edukasi</span></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
                     <div class="bg-orange-50 text-orange-600 p-2.5 rounded-lg text-sm"><i class="fa fa-arrow-down"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">7</span><span class="text-[10px] text-gray-400">Panduan & Infografis</span></div>
+                    <div><span class="text-lg font-bold text-gray-800 block">3</span><span class="text-[10px] text-gray-400">Panduan & Infografis</span></div>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
-                    <div class="bg-purple-50 text-purple-600 p-2.5 rounded-lg text-sm"><i class="fa fa-eye"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">3.4K</span><span class="text-[10px] text-gray-400">Total Pembaca</span></div>
-                </div>
+              
             </div>
 
             <div class="flex overflow-x-auto gap-2 mb-8 pb-1">
@@ -171,73 +195,42 @@ foreach ($all_articles as $article) {
                                             <p class="text-xs text-gray-500 line-clamp-3 mb-4"><?= $art['desc'] ?></p>
                                         </div>
                                         <div class="flex justify-between items-center border-t pt-3 text-[11px]">
-                                            <span class="text-gray-400 font-medium"><i class="fa fa-user-shield text-[10px] mr-1"></i> <?= $art['author'] ?></span>
-                                            <a href="#" class="text-blue-600 font-bold hover:underline">Baca Selengkapnya →</a>
-                                        </div>
+    <span class="text-gray-400 font-medium"><i class="fa fa-user-shield text-[10px] mr-1"></i> <?= $art['author'] ?></span>
+    <a href="<?= $art['url'] ?>" target="_blank" class="text-blue-600 font-bold hover:underline">Baca Selengkapnya →</a>
+</div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
 
+                    <!-- 🎥 BAGIAN VIDEO EDUKASI (PUTAR DI WEB + FIX LAYOUT URUTAN) -->
                     <div class="pt-6">
                         <h2 class="text-md font-bold text-gray-800 mb-4">Video Edukasi</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="bg-white rounded-xl border overflow-hidden shadow-sm">
-                                <img src="https://picsum.photos/id/1073/400/250" class="w-full h-32 object-cover">
+                            
+                            <!-- Video 1: Seri Edukasi Permen PPKS Kemendikbud -->
+                            <div class="bg-white border rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                                <iframe class="w-full h-40" src="https://www.youtube.com/embed/OQU48FWHlkM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                      
                                 <div class="p-3">
                                     <h4 class="text-xs font-bold text-gray-800">Mengenali Kekerasan Seksual Berdasarkan Gender</h4>
                                     <span class="text-[10px] text-gray-400 block mt-2">▶ 8:32 Menit</span>
                                 </div>
                             </div>
-                            <div class="bg-white rounded-xl border overflow-hidden shadow-sm">
-                                <img src="https://picsum.photos/id/1012/400/250" class="w-full h-32 object-cover">
+
+                            <!-- Video 2: Pendampingan & Dukungan Korban (Narasi TV) -->
+                            <div class="bg-white border rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                                <iframe class="w-full h-40" src="https://www.youtube.com/embed/Pz797_hCeRc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                      
                                 <div class="p-3">
                                     <h4 class="text-xs font-bold text-gray-800">Cara Memberikan Dukungan Psikologis ke Korban</h4>
                                     <span class="text-[10px] text-gray-400 block mt-2">▶ 12:15 Menit</span>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                </div>
+                </div> 
 
-                <div class="space-y-6">
-                   <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm">
-                    <h3 class="font-bold text-sm mb-1">Butuh Bantuan Segera?</h3>
-                    <p class="text-[11px] text-blue-100 mb-4 opacity-90">Tim konselor siap mendampingi Anda 24/7</p>
-                    
-                    <a href="bantuan.php" 
-                    class="block text-center w-full bg-white text-blue-600 py-2 rounded-xl text-xs font-semibold hover:bg-blue-50 transition">
-                    <i class="fa fa-comments mr-1"></i> Hubungi Ruang Konsultasi
-                    </a>
-                </div>
-
-                    <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-                        <h3 class="font-bold text-gray-800 mb-4 text-xs uppercase tracking-wider text-gray-400">FAQ Populer</h3>
-                        <ol class="space-y-4 text-xs text-gray-600">
-                            <li class="flex gap-2">
-                                <span class="font-bold text-blue-600">1</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Apa itu Kekerasan Seksual? Definisi dan Bentuk-bentuknya</a></div>
-                            </li>
-                            <li class="flex gap-2">
-                                <span class="font-bold text-blue-600">2</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Bagaimana cara lapor anonim di SIRAKELIKA?</a></div>
-                            </li>
-                            <li class="flex gap-2">
-                                <span class="font-bold text-blue-600">3</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Hak-hak Koran Dijamin oleh Peraturan Kampus</a></div>
-                            </li>
-                            <li class="flex gap-2">
-                                <span class="font-bold text-blue-600">4</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Mengenali Tanda-tanda Kampus Yang Tidak Aman</a></div>
-                            </li>
-                            <li class="flex gap-2">
-                                <span class="font-bold text-blue-600">5</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Peran Teman Sebaya Dalam Pencegahan Kekerasan</a></div>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
 
             </div>
 
@@ -277,130 +270,5 @@ foreach ($all_articles as $article) {
     </div>
 
 </body>
-<!-- ========================================================================= -->
-<!-- CONTAINER POP-UP (MODAL) BACKGROUND                                       -->
-<!-- Letakkan kode di bawah ini tepat di atas tag </body> pada file edukasi.php -->
-<!-- ========================================================================= -->
-<div id="bantuan-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 hidden backdrop-blur-sm p-4">
-    
-    <!-- Kotak Form Pengaduan -->
-    <div class="max-w-md w-full bg-white border border-gray-100 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto relative animate-fade-in">
-        
-        <!-- Tombol Close (X) di Pojok Kanan Atas Modal -->
-        <button type="button" id="close-modal-btn" class="absolute top-4 right-4 text-white/80 hover:text-white text-sm bg-black/20 hover:bg-black/40 w-7 h-7 rounded-full flex items-center justify-center transition z-10">
-            <i class="fa fa-times"></i>
-        </button>
-
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-sky-500 p-6 text-white text-center relative">
-            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
-                <i class="fa fa-file-alt text-xl"></i>
-            </div>
-            <h1 class="text-lg font-bold">Formulir Layanan Bantuan</h1>
-            <p class="text-[11px] text-blue-100 mt-1 opacity-90">Kerahasiaan identitas dan data Anda sepenuhnya terjamin.</p>
-        </div>
-
-        <!-- Formulir Pengaduan -->
-        <form action="" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
-            
-            <!-- Input Nama -->
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Nama <span class="text-gray-400 font-normal text-[10px]">(Opsional)</span></label>
-                <input type="text" name="nama" placeholder="Masukkan nama Anda atau kosongkan" 
-                       class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
-            </div>
-
-            <!-- Input Email -->
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Email <span class="text-red-500">*</span></label>
-                <input type="email" name="email" required placeholder="contoh@mahasiswa.ac.id" 
-                       class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
-            </div>
-
-            <!-- Input NIM -->
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">NIM <span class="text-red-500">*</span></label>
-                <input type="text" name="nim" required placeholder="Masukkan NIM Anda" 
-                       class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
-            </div>
-
-            <!-- Input Kolom Deskripsi -->
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Apa yang bisa kami bantu? <span class="text-red-500">*</span></label>
-                <textarea name="pesan" required rows="4" placeholder="Ceritakan situasi atau kendala yang sedang Anda hadapi..." 
-                          class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition resize-none"></textarea>
-            </div>
-
-            <!-- Input Lampiran File (Opsional) -->
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Lampiran <span class="text-gray-400 font-normal text-[10px]">(Opsional - Bukti/Dokumen pendukung)</span></label>
-                <div class="border border-dashed border-gray-200 rounded-xl p-3 bg-gray-50 flex items-center justify-between">
-                    <input type="file" name="lampiran" id="file-upload" class="hidden">
-                    <label for="file-upload" class="bg-white border border-gray-200 px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 cursor-pointer shadow-sm hover:bg-gray-100 transition">
-                        Pilih File
-                    </label>
-                    <span id="file-name" class="text-[11px] text-gray-400 truncate max-w-[200px]">Belum ada file dipilih</span>
-                </div>
-            </div>
-
-            <!-- Tombol Kirim -->
-            <div class="pt-2">
-                <button type="submit" name="kirim" 
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md shadow-blue-200 transition flex items-center justify-center gap-2">
-                    <i class="fa fa-paper-plane text-[10px]"></i> Kirim Pengaduan
-                </button>
-            </div>
-
-        </form>
-
-        <!-- Tombol Batal (Sebagai ganti tombol kembali) -->
-        <div class="px-6 pb-5 pt-2 bg-gray-50 border-t flex justify-center">
-            <button type="button" id="cancel-modal-btn" class="text-xs font-semibold text-gray-500 hover:text-gray-800 transition flex items-center gap-1">
-                 Batal dan Kembali
-            </button>
-        </div>
-
-    </div>
-</div>
-
-<!-- JAVASCRIPT PENGONTROL MODAL & FILE UPLOAD -->
-<script>
-    // Ambil element pendukung
-    const modalBantuan = document.getElementById('bantuan-modal');
-    const btnCloseX = document.getElementById('close-modal-btn');
-    const btnCancel = document.getElementById('cancel-modal-btn');
-    const fileInputForm = document.getElementById('file-upload');
-    const fileNameText = document.getElementById('file-name');
-    
-    // Cari semua tombol pemicu yang ada di card bantuan pertama
-    const tombolPemicu = document.querySelectorAll('.open-modal-trigger');
-
-    // 1. Aksi Membuka Pop-up ketika tombol di card diklik
-    tombolPemicu.forEach(tombol => {
-        tombol.addEventListener('click', (e) => {
-            e.preventDefault();
-            modalBantuan.classList.remove('hidden');
-        });
-    });
-
-    // 2. Aksi Menutup Pop-up (Melalui tombol X, Batal, atau klik area luar)
-    const tutupModal = () => modalBantuan.classList.add('hidden');
-    
-    btnCloseX.addEventListener('click', tutupModal);
-    btnCancel.addEventListener('click', tutupModal);
-    modalBantuan.addEventListener('click', (e) => {
-        if (e.target === modalBantuan) tutupModal();
-    });
-
-    // 3. Script deteksi nama file saat diunggah
-    fileInputForm.addEventListener('change', function() {
-        if (this.files && this.files.length > 0) {
-            fileNameText.textContent = this.files[0].name;
-            fileNameText.classList.remove('text-gray-400');
-            fileNameText.classList.add('text-gray-700', 'font-medium');
-        } else {
-            fileNameText.textContent = 'Belum ada file dipilih';
-        }
-    });
-</script>
 </html>
+
