@@ -1,21 +1,21 @@
 <?php
-session_start();
-include 'conn.php';
+// session_start();
+// include 'conn.php';
 
-if(!isset($_SESSION['username'])){
-    header("Location: login.php");
-    exit;
-}
+// if(!isset($_SESSION['username'])){
+//     header("Location: login.php");
+//     exit;
+// }
 
-$query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
-$query_baru    = mysqli_query($conn, "SELECT COUNT(*) as baru FROM laporan WHERE status_laporan='Baru'");
-$query_proses  = mysqli_query($conn, "SELECT COUNT(*) as proses FROM laporan WHERE status_laporan='Diproses'");
-$query_selesai = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE status_laporan='Selesai'");
+// $query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
+// $query_baru    = mysqli_query($conn, "SELECT COUNT(*) as baru FROM laporan WHERE status_laporan='Baru'");
+// $query_proses  = mysqli_query($conn, "SELECT COUNT(*) as proses FROM laporan WHERE status_laporan='Diproses'");
+// $query_selesai = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE status_laporan='Selesai'");
 
-$data_total   = mysqli_fetch_assoc($query_total)['total'];
-$data_baru    = mysqli_fetch_assoc($query_baru)['baru'];
-$data_proses  = mysqli_fetch_assoc($query_proses)['proses'];
-$data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
+// $data_total   = mysqli_fetch_assoc($query_total)['total'];
+// $data_baru    = mysqli_fetch_assoc($query_baru)['baru'];
+// $data_proses  = mysqli_fetch_assoc($query_proses)['proses'];
+// $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
 ?>
 
 <!DOCTYPE html>
@@ -51,10 +51,10 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             <a href="#" class="nav-link">
                 <span class="nav-text">Manajemen Kasus</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="edukasi.php" class="nav-link">
                 <span class="nav-text">Edukasi & Informasi</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="kenali.php" class="nav-link">
                 <span class="nav-text">Kenali Situasi Anda</span>
             </a>
 

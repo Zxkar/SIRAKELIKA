@@ -12,25 +12,54 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
     <title>Kenali Situasi Anda - SIRAKELIKA Perlindungan Kampus</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body class="bg-[#F8FAFC] font-sans">
 
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-white border-r p-6 hidden md:block">
-            <div class="flex items-center gap-2 mb-8">
-                <div class="bg-blue-600 text-white p-2 rounded-lg font-bold">S</div>
-                <span class="text-xl font-bold text-blue-900">SIRAKELIKA</span>
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon"></div>
+                <div>
+                    <h1 class="logo-title">SIRAKELIKA</h1>
+                    <p class="logo-sub">PELAPORAN KEKERASAN KAMPUS</p>
+                </div>
             </div>
-            <nav class="space-y-2">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Menu Utama</span>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-file-alt"></i> Laporan Saya</a>
-                <a href="edukasi.php" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-graduation-cap"></i> Edukasi & Informasi</a>
-                <a href="kenali.php?step=1" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-600 rounded-lg text-sm font-semibold"><i class="fa fa-shield-halved"></i> Kenali Situasi Anda</a>
+
+            <nav class="nav-container">
+                <div class="nav-group">MENU UTAMA</div>
+                <a href="dashboard.php" class="nav-link">
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Laporan Saya</span>
+                </a>
+
+                <div class="nav-group">PENGELOLAAN</div>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Manajemen Kasus</span>
+                </a>
+                <a href="edukasi.php" class="nav-link">
+                    <span class="nav-text">Edukasi & Informasi</span>
+                </a>
+                <a href="kenali.php" class="nav-link active">
+                    <span class="nav-text">Kenali Situasi Anda</span>
+                </a>
+
+                <div class="nav-group">AKUN</div>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Profil</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Pengaturan</span>
+                </a>
+                <a href="logout.php" class="nav-link logout">
+                    <span class="nav-text">Keluar</span>
+                </a>
             </nav>
         </aside>
 
-        <main class="flex-1 p-4 md:p-8 flex items-center justify-center">
+        <main class="main-content" style="padding-top: 24px; display: flex; align-items: center; justify-content: center;">
             
             <div class="bg-white max-w-2xl w-full rounded-2xl border border-gray-100 shadow-md overflow-hidden my-4">
                 

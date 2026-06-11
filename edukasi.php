@@ -7,10 +7,12 @@ $all_articles = [
         "tag" => "Hukum & Hak",
         "slug" => "hukum-hak",
         "date" => "08 Mei 2026",
-        "views" => "1.2K",
+        "views" => "1200",
         "title" => "Memahami Permendikbudristek No. 30/2021: Hak dan Perlindungan Korban Kekerasan Seksual di Kampus",
         "desc" => "Peraturan Menteri ini menjadi landasan hukum penting yang mengatur mekanisme pencegahan dan penanganan kekerasan seksual di lingkungan perguruan tinggi. Pelajari hak-hak yang dimiliki korban.",
-        "author" => "Tim Hukum SIRAKELIKA"
+        "author" => "Tim Hukum SIRAKELIKA",
+       "url" => "https://repositori.kemendikdasmen.go.id/24916/1/Buku%20Saku%20Permendikbudristek%20No.%2030%20Tahun%202021.pdf"
+        
     ],
     [
         "id" => 2,
@@ -21,7 +23,8 @@ $all_articles = [
         "views" => "842",
         "title" => "Dampak Psikologis: Perundungan pada mahasiswa dan Cara Pemulihannya",
         "desc" => "Perundungan dapat meninggalkan luka psikologis yang mendalam. Artikel ini membahas gejala trauma dan langkah pemulihan yang efektif bagi korban perundungan di lingkungan akademis.",
-        "author" => "Dr. Psikologi"
+        "author" => "Dr. Psikologi",
+        "url" => "https://p2ptm.kemkes.go.id/infografis-p2ptm/stress/apa-saja-dampak-bullying-bagi-kesehatan-mental"
     ],
     [
         "id" => 3,
@@ -32,7 +35,8 @@ $all_articles = [
         "views" => "915",
         "title" => "Mengenali Kekerasan Verbal: Dari candaan hingga ujaran kebencian",
         "desc" => "Kekerasan verbal sering dianggap sepele. Kenali bentuk-bentuknya agar Anda bisa melindungi diri dan orang sekitar dari dampak buruk manipulasi kata-kata.",
-        "author" => "Satgas Kampus"
+        "author" => "Satgas Kampus",
+        "url" => "https://www.halodoc.com/artikel/verbal-abuse-pengertian-ciri-ciri-dan-dampaknya?srsltid=AfmBOoqjjDk5Cdv2j7eizKHJQQDlm6pCinhvKkzZTdzI30dt9IR_eNi1"
     ],
     [
         "id" => 4,
@@ -40,10 +44,11 @@ $all_articles = [
         "tag" => "Panduan",
         "slug" => "panduan",
         "date" => "02 Mei 2026",
-        "views" => "1.5K",
+        "views" => "1500",
         "title" => "Panduan Lengkap: Cara melaporkan kekerasan di lingkungan kampus",
         "desc" => "Langkah-langkah praktis yang perlu dilakukan saat menghadapi atau menyaksikan kekerasan di kampus, termasuk cara menggunakan sistem pelaporan SIRAKELIKA.",
-        "author" => "Tim SIRAKELIKA"
+        "author" => "Tim SIRAKELIKA",
+        "url" => "laporan.php"
     ]
 ];
 
@@ -83,24 +88,54 @@ foreach ($all_articles as $article) {
     <title>Edukasi & Informasi Kekerasan Kampus - SIRAKELIKA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body class="bg-[#F8FAFC] font-sans">
 
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-white border-r p-6 hidden md:block">
-            <div class="flex items-center gap-2 mb-8">
-                <div class="bg-blue-600 text-white p-2 rounded-lg font-bold">S</div>
-                <span class="text-xl font-bold text-blue-900">SIRAKELIKA</span>
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon"></div>
+                <div>
+                    <h1 class="logo-title">SIRAKELIKA</h1>
+                    <p class="logo-sub">PELAPORAN KEKERASAN KAMPUS</p>
+                </div>
             </div>
-            <nav class="space-y-2">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Menu Utama</span>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-100 rounded-lg text-sm"><i class="fa fa-file-alt"></i> Laporan Saya</a>
-                <a href="edukasi.php" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-600 rounded-lg text-sm font-semibold"><i class="fa fa-graduation-cap"></i> Edukasi & Informasi</a>
+
+            <nav class="nav-container">
+                <div class="nav-group">MENU UTAMA</div>
+                <a href="dashboard.php" class="nav-link">
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Laporan Saya</span>
+                </a>
+
+                <div class="nav-group">PENGELOLAAN</div>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Manajemen Kasus</span>
+                </a>
+                <a href="edukasi.php" class="nav-link active">
+                    <span class="nav-text">Edukasi & Informasi</span>
+                </a>
+                <a href="kenali.php" class="nav-link">
+                    <span class="nav-text">Kenali Situasi Anda</span>
+                </a>
+
+                <div class="nav-group">AKUN</div>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Profil</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="nav-text">Pengaturan</span>
+                </a>
+                <a href="logout.php" class="nav-link logout">
+                    <span class="nav-text">Keluar</span>
+                </a>
             </nav>
         </aside>
 
-        <main class="flex-1 p-4 md:p-8">
+        <main class="main-content" style="padding-top: 24px;">
             
             <div class="bg-gradient-to-r from-blue-600 to-sky-500 rounded-2xl p-6 md:p-8 text-white mb-8 shadow-md">
                 <h1 class="text-xl md:text-2xl font-bold mb-2">📚 Edukasi & Informasi Kekerasan Kampus</h1>
@@ -115,20 +150,17 @@ foreach ($all_articles as $article) {
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
                     <div class="bg-blue-50 text-blue-600 p-2.5 rounded-lg text-sm"><i class="fa fa-file-alt"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">48</span><span class="text-[10px] text-gray-400">Total Artikel</span></div>
+                    <div><span class="text-lg font-bold text-gray-800 block">4</span><span class="text-[10px] text-gray-400">Total Artikel</span></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
                     <div class="bg-emerald-50 text-emerald-600 p-2.5 rounded-lg text-sm"><i class="fa fa-video"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">12</span><span class="text-[10px] text-gray-400">Video Edukasi</span></div>
+                    <div><span class="text-lg font-bold text-gray-800 block">2</span><span class="text-[10px] text-gray-400">Video Edukasi</span></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
                     <div class="bg-orange-50 text-orange-600 p-2.5 rounded-lg text-sm"><i class="fa fa-arrow-down"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">7</span><span class="text-[10px] text-gray-400">Panduan & Infografis</span></div>
+                    <div><span class="text-lg font-bold text-gray-800 block">3</span><span class="text-[10px] text-gray-400">Panduan & Infografis</span></div>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3">
-                    <div class="bg-purple-50 text-purple-600 p-2.5 rounded-lg text-sm"><i class="fa fa-eye"></i></div>
-                    <div><span class="text-lg font-bold text-gray-800 block">3.4K</span><span class="text-[10px] text-gray-400">Total Pembaca</span></div>
-                </div>
+              
             </div>
 
             <div class="flex overflow-x-auto gap-2 mb-8 pb-1">
@@ -163,58 +195,42 @@ foreach ($all_articles as $article) {
                                             <p class="text-xs text-gray-500 line-clamp-3 mb-4"><?= $art['desc'] ?></p>
                                         </div>
                                         <div class="flex justify-between items-center border-t pt-3 text-[11px]">
-                                            <span class="text-gray-400 font-medium"><i class="fa fa-user-shield text-[10px] mr-1"></i> <?= $art['author'] ?></span>
-                                            <a href="#" class="text-blue-600 font-bold hover:underline">Baca Selengkapnya →</a>
-                                        </div>
+    <span class="text-gray-400 font-medium"><i class="fa fa-user-shield text-[10px] mr-1"></i> <?= $art['author'] ?></span>
+    <a href="<?= $art['url'] ?>" target="_blank" class="text-blue-600 font-bold hover:underline">Baca Selengkapnya →</a>
+</div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
 
+                    <!-- 🎥 BAGIAN VIDEO EDUKASI (PUTAR DI WEB + FIX LAYOUT URUTAN) -->
                     <div class="pt-6">
                         <h2 class="text-md font-bold text-gray-800 mb-4">Video Edukasi</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="bg-white rounded-xl border overflow-hidden shadow-sm">
-                                <img src="https://picsum.photos/id/1073/400/250" class="w-full h-32 object-cover">
+                            
+                            <!-- Video 1: Seri Edukasi Permen PPKS Kemendikbud -->
+                            <div class="bg-white border rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                                <iframe class="w-full h-40" src="https://www.youtube.com/embed/OQU48FWHlkM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                      
                                 <div class="p-3">
                                     <h4 class="text-xs font-bold text-gray-800">Mengenali Kekerasan Seksual Berdasarkan Gender</h4>
                                     <span class="text-[10px] text-gray-400 block mt-2">▶ 8:32 Menit</span>
                                 </div>
                             </div>
-                            <div class="bg-white rounded-xl border overflow-hidden shadow-sm">
-                                <img src="https://picsum.photos/id/1012/400/250" class="w-full h-32 object-cover">
+
+                            <!-- Video 2: Pendampingan & Dukungan Korban (Narasi TV) -->
+                            <div class="bg-white border rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                                <iframe class="w-full h-40" src="https://www.youtube.com/embed/Pz797_hCeRc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                      
                                 <div class="p-3">
                                     <h4 class="text-xs font-bold text-gray-800">Cara Memberikan Dukungan Psikologis ke Korban</h4>
                                     <span class="text-[10px] text-gray-400 block mt-2">▶ 12:15 Menit</span>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                </div>
+                </div> 
 
-                <div class="space-y-6">
-                    <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm">
-                        <h3 class="font-bold text-sm mb-1">Butuh Bantuan Segera?</h3>
-                        <p class="text-[11px] text-blue-100 mb-4 opacity-90">Tim konselor siap mendampingi Anda 24/7</p>
-                        <a href="tel:1500YTA" class="block text-center w-full bg-blue-950 py-2.5 rounded-xl text-xs font-bold mb-2 hover:bg-black transition"><i class="fa fa-phone-alt mr-1"></i> 1-500-YTA</a>
-                        <button class="w-full bg-white text-blue-600 py-2 rounded-xl text-xs font-semibold hover:bg-blue-50 transition"><i class="fa fa-comments mr-1"></i> Chat dengan Konselor</button>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-                        <h3 class="font-bold text-gray-800 mb-4 text-xs uppercase tracking-wider text-gray-400">FAQ Populer</h3>
-                        <ol class="space-y-4 text-xs text-gray-600">
-                            <li class="flex gap-2">
-                                <span class="font-bold text-blue-600">1</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Apa itu Kekerasan Seksual? Definisi Kampus</a></div>
-                            </li>
-                            <li class="flex gap-2">
-                                <span class="font-bold text-blue-600">2</span>
-                                <div><a href="#" class="hover:text-blue-600 font-medium block">Bagaimana cara lapor anonim di SIRAKELIKA?</a></div>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
 
             </div>
 
