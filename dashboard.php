@@ -43,7 +43,7 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             <a href="#" class="nav-link active">
                 <span class="nav-text">Dashboard</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="laporan.php" class="nav-link">
                 <span class="nav-text">Laporan Saya</span>
             </a>
 
@@ -92,7 +92,9 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
                 <h2>Selamat Datang di SIRAKELIKA</h2>
                 <p>Sistem Pelaporan Kekerasan di Lingkungan Kampus. Laporkan dengan aman, anonim, dan terlindungi. Kami ada untuk kamu.</p>
             </div>
-            <button class="btn-report">+ Buat Laporan Baru</button>
+           <a href="buat_laporan.php" style="text-decoration: none;">
+    <button class="btn-report">+ Buat Laporan Baru</button>
+</a>
         </section>
 
         <div class="content-title">
