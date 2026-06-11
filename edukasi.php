@@ -271,3 +271,4 @@ foreach ($all_articles as $article) {
 
 </body>
 </html>
+
