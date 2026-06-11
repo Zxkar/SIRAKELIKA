@@ -48,8 +48,6 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             </a>
 
             <div class="nav-group">PENGELOLAAN</div>
-            <a href="#" class="nav-link">
-                <span class="nav-text">Manajemen Kasus</span>
             </a>
             <a href="#" class="nav-link">
                 <span class="nav-text">Edukasi & Informasi</span>
