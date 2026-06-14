@@ -6,21 +6,28 @@ if(isset($_POST['admin_login'])){
   $username = mysqli_real_escape_string($conn, $_POST['username']);
   $password = $_POST['password'];
 
-  // Query khusus memeriksa tabel admin
   $query = mysqli_query($conn, "SELECT * FROM admin WHERE nama_admin='$username'");
   
   if(mysqli_num_rows($query) > 0){
     $data = mysqli_fetch_assoc($query);
     
-    // Verifikasi password menggunakan HASH yang sudah aman kemarin
     if(password_verify($password, $data['password'])){
+      
+      // Set Session Utama Admin
       $_SESSION['admin_logged_in'] = true;
       $_SESSION['admin_id']       = $data['id_admin'];
       $_SESSION['admin_name']     = $data['nama_admin'];
-      $_SESSION['role']           = 'admin';
       
-      header("Location: admin_dashboard.php");
-      exit;
+      //membaca kolom database
+      if($data['role'] === 'super_admin'){
+          $_SESSION['role'] = 'super_admin';
+          header("Location: dashboard_admin.php");
+          exit;
+      } else {
+          $_SESSION['role'] = 'admin';
+          header("Location: dashboard_admin.php");
+          exit;
+      }
     }
   }
   $error = "Username atau Password Admin salah!";
@@ -33,10 +40,10 @@ if(isset($_POST['admin_login'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Admin Control Panel Login</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        /* Sentuhan warna merah/gelap tegas khusus untuk menandakan area Administrator */
-        .panel-left { background: linear-gradient(135deg, #0f172a, #1e293b) !important; color: #ffffff !important; }
-        .bsub { background-color: #ef4444 !important; } /* Tombol Merah khas Admin */
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        .panel-left { background: linear-gradient(135deg, #ff0000, #1e293b) !important; color: #ffffff !important; }
+        .bsub { background-color: #ef4444 !important; } 
         .bsub:hover { background-color: #dc2626 !important; }
     </style>
 </head>
@@ -58,22 +65,22 @@ if(isset($_POST['admin_login'])){
         </p>
       <?php endif; ?>
 
-      <form method="POST" action="admin_login.php">
+      <form method="POST" action="">
         <div class="fg">
           <label for="username">Username Admin</label>
           <div class="iw">
-            <input type="text" id="username" name="username" placeholder="Masukkan username admin" required />
+            <input type="text" id="username" name="username" required />
           </div>
         </div>
 
         <div class="fg">
           <label for="pw">Password</label>
           <div class="iw">
-            <input type="password" id="pw" name="password" placeholder="••••••••" required/>
+            <input type="password" id="pw" name="password" required/>
           </div>
         </div>
 
-        <button class="bsub" type="submit" name="admin_login">Masuk ke Panel</button>
+        <button class="bsub" type="submit" name="admin_login">Masuk</button>
       </form>
     </div>
   </div>
