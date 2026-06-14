@@ -2,13 +2,20 @@
 session_start();
 include 'conn.php';
 
-// Proteksi Halaman: Pastikan hanya Tim Investigasi yang bisa masuk
+// 1. SINKRONISASI LOGIN MAHASISWA & TIM: Memastikan session berasal dari form login biasa
 if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'investigasi'){
-    header("Location: login.php");
+    // Jika tidak punya akses investigasi, tendang kembali ke form login biasa tersebut
+    header("Location: login.php"); 
     exit;
 }
 
-// 1. QUERY STATISTIK KHUSUS TIM INVESTIGASI
+// Mengambil username dari form login biasa untuk query data
+$username_aktif = $_SESSION['username']; 
+
+/* ==========================================================================
+   2. QUERY STATISTIK (Menghitung seluruh kasus berdasarkan status laporan)
+   Sesuai form login biasa Anda, data dihitung langsung dari tabel laporan
+   ========================================================================== */
 $query_total_kasus = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
 $query_perlu_tindakan = mysqli_query($conn, "SELECT COUNT(*) as tindakan FROM laporan WHERE status_laporan='Baru'");
 $query_sedang_selidik = mysqli_query($conn, "SELECT COUNT(*) as selidik FROM laporan WHERE status_laporan='Diproses'");
@@ -26,8 +33,52 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Dashboard Investigasi</title>
     <link rel="stylesheet" href="dashboard.css"> 
-    <link rel="stylesheet" href="dashboard_investigasi.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Welcome Banner - Slate Theme */
+        .welcome-banner-investigasi {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            padding: 32px;
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 28px;
+        }
+
+        .welcome-banner-investigasi h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner-investigasi p {
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        /* Action Button */
+        .btn-action-investigasi {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-action-investigasi:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-action-investigasi:active {
+            transform: scale(0.97);
+        }
+    </style>
 </head>
 <body>
 
@@ -47,18 +98,18 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
             </a>
             
             <div class="nav-group">PENGELOLAAN KASUS</div>
-            <a href="#" class="nav-link">
+            <a href="manajemen_kasus.php" class="nav-link">
                 <span class="nav-text">Manajemen Kasus Masuk</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="agenda_sidang.php" class="nav-link">
                 <span class="nav-text">Agenda Sidang & Mediasi</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="log_aktivitas.php" class="nav-link">
                 <span class="nav-text">Log Aktivitas Kasus</span>
             </a>
 
             <div class="nav-group">AKUN SYSTEM</div>
-            <a href="#" class="nav-link">
+            <a href="profil_tim.php" class="nav-link">
                 <span class="nav-text">Profil Tim</span>
             </a>
             <a href="logout.php" class="nav-link logout">
@@ -74,7 +125,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
             <div class="user-profile">
                 <div class="avatar">TI</div>
                 <div class="user-info">
-                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                    <span class="user-name"><?php echo htmlspecialchars($username_aktif); ?></span>
                     <span class="user-role">Tim Investigasi</span>
                 </div>
             </div>
@@ -83,13 +134,13 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
         <section class="welcome-banner-investigasi">
             <div class="banner-text">
                 <h2>Pusat Kendali Investigasi SIRAKELIKA</h2>
-                <p>Selamat bekerja. Harap lakukan validasi, pemeriksaan saksi, dan penyusunan rekomendasi kasus kekerasan secara objektif demi menjaga keadilan di lingkungan kampus.</p>
+                <p>Selamat bekerja. Sesuai dengan deskripsi tugas kerja sistem, lakukan validasi, pemeriksaan saksi, dan penyusunan rekomendasi kasus kekerasan secara objektif, transparan, dan sesuai prosedur demi menjaga keadilan di kampus.</p>
             </div>
         </section>
 
         <div class="content-title">
             <h2>Ringkasan Kerja Investigasi</h2>
-            <p>Pantau beban penanganan kasus kekerasan yang sedang aktif</p>
+            <p>Pantau beban penanganan kasus kekerasan yang sedang aktif saat ini</p>
         </div>
 
         <section class="stats-grid">
@@ -117,7 +168,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
                 <div class="table-header">
                     <div>
                         <h3>Daftar Antrean Kasus Kampus</h3>
-                        <p>Daftar laporan teratas yang memerlukan tinjauan hukum & perlindungan</p>
+                        <p>Daftar laporan teratas yang memerlukan penanganan objektif & transparan</p>
                     </div>
                 </div>
                 
@@ -152,7 +203,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6'><div class='empty-state'><p>Tidak ada laporan kekerasan masuk.</p></div></td></tr>";
+                            echo "<tr><td colspan='6'><div class='empty-state'><p style='text-align:center; padding:20px; color:#64748b;'>Tidak ada laporan kekerasan masuk.</p></div></td></tr>";
                         }
                         ?>
                     </tbody>
