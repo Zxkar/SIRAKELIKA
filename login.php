@@ -56,23 +56,7 @@ if(isset($_POST['login'])){
           exit;
         }
       }
-    }
-
-    // 4. Verifikasi Admin (Kini Menggunakan HASH)
-    if(!$login_success){
-      $query = mysqli_query($conn, "SELECT * FROM admin WHERE nama_admin='$login_input'");
-      if(mysqli_num_rows($query) > 0){
-        $data = mysqli_fetch_assoc($query);
-        if(password_verify($password, $data['password'])){ 
-          $_SESSION['username'] = $data['nama_admin'];
-          $_SESSION['email']    = $data['email'];
-          $_SESSION['role']     = 'admin';
-          $login_success = true;
-          header("Location: dashboard.php");
-          exit;
-        }
-      }
-    }
+    } 
   }
 
   // Jika login gagal
