@@ -4,20 +4,17 @@ include 'conn.php';
 
 if(isset($_POST['register'])){
 
-  // Mengambil input (Tidak perlu escape string karena menggunakan Prepared Statements)
   $nama     = $_POST['username'];
   $email    = $_POST['email'];
   $password = $_POST['password'];
   $confirm  = $_POST['confirm'];
 
-  // Validasi password di sisi server
   if(strlen($password) < 8){
     $error = "Kata sandi minimal 8 karakter.";
   } elseif($password !== $confirm){
     $error = "Konfirmasi kata sandi tidak cocok.";
   } else {
 
-    // 1. Cek apakah email sudah terdaftar menggunakan Prepared Statements
     $stmt_cek = mysqli_prepare($conn, "SELECT email FROM mahasiswa WHERE email = ?");
     mysqli_stmt_bind_param($stmt_cek, "s", $email);
     mysqli_stmt_execute($stmt_cek);
@@ -29,11 +26,8 @@ if(isset($_POST['register'])){
     } else {
       mysqli_stmt_close($stmt_cek);
 
-      // Hash password dengan aman
       $hash = password_hash($password, PASSWORD_DEFAULT);
 
-      // 2. Insert data mahasiswa baru menggunakan Prepared Statements
-      // Kolom 'nama' disesuaikan menjadi 'nama_mahasiswa' sesuai struktur login.php Anda
       $stmt_insert = mysqli_prepare($conn, "INSERT INTO mahasiswa (nama_mahasiswa, email, password) VALUES (?, ?, ?)");
       mysqli_stmt_bind_param($stmt_insert, "sss", $nama, $email, $hash);
       
@@ -55,6 +49,47 @@ if(isset($_POST['register'])){
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SIRAKELIKA – Daftar Akun</title>
 <link rel="stylesheet" href="style.css"/>
+<style>
+  /* MENYALIN KOMBINASI WARNA DARI LOGIN.PHP */
+  .panel-left { 
+    background: linear-gradient(135deg, #2563eb, #38bdf8) !important; 
+    color: #ffffff !important; 
+  }
+  .site-name { 
+    color: #ffffff !important; 
+  }
+  .panel-tagline { 
+    color: #f0f9ff !important; 
+  }
+  .panel-desc { 
+    color: #e0f2fe !important; 
+  }
+  .bsub { 
+    background-color: #3b82f6 !important; 
+    color: #ffffff !important; 
+    transition: background-color 0.2s ease; 
+  }
+  .bsub:hover { 
+    background-color: #1d4ed8 !important; 
+  }
+  .bl a { 
+    color: #3b82f6 !important; 
+  }
+  .bl a:hover { 
+    text-decoration: underline !important; 
+  }
+  .iw input:focus { 
+    border-color: #3b82f6 !important; 
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important; 
+  }
+  .tpw:hover { 
+    color: #3b82f6 !important; 
+  }
+
+  /* Kode styling tambahan agar layout tetap rapi */
+  .fhint { display: none; font-size: 12px; color: #ef4444; margin-top: 4px; }
+  .fhint.show { display: block; }
+</style>
 </head>
 <body>
 <div class="auth-card" style="min-height:520px">
@@ -77,8 +112,8 @@ if(isset($_POST['register'])){
 
       <?php if(isset($success)): ?>
         <p style="color:#16a34a;font-size:13px;margin-bottom:12px;background:#f0fdf4;padding:8px 12px;border-radius:8px;border:1px solid #bbf7d0;">
-           <?php echo $success; ?>
-          <a href="login.php" style="font-weight:600;color:#16a34a;">Masuk sekarang →</a>
+          <?php echo $success; ?>
+          <a href="login.php" style="font-weight:600;color:#3b82f6;">Masuk sekarang →</a>
         </p>
       <?php endif; ?>
 
