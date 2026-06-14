@@ -1,6 +1,12 @@
 <?php
-include "connection.php";
 session_start();
+include "connection.php";
+
+// Hanya mahasiswa yang login boleh mengakses halaman ini
+if (!isset($_SESSION['id_mahasiswa'])) {
+    header("Location: login.php");
+    exit;
+}
 
 // Generate kode laporan unik
 function generateKode($conn) {
@@ -24,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jenis_kekerasan = $_POST['jenis_kekerasan'] ?? '';
     $waktu_kejadian  = $_POST['waktu_kejadian'] ?? '';
     $lokasi_kejadian = trim($_POST['lokasi_kejadian'] ?? '');
-    $id_mahasiswa    = $_SESSION['id_mahasiswa'] ?? $_SESSION['user_id'] ?? 1;
+    $id_mahasiswa    = (int) $_SESSION['id_mahasiswa'];
 
     if (!$judul_laporan || !$deskripsi || !$jenis_kekerasan || !$waktu_kejadian || !$lokasi_kejadian) {
         $error = 'Semua field wajib diisi.';

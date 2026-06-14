@@ -342,29 +342,40 @@ body {
 .laporan-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0;
 }
 
 .laporan-card {
     background: #fff;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 20px 24px;
+    border-left: 4px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 18px 22px;
     cursor: pointer;
     transition: all 0.2s;
+    margin-bottom: 12px;
 }
 
 .laporan-card:hover {
     border-color: #bfdbfe;
+    border-left-color: var(--lc-accent, #bfdbfe);
     box-shadow: 0 4px 12px rgba(37,99,235,0.07);
     transform: translateY(-1px);
 }
+
+/* Border kiri sesuai status (laporan-card & card-box) */
+.laporan-card.status-menunggu, .card-box.status-menunggu        { border-left-color: #3b82f6; }
+.laporan-card.status-diproses, .card-box.status-diproses        { border-left-color: #f59e0b; }
+.laporan-card.status-ditindaklanjuti, .card-box.status-ditindaklanjuti { border-left-color: #f59e0b; }
+.laporan-card.status-mediasi, .card-box.status-mediasi          { border-left-color: #7c3aed; }
+.laporan-card.status-selesai, .card-box.status-selesai          { border-left-color: #10b981; }
+.laporan-card.status-ditolak, .card-box.status-ditolak          { border-left-color: #ef4444; }
 
 .lc-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     flex-wrap: wrap;
     gap: 8px;
 }
@@ -384,23 +395,26 @@ body {
 
 .lc-id {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     color: #2563eb;
     font-family: 'Courier New', monospace;
+    background: #eff6ff;
+    padding: 2px 8px;
+    border-radius: 6px;
 }
 
 .lc-title {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     color: #0f172a;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .lc-desc {
     font-size: 13px;
     color: #64748b;
     line-height: 1.5;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -429,7 +443,7 @@ body {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .meta-item {
@@ -437,26 +451,27 @@ body {
     align-items: center;
     gap: 5px;
     font-size: 12px;
-    color: #64748b;
+    color: #94a3b8;
 }
 
 /* ===================== PROGRESS BAR ===================== */
 .progress-section {
     border-top: 1px solid #f1f5f9;
-    padding-top: 14px;
+    padding-top: 12px;
 }
 
 .progress-label {
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 10px;
+    font-weight: 700;
     color: #94a3b8;
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+    letter-spacing: 0.8px;
 }
 
 .progress-bar {
     display: flex;
     align-items: flex-start;
+    position: relative;
 }
 
 .ps {
@@ -464,17 +479,29 @@ body {
     flex-direction: column;
     align-items: center;
     flex: 1;
+    min-width: 0;
+    position: relative;
 }
 
-.ps-top {
-    display: flex;
-    align-items: center;
-    width: 100%;
+/* Garis penghubung antar step, digambar dari tengah circle ke tengah circle berikutnya */
+.ps:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 11px;                /* setengah tinggi ps-circle (24px / 2 - 1px) */
+    left: calc(50% + 12px);
+    right: calc(-50% + 12px);
+    height: 2px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.ps.done:not(:last-child)::after {
+    background: #10b981;
 }
 
 .ps-circle {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px solid #e2e8f0;
     background: #fff;
@@ -482,39 +509,36 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    position: relative;
     z-index: 1;
 }
 
 .ps.done .ps-circle  { background: #10b981; border-color: #10b981; color: #fff; }
-.ps.active .ps-circle { border-color: #3b82f6; background: #eff6ff; }
+
+.ps.active .ps-circle {
+    border-color: #3b82f6;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+}
 
 .ps-dot {
-    width: 7px;
-    height: 7px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #3b82f6;
 }
 
-.ps-line {
-    flex: 1;
-    height: 2px;
-    background: #e2e8f0;
-    margin-top: 9px;
-    align-self: flex-start;
-}
-
-.ps-line.done { background: #10b981; }
-
 .ps-lbl {
-    font-size: 10px;
-    color: #94a3b8;
-    margin-top: 6px;
+    font-size: 11px;
+    color: #cbd5e1;
+    margin-top: 8px;
     text-align: center;
     white-space: nowrap;
+    font-weight: 500;
 }
 
 .ps.done .ps-lbl  { color: #10b981; font-weight: 600; }
-.ps.active .ps-lbl { color: #3b82f6; font-weight: 600; }
+.ps.active .ps-lbl { color: #3b82f6; font-weight: 700; }
 
 .selesai-chip {
     display: inline-flex;

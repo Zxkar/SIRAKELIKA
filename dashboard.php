@@ -1,5 +1,20 @@
 <?php
-include "connection.php"
+session_start();
+include "connection.php";
+
+if (!isset($_SESSION['id_mahasiswa'])) {
+    header("Location: login.php");
+    exit;
+}
+$id_mahasiswa = (int) $_SESSION['id_mahasiswa'];
+
+// Ambil data nama untuk ditampilkan di topbar
+$res_user = $conn->query("SELECT nama_mahasiswa FROM mahasiswa WHERE id_mahasiswa = $id_mahasiswa LIMIT 1");
+$user_row = $res_user ? $res_user->fetch_assoc() : null;
+$nama_user = $user_row['nama_mahasiswa'] ?? 'Pengguna';
+$inisial_user = '';
+foreach (explode(' ', $nama_user) as $part) { $inisial_user .= strtoupper(substr($part, 0, 1)); }
+$inisial_user = substr($inisial_user, 0, 2);
 ?>
 
 <!DOCTYPE html>
@@ -23,36 +38,36 @@ include "connection.php"
         </div>
 
         <nav class="nav-container">
-    <div class="nav-group">MENU UTAMA</div>
-    <a href="dashboard.php" class="nav-link active">  
-        <span class="nav-text">Dashboard</span>
-    </a>
-    <a href="laporan.php" class="nav-link">  
-        <span class="nav-text">Laporan Saya</span>
-    </a>
+            <div class="nav-group">MENU UTAMA</div>
+            <a href="dashboard.php" class="nav-link active">
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="laporan.php" class="nav-link">
+                <span class="nav-text">Laporan Saya</span>
+            </a>
 
-    <div class="nav-group">PENGELOLAAN</div>
-    <a href="manajemen.php" class="nav-link"> 
-        <span class="nav-text">Manajemen Kasus</span>
-    </a>
-    <a href="edukasi.php" class="nav-link"> 
-        <span class="nav-text">Edukasi & Informasi</span>
-    </a>
-    <a href="kenali.php" class="nav-link">
-        <span class="nav-text">Kenali Situasi Anda</span>
-    </a>
+            <div class="nav-group">PENGELOLAAN</div>
+            <a href="manajemen.php" class="nav-link">
+                <span class="nav-text">Manajemen Kasus</span>
+            </a>
+            <a href="edukasi.php" class="nav-link">
+                <span class="nav-text">Edukasi & Informasi</span>
+            </a>
+            <a href="kenali.php" class="nav-link">
+                <span class="nav-text">Kenali Situasi Anda</span>
+            </a>
 
-    <div class="nav-group">AKUN</div>
-    <a href="profil.php" class="nav-link">
-        <span class="nav-text">Profil</span>
-    </a>
-    <a href="pengaturan.php" class="nav-link">
-        <span class="nav-text">Pengaturan</span>
-    </a>
-    <a href="logout.php" class="nav-link logout">
-        <span class="nav-text">Keluar</span>
-    </a>
-</nav>
+            <div class="nav-group">AKUN</div>
+            <a href="profil.php" class="nav-link">
+                <span class="nav-text">Profil</span>
+            </a>
+            <a href="pengaturan.php" class="nav-link">
+                <span class="nav-text">Pengaturan</span>
+            </a>
+            <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
+                <span class="nav-text">Keluar</span>
+            </a>
+        </nav>
     </aside>
 
     <main class="main-content">
@@ -63,9 +78,9 @@ include "connection.php"
                 <div class="notif-btn">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9J M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 </div>
-                <div class="avatar">MA</div>
+                <div class="avatar"><?= htmlspecialchars($inisial_user) ?></div>
                 <div class="user-info">
-                    <span class="user-name">M. Alif</span>
+                    <span class="user-name"><?= htmlspecialchars($nama_user) ?></span>
                     <span class="user-role">Mahasiswa</span>
                 </div>
             </div>
