@@ -105,13 +105,13 @@ if(isset($_POST['login'])){
       <form method="POST" action="login.php">
 
         <div class="fg">
-          <label for="login_input">Email atau Username</label>
+          <label for="login_input">Email</label>
           <div class="iw">
             <input
               type="text" 
               id="login_input"
               name="login_input"
-              placeholder="contoh@email.com atau username"
+              placeholder="contoh@email.com"
               value="<?php echo isset($_POST['login_input']) ? htmlspecialchars($_POST['login_input']) : ''; ?>"
               required
             />
