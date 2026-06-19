@@ -8,10 +8,9 @@ if(isset($_POST['login'])){
   $password = $_POST['password'];
   $login_success = false;
 
-  // Pengecekan Kondisional: Berdasarkan Email (Mahasiswa) atau Username (Internal)
+
   if (filter_var($login_input, FILTER_VALIDATE_EMAIL)) {
-    
-    // 1. Verifikasi Mahasiswa (Menggunakan HASH)
+    //mhs
     $query = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE email='$login_input'");
     if(mysqli_num_rows($query) > 0){
       $data = mysqli_fetch_assoc($query);
@@ -26,9 +25,7 @@ if(isset($_POST['login'])){
     }
 
   } else {
-    // Jika input BUKAN email, melainkan USERNAME (Admin / Tim Investigasi / Manajemen Kampus)
-
-    // 2. Verifikasi Tim Investigasi (Kini Menggunakan HASH)
+    //investigasi
     $query = mysqli_query($conn, "SELECT * FROM tim_investigasi WHERE nama_tim='$login_input'");
     if(mysqli_num_rows($query) > 0){
       $data = mysqli_fetch_assoc($query);
@@ -42,7 +39,7 @@ if(isset($_POST['login'])){
       }
     }
 
-    // 3. Verifikasi Manajemen Kampus (Kini Menggunakan HASH)
+    //Manajemen Kampus
     if(!$login_success){
       $query = mysqli_query($conn, "SELECT * FROM manajemen_kampus WHERE nama_manajemen='$login_input'");
       if(mysqli_num_rows($query) > 0){
@@ -52,11 +49,11 @@ if(isset($_POST['login'])){
           $_SESSION['email']    = $data['email'];
           $_SESSION['role']     = 'manajemen';
           $login_success = true;
-          header("Location: dashboard.php");
+          header("Location: dashboard_manajemen.php");
           exit;
         }
       }
-    } 
+    }
   }
 
   // Jika login gagal
