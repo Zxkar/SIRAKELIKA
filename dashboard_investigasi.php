@@ -4,18 +4,12 @@ include 'conn.php';
 
 // 1. SINKRONISASI LOGIN MAHASISWA & TIM: Memastikan session berasal dari form login biasa
 if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'investigasi'){
-    // Jika tidak punya akses investigasi, tendang kembali ke form login biasa tersebut
     header("Location: login.php"); 
     exit;
 }
 
-// Mengambil username dari form login biasa untuk query data
 $username_aktif = $_SESSION['username']; 
 
-/* ==========================================================================
-   2. QUERY STATISTIK (Menghitung seluruh kasus berdasarkan status laporan)
-   Sesuai form login biasa Anda, data dihitung langsung dari tabel laporan
-   ========================================================================== */
 $query_total_kasus = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
 $query_perlu_tindakan = mysqli_query($conn, "SELECT COUNT(*) as tindakan FROM laporan WHERE status_laporan='Baru'");
 $query_sedang_selidik = mysqli_query($conn, "SELECT COUNT(*) as selidik FROM laporan WHERE status_laporan='Diproses'");
