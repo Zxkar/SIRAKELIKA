@@ -30,7 +30,6 @@ $kasus_putus     = mysqli_fetch_assoc($q_kasus_putus)['selesai'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Mengembalikan flexbox layout agar kembali sejajar dan rapi seperti dashboard investigasi */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
