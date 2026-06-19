@@ -19,9 +19,9 @@ if(isset($_POST['admin_login'])){
       $_SESSION['admin_name']     = $data['nama_admin'];
       
       //membaca kolom database
-      if($data['role'] === 'super_admin'){
-          $_SESSION['role'] = 'super_admin';
-          header("Location: dashboard_admin.php");
+      if($data['role'] === 'superadmin'){
+          $_SESSION['role'] = 'superadmin';
+          header("Location: dashboard_superadmin.php");
           exit;
       } else {
           $_SESSION['role'] = 'admin';
