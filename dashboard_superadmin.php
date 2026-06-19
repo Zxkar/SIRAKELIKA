@@ -130,15 +130,15 @@ $count_verif  = mysqli_fetch_assoc($query_belum_verif)['total'];
                 <span class="nav-text">Dashboard</span>
             </a>
             
-            <div class="nav-group">MANAJEMEN DATA</div>
+            <div class="nav-group">MANAJEMEN</div>
             <a href="#" class="nav-link">
                 <span class="nav-text">Verifikasi Laporan Masuk</span>
             </a>
             <a href="#" class="nav-link">
-                <span class="nav-text">Data Akun Mahasiswa</span>
+                <span class="nav-text">kelola Akun Mahasiswa</span>
             </a>
             <a href="#" class="nav-link">
-                <span class="nav-text">Data Akun Pihak Internal</span>
+                <span class="nav-text">kelola Akun Pihak Internal</span>
             </a>
             
             <div class="nav-group">AKUN UTAMA</div>
