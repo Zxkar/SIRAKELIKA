@@ -4,7 +4,7 @@ include 'conn.php';
 
 if(isset($_POST['register'])){
 
-  $nama     = $_POST['username'];
+  $nama     = $_POST['username']; // Mengisi kolom 'username' di database
   $email    = $_POST['email'];
   $password = $_POST['password'];
   $confirm  = $_POST['confirm'];
@@ -15,81 +15,42 @@ if(isset($_POST['register'])){
     $error = "Konfirmasi kata sandi tidak cocok.";
   } else {
 
-    $stmt_cek = mysqli_prepare($conn, "SELECT email FROM mahasiswa WHERE email = ?");
-    mysqli_stmt_bind_param($stmt_cek, "s", $email);
+    // 1. Cek apakah username atau email sudah digunakan di tabel 'users'
+    $stmt_cek = mysqli_prepare($conn, "SELECT id_user FROM users WHERE username = ? OR email = ?");
+    mysqli_stmt_bind_param($stmt_cek, "ss", $nama, $email);
     mysqli_stmt_execute($stmt_cek);
     mysqli_stmt_store_result($stmt_cek);
 
     if(mysqli_stmt_num_rows($stmt_cek) > 0){
-      $error = "Email sudah digunakan.";
+      $error = "Username atau Email sudah digunakan oleh pengguna lain.";
       mysqli_stmt_close($stmt_cek);
     } else {
       mysqli_stmt_close($stmt_cek);
 
+      // 2. Enkripsi password menggunakan bcrypt hash
       $hash = password_hash($password, PASSWORD_DEFAULT);
 
-      $stmt_insert = mysqli_prepare($conn, "INSERT INTO mahasiswa (nama_mahasiswa, email, password) VALUES (?, ?, ?)");
+      // 3. Masukkan data ke tabel 'users' (Kolom nama_lengkap sudah dihapus)
+      $stmt_insert = mysqli_prepare($conn, "INSERT INTO users (username, email, password, role, status_akun) VALUES (?, ?, ?, 'mahasiswa', 'aktif')");
       mysqli_stmt_bind_param($stmt_insert, "sss", $nama, $email, $hash);
       
       if(mysqli_stmt_execute($stmt_insert)){
         $success = "Registrasi berhasil! Silakan masuk.";
       } else {
-        $error = "Registrasi gagal, coba lagi.";
+        $error = "Registrasi gagal, silakan coba lagi.";
       }
       mysqli_stmt_close($stmt_insert);
     }
   }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SIRAKELIKA – Daftar Akun</title>
-<link rel="stylesheet" href="style.css"/>
-<style>
-  /* MENYALIN KOMBINASI WARNA DARI LOGIN.PHP */
-  .panel-left { 
-    background: linear-gradient(135deg, #2563eb, #38bdf8) !important; 
-    color: #ffffff !important; 
-  }
-  .site-name { 
-    color: #ffffff !important; 
-  }
-  .panel-tagline { 
-    color: #f0f9ff !important; 
-  }
-  .panel-desc { 
-    color: #e0f2fe !important; 
-  }
-  .bsub { 
-    background-color: #3b82f6 !important; 
-    color: #ffffff !important; 
-    transition: background-color 0.2s ease; 
-  }
-  .bsub:hover { 
-    background-color: #1d4ed8 !important; 
-  }
-  .bl a { 
-    color: #3b82f6 !important; 
-  }
-  .bl a:hover { 
-    text-decoration: underline !important; 
-  }
-  .iw input:focus { 
-    border-color: #3b82f6 !important; 
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important; 
-  }
-  .tpw:hover { 
-    color: #3b82f6 !important; 
-  }
-
-  /* Kode styling tambahan agar layout tetap rapi */
-  .fhint { display: none; font-size: 12px; color: #ef4444; margin-top: 4px; }
-  .fhint.show { display: block; }
-</style>
+<link rel="stylesheet" href="register.css"/>
 </head>
 <body>
 <div class="auth-card" style="min-height:520px">
