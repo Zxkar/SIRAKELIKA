@@ -6,59 +6,65 @@ if(isset($_POST['login'])){
 
   $login_input = mysqli_real_escape_string($conn, $_POST['login_input']);
   $password = $_POST['password'];
-  $login_success = false;
-
+  $user_found = false; // Penanda apakah username/email terdaftar di sistem
+  $error = "";
 
   if (filter_var($login_input, FILTER_VALIDATE_EMAIL)) {
-    //mhs
+    // 1. CEK TABEL MAHASISWA
     $query = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE email='$login_input'");
     if(mysqli_num_rows($query) > 0){
+      $user_found = true;
       $data = mysqli_fetch_assoc($query);
       if(password_verify($password, $data['password'])){
         $_SESSION['username'] = $data['nama_mahasiswa'];
         $_SESSION['email']    = $data['email'];
         $_SESSION['role']     = 'mahasiswa';
-        $login_success = true;
         header("Location: dashboard.php");
         exit;
+      } else {
+        $error = "Kata sandi yang Anda masukkan salah.";
       }
     }
 
   } else {
-    //investigasi
+    // 2. CEK TABEL TIM INVESTIGASI
     $query = mysqli_query($conn, "SELECT * FROM tim_investigasi WHERE nama_tim='$login_input'");
     if(mysqli_num_rows($query) > 0){
+      $user_found = true;
       $data = mysqli_fetch_assoc($query);
       if(password_verify($password, $data['password'])){ 
         $_SESSION['username'] = $data['nama_tim'];
         $_SESSION['email']    = $data['email'];
         $_SESSION['role']     = 'investigasi';
-        $login_success = true;
         header("Location: dashboard_investigasi.php");
         exit;
+      } else {
+        $error = "Kata sandi yang Anda masukkan salah.";
       }
     }
 
-    //Manajemen Kampus
-    if(!$login_success){
+    // 3. CEK TABEL MANAJEMEN KAMPUS
+    if(!$user_found){
       $query = mysqli_query($conn, "SELECT * FROM manajemen_kampus WHERE nama_manajemen='$login_input'");
       if(mysqli_num_rows($query) > 0){
+        $user_found = true;
         $data = mysqli_fetch_assoc($query);
         if(password_verify($password, $data['password'])){ 
           $_SESSION['username'] = $data['nama_manajemen'];
           $_SESSION['email']    = $data['email'];
           $_SESSION['role']     = 'manajemen';
-          $login_success = true;
           header("Location: dashboard_manajemen.php");
           exit;
+        } else {
+          $error = "Kata sandi yang Anda masukkan salah.";
         }
       }
     }
   }
 
-  // Jika login gagal
-  if(!$login_success){
-    $error = "Email/Username atau password salah.";
+  // Jika setelah memutari seluruh tabel ternyata username/email tidak ada yang cocok
+  if(!$user_found){
+    $error = "Akun tidak ditemukan.";
   }
 }
 ?>
@@ -70,18 +76,18 @@ if(isset($_POST['login'])){
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SIRAKELIKA – Masuk</title>
 <link rel="stylesheet" href="style.css"/>
-<style>
-  .panel-left { background: linear-gradient(135deg, #2563eb, #38bdf8) !important; color: #ffffff !important; }
-  .site-name { color: #ffffff !important; }
-  .panel-tagline { color: #f0f9ff !important; }
-  .panel-desc { color: #e0f2fe !important; }
-  .bsub { background-color: #3b82f6 !important; color: #ffffff !important; transition: background-color 0.2s ease; }
-  .bsub:hover { background-color: #1d4ed8 !important; }
-  .lupa, .bl a { color: #3b82f6 !important; }
-  .lupa:hover, .bl a:hover { text-decoration: underline !important; }
-  .iw input:focus { border-color: #3b82f6 !important; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important; }
-  .tpw:hover { color: #3b82f6 !important; }
-</style>
+    <style>
+      .panel-left { background: linear-gradient(135deg, #2563eb, #38bdf8) !important; color: #ffffff !important; }
+      .site-name { color: #ffffff !important; }
+      .panel-tagline { color: #f0f9ff !important; }
+      .panel-desc { color: #e0f2fe !important; }
+      .bsub { background-color: #3b82f6 !important; color: #ffffff !important; transition: background-color 0.2s ease; }
+      .bsub:hover { background-color: #1d4ed8 !important; }
+      .lupa, .bl a { color: #3b82f6 !important; }
+      .lupa:hover, .bl a:hover { text-decoration: underline !important; }
+      .iw input:focus { border-color: #3b82f6 !important; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important; }
+      .tpw:hover { color: #3b82f6 !important; }
+    </style>
 </head>
 <body>
 <div class="auth-card">
