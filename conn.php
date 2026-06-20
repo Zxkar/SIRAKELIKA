@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $pass = "";
-$dbname = "sirakelika"; // Pastikan nama databasenya benar
+$dbname = "sirakelika";
 
 $conn = new mysqli($servername, $username, $pass, $dbname);
 if ($conn->connect_error) {
