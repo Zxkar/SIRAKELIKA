@@ -1,117 +1,35 @@
 <?php
-session_start();
-include 'conn.php';
+    session_start();
+    include 'conn.php';
 
-// PROTEKSI KETAT: Jika bukan admin yang login, tendang ke halaman login khusus admin
-if(!isset($_SESSION['admin_logged_in']) || $_SESSION['role'] !== 'admin'){
-    header("Location: login_admin.php");
-    exit;
+    if(!isset($_SESSION['admin_logged_in']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'superadmin')){
+        header("Location: login_admin.php");
+        exit;
 }
 
-// 1. QUERY METRIK KHUSUS MANAGEMENT ADMIN (SESUAI SRS)
-// Menghitung data statistik secara real-time dari database
-$query_total_mhs  = mysqli_query($conn, "SELECT COUNT(*) as total FROM mahasiswa");
-$query_total_tim  = mysqli_query($conn, "SELECT COUNT(*) as total FROM tim_investigasi");
-$query_laporan_in = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
-$query_belum_verif= mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan WHERE status_laporan='Baru'");
+    $query_total_mhs  = mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role = 'mahasiswa'");
+    $query_total_tim  = mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role = 'investigasi'");
+    $query_total_manajemen = mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role = 'manajemen'");
+    $count_manajemen = mysqli_fetch_assoc($query_total_manajemen)['total'];
+    $query_laporan_in = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
 
-$count_mhs    = mysqli_fetch_assoc($query_total_mhs)['total'];
-$count_tim    = mysqli_fetch_assoc($query_total_tim)['total'];
-$count_lap    = mysqli_fetch_assoc($query_laporan_in)['total'];
-$count_verif  = mysqli_fetch_assoc($query_belum_verif)['total'];
+    $query_belum_verif= mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan WHERE status_laporan = 'menunggu'");
+
+    $count_mhs    = mysqli_fetch_assoc($query_total_mhs)['total'];
+    $count_tim    = mysqli_fetch_assoc($query_total_tim)['total'];
+    $count_lap    = mysqli_fetch_assoc($query_laporan_in)['total'];
+    $count_verif  = mysqli_fetch_assoc($query_belum_verif)['total'];
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Admin Panel</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="dashboard_admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <style>
-        
-        /* Mengubah Sidebar menjadi cerah/putih bersih */
-        .sidebar { 
-            background-color: #ffffff !important; 
-            border-right: 1px solid #e2e8f0 !important;
-        }
-
-        /* Memastikan warna teks judul aplikasi terlihat sangat jelas */
-        .logo-title {
-            color: #0f172a !important;
-        }
-        .logo-sub {
-            color: #dc2626 !important;
-            font-weight: 700;
-        }
-
-        .nav-group {
-            color: #64748b !important;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            margin-top: 24px;
-        }
-
-        .nav-link {
-            color: #334155 !important;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .nav-link:hover {
-            background-color: #f1f5f9 !important; 
-            color: #dc2626 !important; 
-        }
-
-        .nav-link.active {
-            background-color: #fef2f2 !important; 
-            color: #dc2626 !important; 
-            font-weight: 600;
-        }
-
-        .nav-link.logout {
-            color: #ef4444 !important;
-        }
-        .nav-link.logout:hover {
-            background-color: #fef2f2 !important;
-        }
-
-        .welcome-banner-admin {
-            background: linear-gradient(135deg, #dc2626, #991b1b) !important;
-            padding: 32px;
-            border-radius: 16px;
-            color: white;
-            margin-bottom: 28px;
-        }
-        .welcome-banner-admin h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #ffffff;
-        }
-        .welcome-banner-admin p {
-            font-size: 14px;
-            color: #fecaca;
-            line-height: 1.6;
-            max-width: 700px;
-        }
-
-        .btn-verif { 
-            background-color: #10b981; 
-            color: white; 
-            border: none; 
-            padding: 6px 12px; 
-            border-radius: 6px; 
-            font-size: 11px; 
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.2s;
-        }
-        .btn-verif:hover { 
-            background-color: #059669; 
-        }
-    </style>
 </head>
 <body>
 
@@ -154,7 +72,7 @@ $count_verif  = mysqli_fetch_assoc($query_belum_verif)['total'];
             <div class="user-profile">
                 <div class="avatar" style="background-color: #dc2626; color: white;">ADM</div>
                 <div class="user-info">
-                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
+                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     <span class="user-role">Sistem Administrator</span>
                 </div>
             </div>
