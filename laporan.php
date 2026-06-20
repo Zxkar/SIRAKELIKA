@@ -180,9 +180,9 @@ if ($detail_id) {
         <!-- KIRI -->
         <div>
             <!-- Info utama -->
-            <div class="card-box status-<?= strtolower(trim($detail['status_laporan'])) ?>" style="border-left:4px solid;">
+            <div class="card-box">
                 <div class="card-top">
-                    <span class="lc-id">#<?= htmlspecialchars($kode) ?></span>
+                    <span style="font-size:12px;font-weight:600;color:#2563eb;font-family:monospace">#<?= htmlspecialchars($kode) ?></span>
                     <div class="tag-group">
                         <span class="badge <?= $st ?>"><?= htmlspecialchars(ucfirst($detail['status_laporan'])) ?></span>
                         <?php if (!empty($detail['jenis_kekerasan'])): ?>
@@ -218,11 +218,16 @@ if ($detail_id) {
                 <div class="progress-bar">
                     <?php foreach ($progres_labels as $i => $lbl): ?>
                     <div class="ps <?= $i < $pg ? 'done' : ($i === $pg ? 'active' : '') ?>">
-                        <div class="ps-circle">
-                            <?php if ($i < $pg): ?>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
-                            <?php elseif ($i === $pg): ?>
-                            <div class="ps-dot"></div>
+                        <div class="ps-top">
+                            <div class="ps-circle">
+                                <?php if ($i < $pg): ?>
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
+                                <?php elseif ($i === $pg): ?>
+                                <div class="ps-dot"></div>
+                                <?php endif; ?>
+                            </div>
+                            <?php if ($i < count($progres_labels) - 1): ?>
+                            <div class="ps-line <?= $i < $pg ? 'done' : '' ?>"></div>
                             <?php endif; ?>
                         </div>
                         <span class="ps-lbl"><?= $lbl ?></span>
@@ -402,7 +407,7 @@ if ($detail_id) {
         $tgl_laporan = date('d M Y', strtotime($l['tanggal_laporan']));
         $kode = $l['kode_laporan'] ?? 'KS-'.$l['id_laporan'];
     ?>
-    <div class="laporan-card status-<?= strtolower(trim($l['status_laporan'])) ?>" onclick="window.location='laporan.php?detail=<?= $l['id_laporan'] ?>'">
+    <div class="laporan-card" onclick="window.location='laporan.php?detail=<?= $l['id_laporan'] ?>'">
         <div class="lc-head">
             <div class="lc-left">
                 <span class="lc-id">#<?= htmlspecialchars($kode) ?></span>
@@ -448,11 +453,16 @@ if ($detail_id) {
             <div class="progress-bar">
                 <?php foreach ($progres_labels as $i => $lbl): ?>
                 <div class="ps <?= $i < $pg ? 'done' : ($i === $pg ? 'active' : '') ?>">
-                    <div class="ps-circle">
-                        <?php if ($i < $pg): ?>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
-                        <?php elseif ($i === $pg): ?>
-                        <div class="ps-dot"></div>
+                    <div class="ps-top">
+                        <div class="ps-circle">
+                            <?php if ($i < $pg): ?>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
+                            <?php elseif ($i === $pg): ?>
+                            <div class="ps-dot"></div>
+                            <?php endif; ?>
+                        </div>
+                        <?php if ($i < count($progres_labels) - 1): ?>
+                        <div class="ps-line <?= $i < $pg ? 'done' : '' ?>"></div>
                         <?php endif; ?>
                     </div>
                     <span class="ps-lbl"><?= $lbl ?></span>
