@@ -126,7 +126,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
             <a href="dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
             <a href="laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
             <div class="nav-group">PENGELOLAAN</div>
-            <a href="#" class="nav-link"><span class="nav-text">Manajemen Kasus</span></a>
+          
             <a href="edukasi1.php" class="nav-link"><span class="nav-text">Edukasi & Informasi</span></a>
             <a href="kenali.php" class="nav-link active"><span class="nav-text">Kenali Situasi Anda</span></a>
             <div class="nav-group">AKUN</div>

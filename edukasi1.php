@@ -201,7 +201,7 @@ $faqs = [
             <a href="dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
             <a href="laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
             <div class="nav-group">PENGELOLAAN</div>
-            <a href="#" class="nav-link"><span class="nav-text">Manajemen Kasus</span></a>
+            
             <a href="edukasi.php" class="nav-link active"><span class="nav-text">Edukasi & Informasi</span></a>
             <a href="kenali.php" class="nav-link"><span class="nav-text">Kenali Situasi Anda</span></a>
             <div class="nav-group">AKUN</div>
@@ -383,7 +383,7 @@ $faqs = [
                         <i class="fa fa-envelope text-base"></i>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-gray-800 mb-1">Email Resmi</h4>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Email </h4>
                         <p class="text-xs text-gray-500 mb-3">Kirim pertanyaan atau laporan melalui email. Kami merespon dalam 1x24 jam.</p>
                         <a href="mailto:sirakelika@itbj.ac.id" class="text-xs font-bold text-blue-600 hover:underline">sirakelika@itbj.ac.id</a>
                     </div>
