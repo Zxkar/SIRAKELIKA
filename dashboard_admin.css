@@ -39,7 +39,6 @@ body {
     min-height: 100vh;
 }
 
-/* ===== SIDEBAR ===== */
 .sidebar {
     width: 260px;
     background-color: #ffffff;
@@ -126,7 +125,6 @@ body {
     background-color: #fef2f2;
 }
 
-/* ===== BADGES ===== */
 .badge {
     font-size: 11px;
     font-weight: 600;
@@ -136,14 +134,12 @@ body {
 .badge-red { background-color: #ef4444; color: #fff; }
 .badge-gray { background-color: #94a3b8; color: #fff; }
 
-/* ===== MAIN CONTENT ===== */
 .main-content {
     margin-left: 260px;
     flex: 1;
     padding: 0 40px 40px 40px;
 }
 
-/* ===== TOPBAR ===== */
 .topbar {
     height: 70px;
     display: flex;
@@ -190,7 +186,6 @@ body {
     color: #64748b;
 }
 
-/* ===== WELCOME BANNER ===== */
 .welcome-banner-admin {
     background: linear-gradient(135deg, #dc2626, #991b1b);
     border-radius: 16px;
@@ -217,7 +212,6 @@ body {
     line-height: 1.6;
 }
 
-/* ===== CONTENT TITLE ===== */
 .content-title h2 {
     font-size: 24px;
     font-weight: 700;
@@ -230,7 +224,6 @@ body {
     margin-bottom: 24px;
 }
 
-/* ===== STATS CARDS GRID ===== */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -261,13 +254,11 @@ body {
     margin-top: 4px;
 }
 
-/* ===== DATA GRID ===== */
 .data-grid {
     display: flex;
     gap: 24px;
 }
 
-/* ===== TABLE CONTAINER ===== */
 .table-container {
     background: #ffffff;
     border-radius: 12px;
@@ -320,8 +311,7 @@ body {
     color: #dc2626;
     font-weight: 600;
 }
-
-/* ===== STATUS BADGES ===== */
+ */
 .status-badge {
     font-size: 11px;
     font-weight: 600;
@@ -332,7 +322,6 @@ body {
 .status-process { background-color: #fffbeb; color: #d97706; }
 .status-done    { background-color: #f0fdf4; color: #16a34a; }
 
-/* ===== BUTTON VERIFIKASI ===== */
 .btn-verif {
     background-color: #dc2626;
     color: white;
