@@ -428,10 +428,9 @@ $faqs = [
                             <label class="text-xs font-semibold text-gray-600 block mb-1.5">Topik Konsultasi</label>
                             <select name="topik" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white">
                                 <option value="">-- Pilih Topik --</option>
-                                <option>Cara melaporkan kejadian</option>
+                                <option>Masalah Akun</option>
                                 <option>Status laporan saya</option>
                                 <option>Kendala menggunakan sistem</option>
-                                <option>Konsultasi kekerasan</option>
                                 <option>Lainnya</option>
                             </select>
                         </div>
