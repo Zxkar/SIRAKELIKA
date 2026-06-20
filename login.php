@@ -6,64 +6,55 @@ if(isset($_POST['login'])){
 
   $login_input = mysqli_real_escape_string($conn, $_POST['login_input']);
   $password = $_POST['password'];
-  $user_found = false; // Penanda apakah username/email terdaftar di sistem
   $error = "";
 
-  if (filter_var($login_input, FILTER_VALIDATE_EMAIL)) {
-    // 1. CEK TABEL MAHASISWA
-    $query = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE email='$login_input'");
-    if(mysqli_num_rows($query) > 0){
-      $user_found = true;
-      $data = mysqli_fetch_assoc($query);
+  // Cukup cari ke SATU TABEL tunggal (Mendukung input berupa EMAIL ataupun USERNAME)
+  $query = mysqli_query($conn, "SELECT * FROM users WHERE (email='$login_input' OR username='$login_input')");
+
+  if(mysqli_num_rows($query) > 0){
+    $data = mysqli_fetch_assoc($query);
+
+    // 1. Validasi apakah akun berstatus aktif
+    if($data['status_akun'] == 'nonaktif'){
+      $error = "Akun Anda telah dinonaktifkan oleh administrator.";
+    } else {
+      
+      // 2. Verifikasi kesesuaian Password berekstensi Hash
       if(password_verify($password, $data['password'])){
-        $_SESSION['username'] = $data['nama_mahasiswa'];
-        $_SESSION['email']    = $data['email'];
-        $_SESSION['role']     = 'mahasiswa';
-        header("Location: dashboard.php");
-        exit;
-      } else {
-        $error = "Kata sandi yang Anda masukkan salah.";
-      }
-    }
+        
+        // Daftarkan session universal (Menggunakan id_user tunggal)
+        $_SESSION['id_user']   = $data['id_user'];
+        $_SESSION['username']  = $data['username'];
+        $_SESSION['nama']      = $data['nama_lengkap'];
+        $_SESSION['email']     = $data['email'];
+        $_SESSION['role']      = $data['role']; // Berisi: 'mahasiswa', 'investigasi', 'manajemen', 'admin', 'superadmin'
 
-  } else {
-    // 2. CEK TABEL TIM INVESTIGASI
-    $query = mysqli_query($conn, "SELECT * FROM tim_investigasi WHERE nama_tim='$login_input'");
-    if(mysqli_num_rows($query) > 0){
-      $user_found = true;
-      $data = mysqli_fetch_assoc($query);
-      if(password_verify($password, $data['password'])){ 
-        $_SESSION['username'] = $data['nama_tim'];
-        $_SESSION['email']    = $data['email'];
-        $_SESSION['role']     = 'investigasi';
-        header("Location: dashboard_investigasi.php");
-        exit;
-      } else {
-        $error = "Kata sandi yang Anda masukkan salah.";
-      }
-    }
-
-    // 3. CEK TABEL MANAJEMEN KAMPUS
-    if(!$user_found){
-      $query = mysqli_query($conn, "SELECT * FROM manajemen_kampus WHERE nama_manajemen='$login_input'");
-      if(mysqli_num_rows($query) > 0){
-        $user_found = true;
-        $data = mysqli_fetch_assoc($query);
-        if(password_verify($password, $data['password'])){ 
-          $_SESSION['username'] = $data['nama_manajemen'];
-          $_SESSION['email']    = $data['email'];
-          $_SESSION['role']     = 'manajemen';
-          header("Location: dashboard_manajemen.php");
-          exit;
-        } else {
-          $error = "Kata sandi yang Anda masukkan salah.";
+        // 3. Arahkan ke Dashboard masing-masing berdasarkan isi kolom 'role' secara otomatis
+        switch($data['role']){
+          case 'mahasiswa':
+            header("Location: dashboard.php");
+            break;
+          case 'investigasi':
+            header("Location: dashboard_investigasi.php");
+            break;
+          case 'manajemen':
+            header("Location: dashboard_manajemen.php");
+            break;
+          case 'admin':
+          case 'superadmin':
+            header("Location: dashboard_admin.php");
+            break;
+          default:
+            $error = "Hak akses peran (role) tidak dikenali.";
+            break;
         }
+        exit;
+
+      } else {
+        $error = "Kata sandi yang Anda masukkan salah.";
       }
     }
-  }
-
-  // Jika setelah memutari seluruh tabel ternyata username/email tidak ada yang cocok
-  if(!$user_found){
+  } else {
     $error = "Akun tidak ditemukan.";
   }
 }
@@ -72,22 +63,10 @@ if(isset($_POST['login'])){
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>SIRAKELIKA – Masuk</title>
-<link rel="stylesheet" href="style.css"/>
-    <style>
-      .panel-left { background: linear-gradient(135deg, #2563eb, #38bdf8) !important; color: #ffffff !important; }
-      .site-name { color: #ffffff !important; }
-      .panel-tagline { color: #f0f9ff !important; }
-      .panel-desc { color: #e0f2fe !important; }
-      .bsub { background-color: #3b82f6 !important; color: #ffffff !important; transition: background-color 0.2s ease; }
-      .bsub:hover { background-color: #1d4ed8 !important; }
-      .lupa, .bl a { color: #3b82f6 !important; }
-      .lupa:hover, .bl a:hover { text-decoration: underline !important; }
-      .iw input:focus { border-color: #3b82f6 !important; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important; }
-      .tpw:hover { color: #3b82f6 !important; }
-    </style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>SIRAKELIKA – Masuk</title>
+    <link rel="stylesheet" href="login.css"/>
 </head>
 <body>
 <div class="auth-card">
@@ -102,7 +81,7 @@ if(isset($_POST['login'])){
     <div class="form-box">
       <h2 class="ftitle">Masuk</h2>
 
-      <?php if(isset($error)): ?>
+      <?php if(!empty($error)): ?>
         <p style="color:#ef4444;font-size:13px;margin-bottom:12px;background:#fef2f2;padding:8px 12px;border-radius:8px;border:1px solid #fecaca;">
           ⚠️ <?php echo $error; ?>
         </p>
@@ -117,7 +96,6 @@ if(isset($_POST['login'])){
               type="text" 
               id="login_input"
               name="login_input"
-              placeholder="contoh@email.com"
               value="<?php echo isset($_POST['login_input']) ? htmlspecialchars($_POST['login_input']) : ''; ?>"
               required
             />
@@ -130,7 +108,7 @@ if(isset($_POST['login'])){
             <a href="forgot-password.php" class="lupa">Lupa password?</a>
           </div>
           <div class="iw">
-            <input type="password" id="pw" name="password" placeholder="••••••••" required/>
+            <input type="password" id="pw" name="password"required/>
             <button class="tpw" type="button" onclick="tgl('pw',this)" aria-label="Lihat kata sandi">
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
