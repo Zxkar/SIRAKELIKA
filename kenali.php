@@ -33,6 +33,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
             padding: 10px 12px !important;
             color: #64748b !important;
             text-decoration: none !important;
+            outline: none !important;
             font-size: 13px !important;
             font-weight: 500 !important;
             border-radius: 8px !important;
@@ -75,6 +76,8 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
         .option-card {
             transition: all 0.2s ease;
             border: 1.5px solid #e2e8f0;
+            text-decoration: none !important;
+            color: inherit !important;
         }
         .option-card:hover {
             transform: translateY(-2px);
@@ -83,6 +86,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
         .option-card.red:hover   { border-color: #f87171; background: #fff5f5; }
         .option-card.amber:hover { border-color: #fbbf24; background: #fffbeb; }
         .option-card.purple:hover{ border-color: #a78bfa; background: #f5f3ff; }
+        .option-card * { text-decoration: none !important; }
 
         .progress-bar-fill {
             transition: width 0.4s ease;
