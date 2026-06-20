@@ -107,7 +107,7 @@ foreach ($all_articles as $article) {
                 <a href="dashboard.php" class="nav-link">
                     <span class="nav-text">Dashboard</span>
                 </a>
-                <a href="#" class="nav-link">
+                <a href="laporan.php" class="nav-link">
                     <span class="nav-text">Laporan Saya</span>
                 </a>
 
