@@ -2,8 +2,6 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-/* RESET & BASE STYLES */
-/* RESET & BASE STYLES */
 
 * {
     margin: 0;
@@ -13,7 +11,6 @@
 }
 
 
-/* Mengatur wadah pembungkus agar teks dan ikon berada tepat di tengah */
 .empty-state {
     text-align: center;
     padding: 50px 20px;
@@ -21,17 +18,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #94a3b8; /* Warna teks abu-abu redup */
+    color: #94a3b8;
 }
 
-/* Mengatur visualisasi ikon SVG kosong agar terlihat bersih dan serasi */
 .empty-state svg {
     margin-bottom: 14px;
-    color: #cbd5e1; /* Warna ikon abu-abu terang */
-    stroke-width: 1.5; /* Membuat garis ikon sedikit lebih tipis & elegan */
+    color: #cbd5e1; 
+    stroke-width: 1.5;
 }
 
-/* Mengatur ukuran teks keterangan di dalam status kosong */
 .empty-state p {
     font-size: 14px;
     font-weight: 400;
@@ -46,7 +41,6 @@ body {
     min-height: 100vh;
 }
 
-/* SIDEBAR STYLES */
 .sidebar {
     width: 260px;
     background-color: #ffffff;
@@ -142,14 +136,12 @@ body {
 .badge-blue { background-color: #3b82f6; color: #fff; }
 .badge-red { background-color: #ef4444; color: #fff; }
 
-/* MAIN CONTENT */
 .main-content {
     margin-left: 260px;
     flex: 1;
     padding: 0 40px 40px 40px;
 }
 
-/* TOPBAR */
 .topbar {
     height: 70px;
     display: flex;
@@ -204,7 +196,6 @@ body {
     color: #64748b;
 }
 
-/* WELCOME BANNER */
 .welcome-banner {
     background: linear-gradient(135deg, #3b82f6, #06b6d4);
     border-radius: 16px;
@@ -247,7 +238,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* TITLE INDEX */
 .content-title h2 {
     font-size: 24px;
     font-weight: 700;
@@ -260,7 +250,6 @@ body {
     margin-bottom: 24px;
 }
 
-/* STATS CARDS GRID */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -306,14 +295,12 @@ body {
 .trend-orange { color: #f59e0b; }
 .trend-green { color: #10b981; }
 
-/* TWO COLUMN DATA SYSTEM */
 .data-grid {
     display: grid;
     grid-template-columns: 2.3fr 1fr;
     gap: 24px;
 }
 
-/* TABLE CONTAINER */
 .table-container, .activity-container {
     background: #ffffff;
     border-radius: 12px;
