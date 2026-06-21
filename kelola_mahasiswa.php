@@ -24,6 +24,29 @@ if(isset($_POST['hapus_akun'])){
     exit;
 }
 
+// Edit akun
+if(isset($_POST['edit_akun'])){
+    $id       = (int)$_POST['id_user'];
+    $username = mysqli_real_escape_string($conn, trim($_POST['username']));
+    $email    = mysqli_real_escape_string($conn, trim($_POST['email']));
+
+    // Cek duplikat (kecuali akun ini sendiri)
+    $cek = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM users WHERE (email='$email' OR username='$username') AND id_user != $id"));
+    if($cek){
+        header("Location: kelola_mahasiswa.php?error=duplikat");
+        exit;
+    }
+
+    if(!empty($_POST['password'])){
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        mysqli_query($conn, "UPDATE users SET username='$username', email='$email', password='$password' WHERE id_user=$id AND role='mahasiswa'");
+    } else {
+        mysqli_query($conn, "UPDATE users SET username='$username', email='$email' WHERE id_user=$id AND role='mahasiswa'");
+    }
+    header("Location: kelola_mahasiswa.php?success=1");
+    exit;
+}
+
 // Search
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
 $where  = $search ? "AND (username LIKE '%$search%' OR email LIKE '%$search%')" : '';
@@ -57,10 +80,30 @@ $total = mysqli_num_rows($query);
         .btn-hapus      { background:#fff; color:#dc2626; border:1px solid #fecaca; padding:5px 12px;
                           border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; }
         .btn-hapus:hover { background:#fef2f2; }
+        .btn-edit       { background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; padding:5px 12px;
+                          border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; }
+        .btn-edit:hover { background:#dbeafe; }
         .alert-success { background:#f0fdf4; border:1px solid #bbf7d0; color:#16a34a;
                          padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:13px; font-weight:600; }
         .alert-deleted { background:#fef2f2; border:1px solid #fecaca; color:#dc2626;
                          padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:13px; font-weight:600; }
+        .alert-error    { background:#fffbeb; border:1px solid #fde68a; color:#d97706;
+                         padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:13px; font-weight:600; }
+        /* Modal */
+        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; align-items:center; justify-content:center; }
+        .modal-overlay.show { display:flex; }
+        .modal { background:#fff; border-radius:16px; padding:32px; width:460px; max-width:95vw; }
+        .modal h3 { font-size:18px; font-weight:700; margin-bottom:4px; }
+        .modal p.sub { font-size:13px; color:#64748b; margin-bottom:20px; }
+        .form-group { margin-bottom:14px; }
+        .form-group label { font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:6px; }
+        .form-group input, .form-group select {
+            width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px;
+            font-size:13px; color:#1e293b; font-family:inherit; outline:none; }
+        .form-group input:focus, .form-group select:focus { border-color:#dc2626; }
+        .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+        .btn-cancel { padding:9px 20px; border-radius:8px; border:1px solid #e2e8f0; background:#fff; font-size:13px; font-weight:600; cursor:pointer; color:#64748b; }
+        .btn-submit { padding:9px 20px; border-radius:8px; border:none; background:#dc2626; font-size:13px; font-weight:600; cursor:pointer; color:#fff; }
     </style>
 </head>
 <body>
@@ -113,10 +156,13 @@ $total = mysqli_num_rows($query);
     </div>
 
     <?php if(isset($_GET['success'])): ?>
-    <div class="alert-success">✓ Status akun berhasil diperbarui.</div>
+    <div class="alert-success">✓ Perubahan akun berhasil disimpan.</div>
     <?php endif; ?>
     <?php if(isset($_GET['deleted'])): ?>
     <div class="alert-deleted">✓ Akun berhasil dihapus dari sistem.</div>
+    <?php endif; ?>
+    <?php if(isset($_GET['error']) && $_GET['error']==='duplikat'): ?>
+    <div class="alert-error">⚠ Username atau email sudah dipakai akun lain.</div>
     <?php endif; ?>
 
     <!-- Search -->
@@ -157,6 +203,8 @@ $total = mysqli_num_rows($query);
                 </td>
                 <td><?= date('d M Y', strtotime($row['created_at'])) ?></td>
                 <td style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <!-- Edit -->
+                    <button type="button" class="btn-edit" onclick="openEditModal(<?= $row['id_user'] ?>, '<?= htmlspecialchars($row['username'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['email'], ENT_QUOTES) ?>')">Edit</button>
                     <!-- Toggle status -->
                     <form method="POST" style="margin:0;">
                         <input type="hidden" name="toggle_status" value="1">
@@ -181,6 +229,47 @@ $total = mysqli_num_rows($query);
         </table>
     </div>
 </main>
+
+<!-- Modal Edit Akun -->
+<div class="modal-overlay" id="modalEdit">
+    <div class="modal">
+        <h3>Edit Akun Mahasiswa</h3>
+        <p class="sub">Ubah username, email, atau reset password akun ini</p>
+        <form method="POST">
+            <input type="hidden" name="edit_akun" value="1">
+            <input type="hidden" name="id_user" id="edit_id_user">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" id="edit_username" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" id="edit_email" required>
+            </div>
+            <div class="form-group">
+                <label>Password Baru</label>
+                <input type="password" name="password" id="edit_password" placeholder="Kosongkan jika tidak ingin mengubah password">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="document.getElementById('modalEdit').classList.remove('show')">Batal</button>
+                <button type="submit" class="btn-submit">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openEditModal(id, username, email){
+    document.getElementById('edit_id_user').value = id;
+    document.getElementById('edit_username').value = username;
+    document.getElementById('edit_email').value = email;
+    document.getElementById('edit_password').value = '';
+    document.getElementById('modalEdit').classList.add('show');
+}
+document.getElementById('modalEdit').addEventListener('click', function(e){
+    if(e.target === this) this.classList.remove('show');
+});
+</script>
 
 </body>
 </html>
