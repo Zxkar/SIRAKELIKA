@@ -59,7 +59,7 @@ $count_verif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
     <header class="topbar">
         <div></div>
         <div class="user-profile">
-            <div class="avatar">ADM</div>
+            <div class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 2)); ?></div>
             <div class="user-info">
                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
                 <span class="user-role">Sistem Administrator</span>
