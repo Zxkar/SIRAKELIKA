@@ -358,9 +358,6 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
         </a>
 
         <div class="nav-group">AKUN SYSTEM</div>
-        <a href="profil_tim.php" class="nav-link">
-            <span class="nav-text">Profil Tim</span>
-        </a>
         <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
             <span class="nav-text">Keluar</span>
         </a>
@@ -370,14 +367,6 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
 <main class="main-content">
 
     <header class="topbar">
-        <div></div>
-        <div class="user-profile">
-            <div class="avatar"><?= htmlspecialchars($inisial) ?></div>
-            <div class="user-info">
-                <span class="user-name"><?= htmlspecialchars($username_aktif) ?></span>
-                <span class="user-role">Tim Investigasi</span>
-            </div>
-        </div>
     </header>
 
     <?php if (!empty($_GET['success'])): ?>

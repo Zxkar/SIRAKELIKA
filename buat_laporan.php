@@ -41,11 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $upload_dir = 'uploads/bukti/';
             if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
-            $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi'];
+            $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi','mp3','wav','m4a','ogg','aac'];
             $ext = strtolower(pathinfo($_FILES['bukti']['name'], PATHINFO_EXTENSION));
 
             if (!in_array($ext, $ext_allowed)) {
-                $error = 'Format file tidak didukung. Gunakan JPG, PNG, PDF, atau video.';
+                $error = 'Format file tidak didukung. Gunakan JPG, PNG, PDF, video, atau audio (MP3/WAV/M4A).';
             } elseif ($_FILES['bukti']['size'] > 20 * 1024 * 1024) {
                 $error = 'Ukuran file maksimal 20MB.';
             } else {
@@ -663,12 +663,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="step-panel" id="step3">
                 <div class="modal-body">
                     <p style="font-size:13px;color:#64748b;margin-bottom:16px">
-                        Upload bukti pendukung laporan kamu. Bukti dapat berupa foto, video, atau dokumen PDF.
+                        Upload bukti pendukung laporan kamu. Bukti dapat berupa foto, video, rekaman suara, atau dokumen PDF.
                         <strong style="color:#0f172a"> (Opsional)</strong>
                     </p>
 
                     <div class="upload-area" id="uploadArea">
-                        <input type="file" name="bukti" id="inputBukti" accept="image/*,video/*,.pdf"
+                        <input type="file" name="bukti" id="inputBukti" accept="image/*,video/*,audio/*,.pdf"
                                onchange="previewFile(this)">
                         <div class="upload-icon">
                             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -685,11 +685,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="file-tag">PDF</span>
                             <span class="file-tag">MP4</span>
                             <span class="file-tag">MOV</span>
+                            <span class="file-tag">MP3</span>
+                            <span class="file-tag">WAV</span>
+                            <span class="file-tag">M4A</span>
                         </div>
                     </div>
 
                     <div class="file-preview" id="filePreview">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg id="filePreviewIcon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
                             <polyline points="14,2 14,8 20,8"/>
                         </svg>
@@ -697,6 +700,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <span id="fileSize" style="color:#94a3b8;font-size:12px"></span>
                         <button type="button" class="file-remove" onclick="hapusFile()" title="Hapus file">×</button>
                     </div>
+
+                    <audio id="audioPreview" controls style="display:none;width:100%;margin-top:10px;height:36px"></audio>
 
                     <div style="margin-top:20px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px 14px;font-size:12px;color:#7f1d1d;line-height:1.5">
                         <strong>⚠ Privasi:</strong> Bukti yang kamu upload hanya dapat diakses oleh tim penanganan yang berwenang dan disimpan secara aman.
@@ -802,6 +807,22 @@ function previewFile(input) {
         document.getElementById('filePreview').classList.add('show');
         document.getElementById('uploadArea').style.borderColor = '#10b981';
         document.getElementById('uploadArea').style.background  = '#f0fdf4';
+
+        const icon = document.getElementById('filePreviewIcon');
+        const audioPreview = document.getElementById('audioPreview');
+        const isAudio = file.type.startsWith('audio/') || /\.(mp3|wav|m4a|ogg|aac)$/i.test(file.name);
+
+        if (isAudio) {
+            // Ikon mikrofon
+            icon.innerHTML = '<path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>';
+            audioPreview.src = URL.createObjectURL(file);
+            audioPreview.style.display = 'block';
+        } else {
+            // Ikon dokumen (default)
+            icon.innerHTML = '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/>';
+            audioPreview.style.display = 'none';
+            audioPreview.removeAttribute('src');
+        }
     }
 }
 
@@ -810,6 +831,11 @@ function hapusFile() {
     document.getElementById('filePreview').classList.remove('show');
     document.getElementById('uploadArea').style.borderColor = '';
     document.getElementById('uploadArea').style.background  = '';
+
+    const audioPreview = document.getElementById('audioPreview');
+    audioPreview.pause();
+    audioPreview.style.display = 'none';
+    audioPreview.removeAttribute('src');
 }
 
 // Drag & drop

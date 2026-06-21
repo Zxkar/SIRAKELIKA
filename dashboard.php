@@ -80,9 +80,6 @@ function getBadgeD($status, $map) {
             </a>
 
             <div class="nav-group">PENGELOLAAN</div>
-            <a href="manajemen.php" class="nav-link">
-                <span class="nav-text">Manajemen Kasus</span>
-            </a>
             <a href="edukasi.php" class="nav-link">
                 <span class="nav-text">Edukasi & Informasi</span>
             </a>
