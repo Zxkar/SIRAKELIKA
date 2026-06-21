@@ -9,16 +9,64 @@ if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'investigasi'){
 }
 
 $username_aktif = $_SESSION['username']; 
+$inisial = '';
+foreach (explode(' ', $username_aktif) as $part) { $inisial .= strtoupper(substr($part, 0, 1)); }
+$inisial = substr($inisial, 0, 2) ?: 'TI';
 
-$query_total_kasus = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
-$query_perlu_tindakan = mysqli_query($conn, "SELECT COUNT(*) as tindakan FROM laporan WHERE status_laporan='Baru'");
-$query_sedang_selidik = mysqli_query($conn, "SELECT COUNT(*) as selidik FROM laporan WHERE status_laporan='Diproses'");
-$query_kasus_selesai  = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE status_laporan='Selesai'");
+$query_total_kasus    = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
+$query_perlu_tindakan = mysqli_query($conn, "SELECT COUNT(*) as tindakan FROM laporan WHERE status_laporan='menunggu'");
+$query_sedang_selidik = mysqli_query($conn, "SELECT COUNT(*) as selidik FROM laporan WHERE status_laporan IN ('diproses','ditindaklanjuti','mediasi')");
+$query_kasus_selesai  = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE status_laporan='selesai'");
 
 $total_kasus    = mysqli_fetch_assoc($query_total_kasus)['total'];
 $perlu_tindakan = mysqli_fetch_assoc($query_perlu_tindakan)['tindakan'];
 $sedang_selidik = mysqli_fetch_assoc($query_sedang_selidik)['selidik'];
 $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
+
+function statusBadgeClass($status) {
+    $map = [
+        'menunggu'        => 'status-new',
+        'diproses'        => 'status-process',
+        'ditindaklanjuti' => 'status-process',
+        'mediasi'         => 'status-process',
+        'selesai'         => 'status-done',
+        'ditolak'         => 'status-rejected',
+    ];
+    return $map[strtolower(trim($status))] ?? 'status-new';
+}
+
+// =============================================
+//  LOG INVESTIGASI TERKINI (gabungan status_laporan_log + tindak_lanjut)
+// =============================================
+$timeline = [];
+
+$res = $conn->query("SELECT sl.id_laporan, sl.status_lama, sl.status_baru, sl.tanggal_update AS waktu,
+                             'status' AS tipe, l.kode_laporan
+                      FROM status_laporan_log sl
+                      JOIN laporan l ON sl.id_laporan = l.id_laporan
+                      ORDER BY sl.tanggal_update DESC LIMIT 5");
+if ($res) while ($row = $res->fetch_assoc()) $timeline[] = $row;
+
+$res = $conn->query("SELECT tl.id_laporan, tl.deskripsi_tindakan, tl.tanggal_tindakan AS waktu,
+                             'tindakan' AS tipe, l.kode_laporan
+                      FROM tindak_lanjut tl
+                      JOIN laporan l ON tl.id_laporan = l.id_laporan
+                      ORDER BY tl.tanggal_tindakan DESC LIMIT 5");
+if ($res) while ($row = $res->fetch_assoc()) $timeline[] = $row;
+
+usort($timeline, function($a, $b) {
+    return strtotime($b['waktu']) <=> strtotime($a['waktu']);
+});
+$timeline = array_slice($timeline, 0, 5);
+
+function waktuRelatif($tanggal) {
+    $diff = time() - strtotime($tanggal);
+    if ($diff < 60)       return 'Baru saja';
+    if ($diff < 3600)     return floor($diff / 60) . ' menit lalu';
+    if ($diff < 86400)    return floor($diff / 3600) . ' jam lalu';
+    if ($diff < 604800)   return floor($diff / 86400) . ' hari lalu';
+    return date('d M Y', strtotime($tanggal));
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -72,6 +120,8 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
         .btn-action-investigasi:active {
             transform: scale(0.97);
         }
+
+        .status-rejected { background-color: #f1f5f9; color: #64748b; }
     </style>
 </head>
 <body>
@@ -87,16 +137,13 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
 
         <nav class="nav-container">
             <div class="nav-group">NAVIGASI UTAMA</div>
-            <a href="#" class="nav-link active">
+            <a href="dashboard_investigasi.php" class="nav-link active">
                 <span class="nav-text">Dashboard Tim</span>
             </a>
             
             <div class="nav-group">PENGELOLAAN KASUS</div>
             <a href="manajemen_kasus.php" class="nav-link">
                 <span class="nav-text">Manajemen Kasus Masuk</span>
-            </a>
-            <a href="agenda_sidang.php" class="nav-link">
-                <span class="nav-text">Agenda Sidang & Mediasi</span>
             </a>
             <a href="log_aktivitas.php" class="nav-link">
                 <span class="nav-text">Log Aktivitas Kasus</span>
@@ -106,7 +153,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
             <a href="profil_tim.php" class="nav-link">
                 <span class="nav-text">Profil Tim</span>
             </a>
-            <a href="logout.php" class="nav-link logout">
+            <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
                 <span class="nav-text">Keluar</span>
             </a>
         </nav>
@@ -117,7 +164,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
         <header class="topbar">
             <div></div> 
             <div class="user-profile">
-                <div class="avatar">TI</div>
+                <div class="avatar"><?php echo htmlspecialchars($inisial); ?></div>
                 <div class="user-info">
                     <span class="user-name"><?php echo htmlspecialchars($username_aktif); ?></span>
                     <span class="user-role">Tim Investigasi</span>
@@ -183,17 +230,16 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
                         
                         if(mysqli_num_rows($query_laporan) > 0) {
                             while($row = mysqli_fetch_assoc($query_laporan)) {
-                                $badge_class = 'status-new';
-                                if($row['status_laporan'] == 'Diproses') { $badge_class = 'status-process'; }
-                                elseif($row['status_laporan'] == 'Selesai') { $badge_class = 'status-done'; }
+                                $badge_class = statusBadgeClass($row['status_laporan']);
+                                $kode = $row['kode_laporan'] ?? 'KS-' . $row['id_laporan'];
                                 
                                 echo "<tr>";
-                                echo "<td class='id-case'>#KS-" . $row['id_laporan'] . "</td>";
-                                echo "<td><strong>" . htmlspecialchars($row['jenis_laporan']) . "</strong></td>";
-                                echo "<td>" . htmlspecialchars($row['lokasi']) . "</td>";
+                                echo "<td class='id-case'>#" . htmlspecialchars($kode) . "</td>";
+                                echo "<td><strong>" . htmlspecialchars(ucfirst($row['jenis_kekerasan'])) . "</strong></td>";
+                                echo "<td>" . htmlspecialchars($row['lokasi_kejadian']) . "</td>";
                                 echo "<td>" . date('d M Y', strtotime($row['tanggal_laporan'])) . "</td>";
-                                echo "<td><span class='status-badge {$badge_class}'>" . htmlspecialchars($row['status_laporan']) . "</span></td>";
-                                echo "<td><button class='btn-action-investigasi' onclick=\"location.href='proses_kasus.php?id=" . $row['id_laporan'] . "'\">Kelola Kasus</button></td>";
+                                echo "<td><span class='status-badge {$badge_class}'>" . htmlspecialchars(ucfirst($row['status_laporan'])) . "</span></td>";
+                                echo "<td><button class='btn-action-investigasi' onclick=\"location.href='manajemen_kasus.php?search=" . urlencode($kode) . "'\">Kelola Kasus</button></td>";
                                 echo "</tr>";
                             }
                         } else {
@@ -209,18 +255,27 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
                 <p class="activity-sub">Histori perubahan status berkas</p>
                 
                 <div class="timeline">
-                    <div class="timeline-item item-blue">
-                        <p class="timeline-text">Berita Acara Pemeriksaan (BAP) untuk kasus <strong>#KS-2026-002</strong> berhasil dibuat.</p>
-                        <span class="timeline-time">Hari ini</span>
+                    <?php if (empty($timeline)): ?>
+                    <div class="empty-state" style="padding:30px 10px">
+                        <p style="text-align:center; color:#64748b; font-size:13px;">Belum ada aktivitas tercatat.</p>
                     </div>
-                    <div class="timeline-item item-green">
-                        <p class="timeline-text">Rekomendasi sanksi kasus <strong>#KS-2026-001</strong> dikirim ke Manajemen Kampus.</p>
-                        <span class="timeline-time">3 hari lalu</span>
+                    <?php else: foreach ($timeline as $item):
+                        $kode = htmlspecialchars($item['kode_laporan']);
+                        if ($item['tipe'] === 'status') {
+                            $cls  = 'item-blue';
+                            $text = "Status kasus <strong>#$kode</strong> diperbarui dari <strong>" 
+                                    . htmlspecialchars(ucfirst($item['status_lama'] ?: '—')) . "</strong> ke <strong>" 
+                                    . htmlspecialchars(ucfirst($item['status_baru'])) . "</strong>.";
+                        } else {
+                            $cls  = 'item-green';
+                            $text = "Catatan tindak lanjut ditambahkan pada kasus <strong>#$kode</strong>.";
+                        }
+                    ?>
+                    <div class="timeline-item <?= $cls ?>">
+                        <p class="timeline-text"><?= $text ?></p>
+                        <span class="timeline-time"><?= waktuRelatif($item['waktu']) ?></span>
                     </div>
-                    <div class="timeline-item item-red">
-                        <p class="timeline-text">Notifikasi masuk: Kasus baru <strong>#KS-2026-003</strong> dialihkan oleh Admin.</p>
-                        <span class="timeline-time">1 minggu lalu</span>
-                    </div>
+                    <?php endforeach; endif; ?>
                 </div>
             </div>
 

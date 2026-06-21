@@ -2,16 +2,16 @@
 session_start();
 include "connection.php";
 
-if (!isset($_SESSION['id_mahasiswa'])) {
+if (!isset($_SESSION['id_user'])) {
     header("Location: login.php");
     exit;
 }
-$id_mahasiswa = (int) $_SESSION['id_mahasiswa'];
+$id_user = (int) $_SESSION['id_user'];
 
 // Ambil data nama untuk ditampilkan di topbar
-$res_user = $conn->query("SELECT nama_mahasiswa FROM mahasiswa WHERE id_mahasiswa = $id_mahasiswa LIMIT 1");
+$res_user = $conn->query("SELECT username FROM users WHERE id_user = $id_user LIMIT 1");
 $user_row = $res_user ? $res_user->fetch_assoc() : null;
-$nama_user = $user_row['nama_mahasiswa'] ?? 'Pengguna';
+$nama_user = $user_row['username'] ?? 'Pengguna';
 $inisial_user = '';
 foreach (explode(' ', $nama_user) as $part) { $inisial_user .= strtoupper(substr($part, 0, 1)); }
 $inisial_user = substr($inisial_user, 0, 2);
@@ -19,23 +19,23 @@ $inisial_user = substr($inisial_user, 0, 2);
 // =============================================
 //  STATISTIK LAPORAN (milik mahasiswa yang login)
 // =============================================
-$total    = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa")->fetch_assoc()['c'] ?? 0);
-$baru     = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND LOWER(status_laporan) = 'menunggu'")->fetch_assoc()['c'] ?? 0);
-$proses   = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')")->fetch_assoc()['c'] ?? 0);
-$selesai  = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND LOWER(status_laporan)='selesai'")->fetch_assoc()['c'] ?? 0);
+$total    = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user")->fetch_assoc()['c'] ?? 0);
+$baru     = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user AND LOWER(status_laporan) = 'menunggu'")->fetch_assoc()['c'] ?? 0);
+$proses   = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')")->fetch_assoc()['c'] ?? 0);
+$selesai  = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user AND LOWER(status_laporan)='selesai'")->fetch_assoc()['c'] ?? 0);
 
 // =============================================
 //  LAPORAN TERBARU (7 hari terakhir, milik sendiri)
 // =============================================
 $laporan_terbaru = [];
-$res = $conn->query("SELECT * FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND tanggal_laporan >= (NOW() - INTERVAL 7 DAY) ORDER BY tanggal_laporan DESC LIMIT 5");
+$res = $conn->query("SELECT * FROM laporan WHERE id_user = $id_user AND tanggal_laporan >= (NOW() - INTERVAL 7 DAY) ORDER BY tanggal_laporan DESC LIMIT 5");
 if ($res) while ($row = $res->fetch_assoc()) $laporan_terbaru[] = $row;
 
 // =============================================
 //  AKTIVITAS TERBARU (update status, milik sendiri)
 // =============================================
 $aktivitas_terbaru = [];
-$res = $conn->query("SELECT * FROM laporan WHERE id_mahasiswa = $id_mahasiswa ORDER BY updated_at DESC LIMIT 5");
+$res = $conn->query("SELECT * FROM laporan WHERE id_user = $id_user ORDER BY updated_at DESC LIMIT 5");
 if ($res) while ($row = $res->fetch_assoc()) $aktivitas_terbaru[] = $row;
 
 $status_badge = [
@@ -108,18 +108,15 @@ function getBadgeD($status, $map) {
         <header class="topbar">
             <div></div> 
             <div class="user-profile">
-            <div class="notif-btn">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 01-3.46 0"/>
-                </svg>
+                <div class="notif-btn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9J M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+                <div class="avatar"><?= htmlspecialchars($inisial_user) ?></div>
+                <div class="user-info">
+                    <span class="user-name"><?= htmlspecialchars($nama_user) ?></span>
+                    <span class="user-role">Mahasiswa</span>
+                </div>
             </div>
-            <div class="avatar"><?= htmlspecialchars($inisial_user) ?></div>
-            <div class="user-info">
-                <span class="user-name"><?= htmlspecialchars($nama_user) ?></span>
-                <span class="user-role">Mahasiswa</span>
-            </div>
-        </div>
         </header>
 
         <section class="welcome-banner">

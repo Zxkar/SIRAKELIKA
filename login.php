@@ -8,54 +8,39 @@ if(isset($_POST['login'])){
   $password = $_POST['password'];
   $login_success = false;
 
-  // Pengecekan Kondisional: Berdasarkan Email (Mahasiswa) atau Username (Internal)
-  if (filter_var($login_input, FILTER_VALIDATE_EMAIL)) {
-    
-$query = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE email='$login_input'");
-if(mysqli_num_rows($query) > 0){
-  $data = mysqli_fetch_assoc($query);
-  if(password_verify($password, $data['password'])){
-    $_SESSION['username']     = $data['nama_mahasiswa'];
-    $_SESSION['email']        = $data['email'];
-    $_SESSION['role']         = 'mahasiswa';
-    $_SESSION['id_mahasiswa'] = $data['id_mahasiswa'];   // ← TAMBAHKAN INI
-    $login_success = true;
-    header("Location: dashboard.php");
-    exit;
-  }
-}
-  } else {
-    // Jika input BUKAN email, melainkan USERNAME (Admin / Tim Investigasi / Manajemen Kampus)
+  // Cari user berdasarkan email ATAU username (tabel users tunggal untuk semua role)
+  $query = mysqli_query($conn, "SELECT * FROM users WHERE email='$login_input' OR username='$login_input'");
 
-    // 2. Verifikasi Tim Investigasi (Kini Menggunakan HASH)
-    $query = mysqli_query($conn, "SELECT * FROM tim_investigasi WHERE nama_tim='$login_input'");
-    if(mysqli_num_rows($query) > 0){
-      $data = mysqli_fetch_assoc($query);
-      if(password_verify($password, $data['password'])){ 
-        $_SESSION['username'] = $data['nama_tim'];
-        $_SESSION['email']    = $data['email'];
-        $_SESSION['role']     = 'investigasi';
-        $login_success = true;
-        header("Location: dashboard_investigasi.php");
-        exit;
-      }
-    }
+  if(mysqli_num_rows($query) > 0){
+    $data = mysqli_fetch_assoc($query);
 
-    // 3. Verifikasi Manajemen Kampus (Kini Menggunakan HASH)
-    if(!$login_success){
-      $query = mysqli_query($conn, "SELECT * FROM manajemen_kampus WHERE nama_manajemen='$login_input'");
-      if(mysqli_num_rows($query) > 0){
-        $data = mysqli_fetch_assoc($query);
-        if(password_verify($password, $data['password'])){ 
-          $_SESSION['username'] = $data['nama_manajemen'];
-          $_SESSION['email']    = $data['email'];
-          $_SESSION['role']     = 'manajemen';
-          $login_success = true;
+    if(password_verify($password, $data['password'])){
+
+      $_SESSION['id_user']   = $data['id_user'];
+      $_SESSION['username']  = $data['username'];
+      $_SESSION['email']     = $data['email'];
+      $_SESSION['role']      = $data['role']; // mahasiswa / investigasi / manajemen / admin
+      $login_success = true;
+
+      // Redirect sesuai role
+      switch ($data['role']) {
+        case 'mahasiswa':
           header("Location: dashboard.php");
-          exit;
-        }
+          break;
+        case 'investigasi':
+          header("Location: dashboard_investigasi.php");
+          break;
+        case 'manajemen':
+          header("Location: dashboard_manajemen.php");
+          break;
+        case 'admin':
+          header("Location: dashboard_admin.php");
+          break;
+        default:
+          header("Location: login.php");
       }
-    } 
+      exit;
+    }
   }
 
   // Jika login gagal

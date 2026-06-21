@@ -2,11 +2,11 @@
 session_start();
 include "connection.php";
 
-if (!isset($_SESSION['id_mahasiswa'])) {
+if (!isset($_SESSION['id_user'])) {
     header("Location: login.php");
     exit;
 }
-$id_mahasiswa = (int) $_SESSION['id_mahasiswa'];
+$id_user = (int) $_SESSION['id_user'];
 
 $status_progres = [
     'menunggu'        => 0,
@@ -29,9 +29,9 @@ function getBadge($status, $map) {
 }
 
 // =============================================
-//  AMBIL DATA MAHASISWA
+//  AMBIL DATA USER (tabel users tunggal untuk semua role)
 // =============================================
-$res = $conn->query("SELECT * FROM mahasiswa WHERE id_mahasiswa = $id_mahasiswa LIMIT 1");
+$res = $conn->query("SELECT * FROM users WHERE id_user = $id_user LIMIT 1");
 $mhs = $res ? $res->fetch_assoc() : null;
 
 if (!$mhs) {
@@ -39,7 +39,7 @@ if (!$mhs) {
     exit;
 }
 
-$nama_mhs   = $mhs['nama_mahasiswa'];
+$nama_mhs   = $mhs['username'];
 $inisial    = '';
 foreach (explode(' ', $nama_mhs) as $part) { $inisial .= strtoupper(substr($part, 0, 1)); }
 $inisial    = substr($inisial, 0, 2);
@@ -48,15 +48,15 @@ $bergabung  = date('M Y', strtotime($mhs['created_at']));
 // =============================================
 //  STATISTIK LAPORAN
 // =============================================
-$total    = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa")->fetch_assoc()['c'] ?? 0);
-$diproses = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')")->fetch_assoc()['c'] ?? 0);
-$selesai  = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND LOWER(status_laporan)='selesai'")->fetch_assoc()['c'] ?? 0);
+$total    = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user")->fetch_assoc()['c'] ?? 0);
+$diproses = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')")->fetch_assoc()['c'] ?? 0);
+$selesai  = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user AND LOWER(status_laporan)='selesai'")->fetch_assoc()['c'] ?? 0);
 
 // =============================================
 //  RINGKASAN LAPORAN (terbaru, max 6)
 // =============================================
 $laporan_list = [];
-$res = $conn->query("SELECT * FROM laporan WHERE id_mahasiswa = $id_mahasiswa ORDER BY tanggal_laporan DESC LIMIT 6");
+$res = $conn->query("SELECT * FROM laporan WHERE id_user = $id_user ORDER BY tanggal_laporan DESC LIMIT 6");
 if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
 ?>
 <!DOCTYPE html>
@@ -397,12 +397,12 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
 
                 <div class="profile-info-grid">
                     <div>
-                        <p class="profile-label">NAMA LENGKAP</p>
+                        <p class="profile-label">NAMA LENGKAP / USERNAME</p>
                         <p class="profile-value"><?= htmlspecialchars($nama_mhs) ?></p>
                     </div>
                     <div>
-                        <p class="profile-label">NIM</p>
-                        <p class="profile-value"><?= htmlspecialchars($mhs['nim']) ?></p>
+                        <p class="profile-label">PERAN</p>
+                        <p class="profile-value"><?= htmlspecialchars(ucfirst($mhs['role'])) ?></p>
                     </div>
                     <div>
                         <p class="profile-label">EMAIL</p>

@@ -3,16 +3,16 @@ session_start();
 include "connection.php";
 
 // Hanya mahasiswa yang login boleh mengakses halaman ini
-if (!isset($_SESSION['id_mahasiswa'])) {
+if (!isset($_SESSION['id_user'])) {
     header("Location: login.php");
     exit;
 }
-$id_mahasiswa = (int) $_SESSION['id_mahasiswa'];
+$id_user = (int) $_SESSION['id_user'];
 
 // Ambil data nama untuk ditampilkan di topbar
-$res_user = $conn->query("SELECT nama_mahasiswa FROM mahasiswa WHERE id_mahasiswa = $id_mahasiswa LIMIT 1");
+$res_user = $conn->query("SELECT username FROM users WHERE id_user = $id_user LIMIT 1");
 $user_row = $res_user ? $res_user->fetch_assoc() : null;
-$nama_user = $user_row['nama_mahasiswa'] ?? 'Pengguna';
+$nama_user = $user_row['username'] ?? 'Pengguna';
 $inisial_user = '';
 foreach (explode(' ', $nama_user) as $part) { $inisial_user .= strtoupper(substr($part, 0, 1)); }
 $inisial_user = substr($inisial_user, 0, 2);
@@ -53,7 +53,7 @@ $success_msg = $_GET['success'] ?? '';
 // =============================================
 //  QUERY DATABASE
 // =============================================
-$where = "id_mahasiswa = $id_mahasiswa";
+$where = "id_user = $id_user";
 
 if ($filter === 'baru')         $where .= " AND LOWER(status_laporan) = 'menunggu'";
 elseif ($filter === 'diproses') $where .= " AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')";
@@ -69,14 +69,14 @@ $res = $conn->query("SELECT * FROM laporan WHERE $where ORDER BY tanggal_laporan
 if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
 
 // Statistik
-$total    = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa")->fetch_assoc()['c'] ?? 0);
-$diproses = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')")->fetch_assoc()['c'] ?? 0);
-$selesai  = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_mahasiswa = $id_mahasiswa AND LOWER(status_laporan)='selesai'")->fetch_assoc()['c'] ?? 0);
+$total    = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user")->fetch_assoc()['c'] ?? 0);
+$diproses = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')")->fetch_assoc()['c'] ?? 0);
+$selesai  = (int)($conn->query("SELECT COUNT(*) c FROM laporan WHERE id_user = $id_user AND LOWER(status_laporan)='selesai'")->fetch_assoc()['c'] ?? 0);
 
 // Detail
 $detail = null;
 if ($detail_id) {
-    $res = $conn->query("SELECT * FROM laporan WHERE id_laporan = $detail_id AND id_mahasiswa = $id_mahasiswa LIMIT 1");
+    $res = $conn->query("SELECT * FROM laporan WHERE id_laporan = $detail_id AND id_user = $id_user LIMIT 1");
     if ($res && $res->num_rows) $detail = $res->fetch_assoc();
 }
 ?>
@@ -180,9 +180,9 @@ if ($detail_id) {
         <!-- KIRI -->
         <div>
             <!-- Info utama -->
-            <div class="card-box">
+            <div class="card-box status-<?= strtolower(trim($detail['status_laporan'])) ?>" style="border-left:4px solid;">
                 <div class="card-top">
-                    <span style="font-size:12px;font-weight:600;color:#2563eb;font-family:monospace">#<?= htmlspecialchars($kode) ?></span>
+                    <span class="lc-id">#<?= htmlspecialchars($kode) ?></span>
                     <div class="tag-group">
                         <span class="badge <?= $st ?>"><?= htmlspecialchars(ucfirst($detail['status_laporan'])) ?></span>
                         <?php if (!empty($detail['jenis_kekerasan'])): ?>
@@ -218,16 +218,11 @@ if ($detail_id) {
                 <div class="progress-bar">
                     <?php foreach ($progres_labels as $i => $lbl): ?>
                     <div class="ps <?= $i < $pg ? 'done' : ($i === $pg ? 'active' : '') ?>">
-                        <div class="ps-top">
-                            <div class="ps-circle">
-                                <?php if ($i < $pg): ?>
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
-                                <?php elseif ($i === $pg): ?>
-                                <div class="ps-dot"></div>
-                                <?php endif; ?>
-                            </div>
-                            <?php if ($i < count($progres_labels) - 1): ?>
-                            <div class="ps-line <?= $i < $pg ? 'done' : '' ?>"></div>
+                        <div class="ps-circle">
+                            <?php if ($i < $pg): ?>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
+                            <?php elseif ($i === $pg): ?>
+                            <div class="ps-dot"></div>
                             <?php endif; ?>
                         </div>
                         <span class="ps-lbl"><?= $lbl ?></span>
@@ -407,7 +402,7 @@ if ($detail_id) {
         $tgl_laporan = date('d M Y', strtotime($l['tanggal_laporan']));
         $kode = $l['kode_laporan'] ?? 'KS-'.$l['id_laporan'];
     ?>
-    <div class="laporan-card" onclick="window.location='laporan.php?detail=<?= $l['id_laporan'] ?>'">
+    <div class="laporan-card status-<?= strtolower(trim($l['status_laporan'])) ?>" onclick="window.location='laporan.php?detail=<?= $l['id_laporan'] ?>'">
         <div class="lc-head">
             <div class="lc-left">
                 <span class="lc-id">#<?= htmlspecialchars($kode) ?></span>
@@ -453,16 +448,11 @@ if ($detail_id) {
             <div class="progress-bar">
                 <?php foreach ($progres_labels as $i => $lbl): ?>
                 <div class="ps <?= $i < $pg ? 'done' : ($i === $pg ? 'active' : '') ?>">
-                    <div class="ps-top">
-                        <div class="ps-circle">
-                            <?php if ($i < $pg): ?>
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
-                            <?php elseif ($i === $pg): ?>
-                            <div class="ps-dot"></div>
-                            <?php endif; ?>
-                        </div>
-                        <?php if ($i < count($progres_labels) - 1): ?>
-                        <div class="ps-line <?= $i < $pg ? 'done' : '' ?>"></div>
+                    <div class="ps-circle">
+                        <?php if ($i < $pg): ?>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20,6 9,17 4,12"/></svg>
+                        <?php elseif ($i === $pg): ?>
+                        <div class="ps-dot"></div>
                         <?php endif; ?>
                     </div>
                     <span class="ps-lbl"><?= $lbl ?></span>

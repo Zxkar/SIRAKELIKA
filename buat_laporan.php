@@ -3,7 +3,7 @@ session_start();
 include "connection.php";
 
 // Hanya mahasiswa yang login boleh mengakses halaman ini
-if (!isset($_SESSION['id_mahasiswa'])) {
+if (!isset($_SESSION['id_user'])) {
     header("Location: login.php");
     exit;
 }
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jenis_kekerasan = $_POST['jenis_kekerasan'] ?? '';
     $waktu_kejadian  = $_POST['waktu_kejadian'] ?? '';
     $lokasi_kejadian = trim($_POST['lokasi_kejadian'] ?? '');
-    $id_mahasiswa    = (int) $_SESSION['id_mahasiswa'];
+    $id_user    = (int) $_SESSION['id_user'];
 
     if (!$judul_laporan || !$deskripsi || !$jenis_kekerasan || !$waktu_kejadian || !$lokasi_kejadian) {
         $error = 'Semua field wajib diisi.';
@@ -66,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bn_sql    = $bn ? "'$bn'" : 'NULL';
 
             $sql = "INSERT INTO laporan 
-                    (id_mahasiswa, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan)
-                    VALUES ($id_mahasiswa, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
+                    (id_user, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan)
+                    VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
 
             if ($conn->query($sql)) {
                 header("Location: laporan.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
