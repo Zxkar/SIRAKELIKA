@@ -141,7 +141,6 @@ $total = mysqli_num_rows($query);
                     <th>ID</th>
                     <th>USERNAME</th>
                     <th>EMAIL</th>
-                    <th>NO HP</th>
                     <th>STATUS</th>
                     <th>TERDAFTAR</th>
                     <th>AKSI</th>
@@ -153,7 +152,6 @@ $total = mysqli_num_rows($query);
                 <td class="id-case">#<?= $row['id_user'] ?></td>
                 <td><strong><?= htmlspecialchars($row['username']) ?></strong></td>
                 <td><?= htmlspecialchars($row['email']) ?></td>
-                <td><?= $row['no_hp'] ? htmlspecialchars($row['no_hp']) : '<span style="color:#94a3b8">—</span>' ?></td>
                 <td>
                     <span class="badge-<?= $row['status_akun'] ?>"><?= ucfirst($row['status_akun']) ?></span>
                 </td>
@@ -177,7 +175,7 @@ $total = mysqli_num_rows($query);
                 </td>
             </tr>
             <?php endwhile; else: ?>
-            <tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8;">Tidak ada akun mahasiswa ditemukan.</td></tr>
+            <tr><td colspan="6" style="text-align:center;padding:30px;color:#94a3b8;">Tidak ada akun mahasiswa ditemukan.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>

@@ -12,6 +12,7 @@ $count_mhs   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
 $count_tim   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role='investigasi'"))['total'];
 $count_lap   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan"))['total'];
 $count_verif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan WHERE status_laporan='menunggu'"))['total'];
+$count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role='admin'"))['total'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -81,20 +82,39 @@ $count_verif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
 
     <section class="stats-grid">
         <div class="card" style="border-top:4px solid #ef4444;">
+            <div class="card-icon" style="background:#fef2f2;color:#ef4444;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 3"/></svg>
+            </div>
             <span class="card-num" style="color:#ef4444;"><?php echo $count_verif; ?></span>
             <span class="card-title">Menunggu Verifikasi</span>
         </div>
         <div class="card" style="border-top:4px solid #3b82f6;">
+            <div class="card-icon" style="background:#eff6ff;color:#3b82f6;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+            </div>
             <span class="card-num"><?php echo $count_lap; ?></span>
             <span class="card-title">Total Semua Laporan</span>
         </div>
         <div class="card" style="border-top:4px solid #10b981;">
+            <div class="card-icon" style="background:#f0fdf4;color:#10b981;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
             <span class="card-num"><?php echo $count_mhs; ?></span>
             <span class="card-title">Total User Mahasiswa</span>
         </div>
         <div class="card" style="border-top:4px solid #f59e0b;">
+            <div class="card-icon" style="background:#fffbeb;color:#f59e0b;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+            </div>
             <span class="card-num"><?php echo $count_tim; ?></span>
             <span class="card-title">Total Akun Investigasi</span>
+        </div>
+        <div class="card" style="border-top:4px solid #8b5cf6;">
+            <div class="card-icon" style="background:#f5f3ff;color:#8b5cf6;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21v-1a7 7 0 0 1 7-7 7 7 0 0 1 7 7v1"/><path d="M19.4 9.5a2 2 0 1 0-2.83 2.83"/></svg>
+            </div>
+            <span class="card-num"><?php echo $count_admin; ?></span>
+            <span class="card-title">Total Akun Admin</span>
         </div>
     </section>
 
@@ -134,7 +154,12 @@ $count_verif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
                         </tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='5' style='text-align:center;padding:30px;color:#94a3b8;'>✓ Semua laporan telah diverifikasi.</td></tr>";
+                    echo "<tr><td colspan='5' style='padding:0;'>
+                        <div class='empty-state'>
+                            <svg width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><path d='m9 12 2 2 4-4'/></svg>
+                            <p>Semua laporan telah diverifikasi. Tidak ada antrean saat ini.</p>
+                        </div>
+                    </td></tr>";
                 }
                 ?>
                 </tbody>
