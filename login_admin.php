@@ -6,15 +6,15 @@ if(isset($_POST['admin_login'])){
   $username = mysqli_real_escape_string($conn, $_POST['username']);
   $password = $_POST['password'];
 
-  $query = mysqli_query($conn, "SELECT * FROM admin WHERE nama_admin='$username'");
+  $query = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' AND role IN ('admin','superadmin')");
   
   if(mysqli_num_rows($query) > 0){
     $data = mysqli_fetch_assoc($query);
     
     if(password_verify($password, $data['password'])){
       $_SESSION['admin_logged_in'] = true;
-      $_SESSION['admin_id']       = $data['id_admin'];
-      $_SESSION['admin_name']     = $data['nama_admin'];
+      $_SESSION['admin_id']       = $data['id_user'];
+      $_SESSION['admin_name']     = $data['username'];
       
       if($data['role'] === 'superadmin'){
           $_SESSION['role'] = 'superadmin';
