@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kirim_konsultasi'])) 
 
         if ($stmt->execute()) {
             // Kirim email notifikasi ke admin
-            $to = "sirakelika@itbj.ac.id";
+            $to = "sirakelika@gmail.com";
             $subject = "Pesan Konsultasi Baru - SIRAKELIKA";
             $nama_tampil = $is_anonim ? 'Anonim' : htmlspecialchars($nama_pengirim);
             $topik_tampil = !empty($topik) ? htmlspecialchars($topik) : '-';
@@ -390,7 +390,9 @@ $faqs = [
                     <div class="mt-4 pt-3 border-t border-gray-50">
                         <!-- Tombol Email dengan Auto-Fill Subjek dan Isi Pesan -->
                     <!-- Tombol Email Terbaru menggunakan sirakelika@gmail.com -->
-                    <a href="mailto:sirakelika@gmail.com?subject=Kendala%20Sistem%20SIRAKELIKA&body=Halo%20Tim%20Support%20SIRAKELIKA,%0A%0Asaya%20membutuhkan%20bantuan%20terkait..." 
+                    <!-- Tombol Email yang Dijamin 100% Terbuka di Laptop lewat Browser -->
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sirakelika@gmail.com&su=Kendala%20Sistem%20SIRAKELIKA&body=Halo%20Tim%20Support%20SIRAKELIKA,%0A%0Asaya%20membutuhkan%20bantuan%20terkait..." 
+                    target="_blank" 
                     class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition w-full justify-center">
                         <i class="fa fa-paper-plane"></i> Hubungi via Email
                     </a>
@@ -398,21 +400,24 @@ $faqs = [
                 </div>
 
                 <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 flex flex-col justify-between hover:shadow-md transition">
-                    <div class="flex flex-col gap-3">
-                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-gray-800 mb-1">Hotline WhatsApp (Fast Response)</h4>
-                            <p class="text-xs text-gray-500 leading-relaxed">Hubungi pusat bantuan tanggap cepat untuk konsultasi langsung via chat teks bersama operator posko pengaduan kampus pada jam kerja operasional.</p>
-                        </div>
+                <div class="flex flex-col gap-3">
+                    <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-gray-50">
-                        <a href="https://wa.me/628123456789?text=Halo%20Admin%20SIRAKELIKA,%20saya%20butuh%20bantuan." target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition w-full justify-center">
-                            <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi via WhatsApp
-                        </a>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Hotline WhatsApp (Fast Response)</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Hubungi pusat bantuan tanggap cepat untuk konsultasi langsung via chat teks bersama operator posko pengaduan kampus pada jam kerja operasional.</p>
                     </div>
                 </div>
+                <div class="mt-4 pt-3 border-t border-gray-50">
+                    <!-- Tautan WA Resmi yang Sudah Dibersihkan dari Spasi dan Karakter Spesial -->
+                    <a href="https://wa.me/6285179614915?text=Halo%20Admin%20SIRAKELIKA,%20saya%20butuh%20bantuan%20terkait..." 
+                    target="_blank" 
+                    class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition w-full justify-center">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi via WhatsApp
+                    </a>
+                </div>
+            </div>
 
             </div>
         </section>
