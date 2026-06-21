@@ -2,7 +2,6 @@
 session_start();
 include 'conn.php';
 
-// 1. PROTEKSI HALAMAN - Memastikan yang masuk benar-benar akun Manajemen Kampus
 if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'manajemen'){
     header("Location: login.php"); 
     exit;
@@ -30,6 +29,7 @@ $kasus_putus     = mysqli_fetch_assoc($q_kasus_putus)['selesai'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Mengembalikan flexbox layout agar kembali sejajar dan rapi seperti dashboard investigasi */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
@@ -83,6 +83,7 @@ $kasus_putus     = mysqli_fetch_assoc($q_kasus_putus)['selesai'];
         }
         .bg-warning { background-color: #fef3c7; color: #d97706; }
     </style>
+    
 </head>
 <body>
 
@@ -98,7 +99,7 @@ $kasus_putus     = mysqli_fetch_assoc($q_kasus_putus)['selesai'];
         <nav class="nav-container">
             <div class="nav-group">MONITORING & PENGAWASAN</div>
             <a href="#" class="nav-link active">
-                <span class="nav-text">Dashboard Kebijakan</span>
+                <span class="nav-text">Dashboard</span>
             </a>
             
             <div class="nav-group">PENGAMBILAN KEPUTUSAN</div>
