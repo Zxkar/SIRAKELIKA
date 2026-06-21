@@ -309,8 +309,7 @@ if(isset($_POST['admin_login'])){
         <button class="bsub" type="submit" name="admin_login">Masuk</button>
       </form>
 
-      <p class="bl"><a href="login.php">← Kembali ke halaman utama</a></p>
-    </div>
+      
   </div>
 
 </div>

@@ -9,17 +9,57 @@ if(!isset($_SESSION['admin_logged_in']) || $_SESSION['role'] !== 'admin'){
 
 // Proses update status jika ada submit
 if(isset($_POST['update_status'])){
-    $id     = (int)$_POST['id_laporan'];
-    $status = mysqli_real_escape_string($conn, $_POST['status_baru']);
+    $id      = (int)$_POST['id_laporan'];
+    $status  = mysqli_real_escape_string($conn, $_POST['status_baru']);
     $catatan = mysqli_real_escape_string($conn, $_POST['catatan']);
+
+    // Ambil status lama + judul laporan
+    $lap_lama    = mysqli_fetch_assoc(mysqli_query($conn, "SELECT status_laporan, judul_laporan, kode_laporan FROM laporan WHERE id_laporan=$id"));
+    $status_lama = $lap_lama['status_laporan'];
+    $judul       = mysqli_real_escape_string($conn, $lap_lama['judul_laporan']);
+    $kode        = $lap_lama['kode_laporan'] ?? 'KS-'.$id;
 
     // Update status laporan
     mysqli_query($conn, "UPDATE laporan SET status_laporan='$status' WHERE id_laporan=$id");
 
-    // Catat ke log
+    // Catat ke log (sekarang dengan status_lama)
     $admin_id = $_SESSION['admin_id'] ?? 0;
-    mysqli_query($conn, "INSERT INTO status_laporan_log (id_laporan, id_user_petugas, status_baru, catatan)
-                         VALUES ($id, $admin_id, '$status', '$catatan')");
+    mysqli_query($conn, "INSERT INTO status_laporan_log (id_laporan, id_user_petugas, status_lama, status_baru, catatan)
+                         VALUES ($id, $admin_id, '$status_lama', '$status', '$catatan')");
+
+    // Kirim notifikasi otomatis ke tim investigasi jika status = ditindaklanjuti
+    if($status === 'ditindaklanjuti'){
+        $tim = mysqli_query($conn, "SELECT id_user FROM users WHERE role='investigasi' AND status_akun='aktif'");
+        while($t = mysqli_fetch_assoc($tim)){
+            mysqli_query($conn, "INSERT INTO notifikasi (id_user, id_laporan, judul, pesan)
+                VALUES (
+                    {$t['id_user']},
+                    $id,
+                    'Laporan Baru Perlu Ditindaklanjuti',
+                    'Laporan [$kode] \"$judul\" telah diteruskan oleh admin dan menunggu tindak lanjut tim investigasi.'
+                )");
+        }
+    }
+
+    // Kirim notifikasi ke pelapor jika ada id_user (bukan anonim)
+    $pelapor = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM laporan WHERE id_laporan=$id"));
+    if($pelapor['id_user']){
+        $pesan_map = [
+            'diproses'         => 'Laporan kamu sedang dalam proses review oleh admin.',
+            'ditindaklanjuti'  => 'Laporan kamu sudah diteruskan ke Tim Investigasi Kampus.',
+            'selesai'          => 'Laporan kamu telah selesai ditangani.',
+            'ditolak'          => 'Laporan kamu tidak dapat diproses. Silakan hubungi admin untuk informasi lebih lanjut.',
+            'menunggu'         => 'Status laporan kamu dikembalikan ke menunggu verifikasi.',
+        ];
+        $pesan_notif = mysqli_real_escape_string($conn, $pesan_map[$status] ?? 'Status laporan kamu telah diperbarui.');
+        mysqli_query($conn, "INSERT INTO notifikasi (id_user, id_laporan, judul, pesan)
+            VALUES (
+                {$pelapor['id_user']},
+                $id,
+                'Update Status Laporan [$kode]',
+                '$pesan_notif'
+            )");
+    }
 
     header("Location: verifikasi_laporan.php?success=1");
     exit;
