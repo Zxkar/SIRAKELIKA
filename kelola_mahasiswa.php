@@ -203,9 +203,7 @@ $total = mysqli_num_rows($query);
                 </td>
                 <td><?= date('d M Y', strtotime($row['created_at'])) ?></td>
                 <td style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <!-- Edit -->
                     <button type="button" class="btn-edit" onclick="openEditModal(<?= $row['id_user'] ?>, '<?= htmlspecialchars($row['username'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['email'], ENT_QUOTES) ?>')">Edit</button>
-                    <!-- Toggle status -->
                     <form method="POST" style="margin:0;">
                         <input type="hidden" name="toggle_status" value="1">
                         <input type="hidden" name="id_user" value="<?= $row['id_user'] ?>">

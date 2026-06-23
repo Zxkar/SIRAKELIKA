@@ -39,6 +39,7 @@ body {
     min-height: 100vh;
 }
 
+/* ===== SIDEBAR ===== */
 .sidebar {
     width: 260px;
     background-color: #ffffff;
@@ -124,7 +125,6 @@ body {
 .nav-link.logout:hover {
     background-color: #fef2f2;
 }
-
 
 .badge {
     font-size: 11px;
@@ -283,11 +283,13 @@ body {
     margin-top: 4px;
 }
 
+/* ===== DATA GRID ===== */
 .data-grid {
     display: flex;
     gap: 24px;
 }
 
+/* ===== TABLE CONTAINER ===== */
 .table-container {
     background: #ffffff;
     border-radius: 12px;

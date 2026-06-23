@@ -19,7 +19,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    // 2. QUERY MENDUKUNG 'admin' DAN 'superadmin'
     $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE username = ? AND role IN ('admin', 'superadmin') LIMIT 1");
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
@@ -28,10 +27,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     if($user && password_verify($password, $user['password'])){
         $_SESSION['admin_logged_in'] = true;
-        $_SESSION['role'] = $user['role']; // Simpan role asli (admin / superadmin)
+        $_SESSION['role'] = $user['role']; //
         $_SESSION['admin_name'] = $user['username'];
 
-        // 3. PENGALIEHAN DINAMIS SAAT BERHASIL LOGIN
         if($user['role'] === 'superadmin'){
             header("Location: dashboard_superadmin.php");
         } else {
@@ -43,7 +41,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -94,7 +91,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 12px 32px rgba(31,36,48,0.10);
         }
 
-        /* ---------- Left panel ---------- */
         .panel-brand {
             position: relative;
             flex: 1 1 46%;
@@ -185,7 +181,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding-top: 16px;
         }
 
-        /* ---------- Right panel ---------- */
         .panel-form {
             flex: 1 1 54%;
             padding: 48px 44px;
