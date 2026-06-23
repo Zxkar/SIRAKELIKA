@@ -8,28 +8,23 @@ if(isset($_POST['login'])){
   $password = $_POST['password'];
   $error = "";
 
-  // Cukup cari ke SATU TABEL tunggal (Mendukung input berupa EMAIL ataupun USERNAME)
   $query = mysqli_query($conn, "SELECT * FROM users WHERE (email='$login_input' OR username='$login_input')");
 
   if(mysqli_num_rows($query) > 0){
     $data = mysqli_fetch_assoc($query);
 
-    // 1. Validasi apakah akun berstatus aktif
     if($data['status_akun'] == 'nonaktif'){
       $error = "Akun Anda telah dinonaktifkan oleh administrator.";
     } else {
-      
-      // 2. Verifikasi kesesuaian Password berekstensi Hash
       if(password_verify($password, $data['password'])){
         
-        // Daftarkan session universal (Menggunakan id_user tunggal)
-        $_SESSION['id_user']   = $data['id_user'];
-        $_SESSION['username']  = $data['username'];
-        $_SESSION['nama']      = $data['nama_lengkap'];
-        $_SESSION['email']     = $data['email'];
-        $_SESSION['role']      = $data['role']; // Berisi: 'mahasiswa', 'investigasi', 'manajemen', 'admin', 'superadmin'
+        $_SESSION['user_logged_in'] = true;
+        $_SESSION['id_user']        = $data['id_user'];
+        $_SESSION['username']       = $data['username'];
+        $_SESSION['nama']           = $data['nama_lengkap'] ?? $data['username'];
+        $_SESSION['email']          = $data['email'];
+        $_SESSION['role']           = $data['role'];
 
-        // 3. Arahkan ke Dashboard masing-masing berdasarkan isi kolom 'role' secara otomatis
         switch($data['role']){
           case 'mahasiswa':
             header("Location: dashboard.php");
@@ -40,12 +35,8 @@ if(isset($_POST['login'])){
           case 'manajemen':
             header("Location: dashboard_manajemen.php");
             break;
-          case 'admin':
-          case 'superadmin':
-            header("Location: dashboard_admin.php");
-            break;
           default:
-            $error = "Hak akses peran (role) tidak dikenali.";
+            header("Location: login.php");
             break;
         }
         exit;
@@ -90,13 +81,13 @@ if(isset($_POST['login'])){
       <form method="POST" action="login.php">
 
         <div class="fg">
-          <label for="login_input">Email</label>
-          <div class="iw">
+          <label for="login_input">Username atau Email</label> <div class="iw">
             <input
               type="text" 
               id="login_input"
               name="login_input"
               value="<?php echo isset($_POST['login_input']) ? htmlspecialchars($_POST['login_input']) : ''; ?>"
+              placeholder="Masukkan username atau email"
               required
             />
           </div>
@@ -108,7 +99,7 @@ if(isset($_POST['login'])){
             <a href="forgot-password.php" class="lupa">Lupa password?</a>
           </div>
           <div class="iw">
-            <input type="password" id="pw" name="password"required/>
+            <input type="password" id="pw" name="password" placeholder="Masukkan kata sandi" required/>
             <button class="tpw" type="button" onclick="tgl('pw',this)" aria-label="Lihat kata sandi">
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>

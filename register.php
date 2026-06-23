@@ -4,7 +4,7 @@ include 'conn.php';
 
 if(isset($_POST['register'])){
 
-  $nama     = $_POST['username']; // Mengisi kolom 'username' di database
+  $nama     = $_POST['username']; 
   $email    = $_POST['email'];
   $password = $_POST['password'];
   $confirm  = $_POST['confirm'];
@@ -15,7 +15,6 @@ if(isset($_POST['register'])){
     $error = "Konfirmasi kata sandi tidak cocok.";
   } else {
 
-    // 1. Cek apakah username atau email sudah digunakan di tabel 'users'
     $stmt_cek = mysqli_prepare($conn, "SELECT id_user FROM users WHERE username = ? OR email = ?");
     mysqli_stmt_bind_param($stmt_cek, "ss", $nama, $email);
     mysqli_stmt_execute($stmt_cek);
@@ -27,15 +26,24 @@ if(isset($_POST['register'])){
     } else {
       mysqli_stmt_close($stmt_cek);
 
-      // 2. Enkripsi password menggunakan bcrypt hash
       $hash = password_hash($password, PASSWORD_DEFAULT);
 
-      // 3. Masukkan data ke tabel 'users' (Kolom nama_lengkap sudah dihapus)
+      // 3. Masukkan data ke tabel 'users'
       $stmt_insert = mysqli_prepare($conn, "INSERT INTO users (username, email, password, role, status_akun) VALUES (?, ?, ?, 'mahasiswa', 'aktif')");
       mysqli_stmt_bind_param($stmt_insert, "sss", $nama, $email, $hash);
       
       if(mysqli_stmt_execute($stmt_insert)){
-        $success = "Registrasi berhasil! Silakan masuk.";
+
+        $new_user_id = mysqli_insert_id($conn);
+        
+        $_SESSION['user_logged_in'] = true;
+        $_SESSION['user_id']        = $new_user_id;
+        $_SESSION['username']       = $nama;
+        $_SESSION['role']           = 'mahasiswa';
+        
+        header("Location: dashboard.php");
+        exit;
+        
       } else {
         $error = "Registrasi gagal, silakan coba lagi.";
       }
@@ -68,13 +76,6 @@ if(isset($_POST['register'])){
       <?php if(isset($error)): ?>
         <p style="color:#ef4444;font-size:13px;margin-bottom:12px;background:#fef2f2;padding:8px 12px;border-radius:8px;border:1px solid #fecaca;">
           <?php echo $error; ?>
-        </p>
-      <?php endif; ?>
-
-      <?php if(isset($success)): ?>
-        <p style="color:#16a34a;font-size:13px;margin-bottom:12px;background:#f0fdf4;padding:8px 12px;border-radius:8px;border:1px solid #bbf7d0;">
-          <?php echo $success; ?>
-          <a href="login.php" style="font-weight:600;color:#3b82f6;">Masuk sekarang →</a>
         </p>
       <?php endif; ?>
 
