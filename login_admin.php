@@ -2,330 +2,171 @@
 session_start();
 include 'conn.php';
 
-if(isset($_POST['admin_login'])){
-  $username = mysqli_real_escape_string($conn, $_POST['username']);
-  $password = $_POST['password'];
-
-  $query = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' AND role IN ('admin','superadmin')");
-  
-  if(mysqli_num_rows($query) > 0){
-    $data = mysqli_fetch_assoc($query);
-    
-    if(password_verify($password, $data['password'])){
-      $_SESSION['admin_logged_in'] = true;
-      $_SESSION['admin_id']       = $data['id_user'];
-      $_SESSION['admin_name']     = $data['username'];
-      
-      if($data['role'] === 'superadmin'){
-          $_SESSION['role'] = 'superadmin';
-          header("Location: dashboard_superadmin.php");
-          exit;
-      } else {
-          $_SESSION['role'] = 'admin';
-          header("Location: dashboard_admin.php");
-          exit;
-      }
-    }
-  }
-  $error = "Username atau Password Admin salah!";
+if(!isset($_SESSION['admin_logged_in']) || $_SESSION['role'] !== 'admin'){
+    header("Location: login_admin.php");
+    exit;
 }
+
+// Query sesuai tabel users (bukan mahasiswa/tim_investigasi terpisah)
+$count_mhs   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role='mahasiswa'"))['total'];
+$count_tim   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role='investigasi'"))['total'];
+$count_lap   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan"))['total'];
+$count_verif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan WHERE status_laporan='menunggu'"))['total'];
+$count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role='admin'"))['total'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIRAKELIKA — Admin Panel</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      background: #fef2f2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .auth-card {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: 820px;
-      min-height: 490px;
-      background: #fff;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 8px 48px rgba(185,28,28,0.13);
-    }
-
-    /* ─── LEFT PANEL ─── */
-    .panel-left {
-      background: #991b1b;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 2.75rem 2.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* lingkaran dekoratif */
-    .panel-left::before {
-      content: '';
-      position: absolute;
-      width: 340px; height: 340px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      top: -100px; right: -100px;
-      pointer-events: none;
-    }
-    .panel-left::after {
-      content: '';
-      position: absolute;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-      bottom: -60px; left: -50px;
-      pointer-events: none;
-    }
-
-    /* garis aksen kecil atas */
-    .left-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 10.5px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      color: #fca5a5;
-      text-transform: uppercase;
-    }
-    .left-eyebrow span {
-      width: 20px; height: 1.5px;
-      background: #fca5a5;
-      display: inline-block;
-    }
-
-    .left-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 2rem 0 1.5rem;
-    }
-
-    .left-title {
-      font-size: 28px;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.25;
-      margin-bottom: 1rem;
-    }
-
-    .left-desc {
-      font-size: 13px;
-      color: #fca5a5;
-      line-height: 1.75;
-      max-width: 230px;
-    }
-
-
-
-    /* ─── RIGHT PANEL ─── */
-    .panel-right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 3rem 2.75rem;
-      background: #fff;
-    }
-
-    .form-box { width: 100%; }
-
-    .ftitle {
-      font-size: 20px;
-      font-weight: 600;
-      color: #111827;
-      margin-bottom: 0.35rem;
-    }
-
-    .fsub {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 2rem;
-      line-height: 1.55;
-    }
-
-    /* error */
-    .err-box {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 12.5px;
-      color: #b91c1c;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* field */
-    .fg { margin-bottom: 1.1rem; }
-
-    .fg label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
-
-    .iw { position: relative; display: flex; align-items: center; }
-
-    .iw input {
-      width: 100%;
-      height: 42px;
-      padding: 0 12px;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 8px;
-      font-size: 13.5px;
-      font-family: 'Inter', sans-serif;
-      color: #111827;
-      background: #fafafa;
-      outline: none;
-      transition: border-color .15s, background .15s, box-shadow .15s;
-    }
-    .iw input::placeholder { color: #d1d5db; }
-    .iw input:focus {
-      border-color: #b91c1c;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(185,28,28,0.08);
-    }
-
-    .tpw {
-      position: absolute;
-      right: 11px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #d1d5db;
-      display: flex;
-      align-items: center;
-      padding: 0;
-    }
-    .tpw:hover { color: #6b7280; }
-    .tpw svg { width: 16px; height: 16px; }
-
-    .bsub {
-      width: 100%;
-      height: 44px;
-      background: #991b1b;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 13.5px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      margin-top: 0.5rem;
-      transition: background .15s, transform .1s;
-      letter-spacing: 0.2px;
-    }
-    .bsub:hover { background: #7f1d1d; }
-    .bsub:active { transform: scale(0.99); }
-
-    .bl {
-      text-align: center;
-      font-size: 12px;
-      color: #9ca3af;
-      margin-top: 1.25rem;
-    }
-    .bl a { color: #991b1b; text-decoration: none; font-weight: 500; }
-    .bl a:hover { text-decoration: underline; }
-
-    @media (max-width: 620px) {
-      .auth-card { grid-template-columns: 1fr; }
-      .panel-left { display: none; }
-      .panel-right { padding: 2rem 1.5rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIRAKELIKA - Admin Panel</title>
+    <link rel="stylesheet" href="dashboard_admin.css">
 </head>
 <body>
-<div class="auth-card">
 
-  <!-- LEFT -->
-  <div class="panel-left">
-    <div class="left-eyebrow">
-      <span></span> SIRAKELIKA
+<aside class="sidebar">
+    <div class="logo-area">
+        <div class="logo-icon"></div>
+        <div>
+            <h1 class="logo-title">SIRAKELIKA</h1>
+            <p class="logo-sub">ADMINISTRATOR</p>
+        </div>
+    </div>
+    <nav class="nav-container">
+        <div class="nav-group">SYSTEM CONTROL</div>
+        <a href="dashboard_admin.php" class="nav-link active">
+            <span class="nav-text">Dashboard</span>
+        </a>
+
+        <div class="nav-group">MANAJEMEN</div>
+        <a href="verifikasi_laporan.php" class="nav-link">
+            <span class="nav-text">Verifikasi Laporan Masuk</span>
+        </a>
+        <a href="kelola_mahasiswa.php" class="nav-link">
+            <span class="nav-text">Kelola Akun Mahasiswa</span>
+        </a>
+        <a href="kelola_internal.php" class="nav-link">
+            <span class="nav-text">Kelola Akun Pihak Internal</span>
+        </a>
+
+        <div class="nav-group">AKUN UTAMA</div>
+        <a href="logout.php" class="nav-link logout">
+            <span class="nav-text">Keluar</span>
+        </a>
+    </nav>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <div></div>
+        <div class="user-profile">
+            <div class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 2)); ?></div>
+            <div class="user-info">
+                <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
+                <span class="user-role">Sistem Administrator</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="welcome-banner-admin">
+        <div class="banner-text">
+            <h2>Selamat Datang di Admin Pusat SIRAKELIKA</h2>
+            <p>Hak akses penuh administrator. Anda bertanggung jawab melakukan validasi administrasi berkas sebelum diteruskan ke Tim Investigasi Kampus.</p>
+        </div>
+    </section>
+
+    <div class="content-title">
+        <h2>Ringkasan Statistik Sistem</h2>
+        <p>Pantau data akun pengguna dan antrean validasi kasus aktif</p>
     </div>
 
-    <div class="left-body">
-      <h1 class="left-title">Admin<br>Control Panel</h1>
-      <p class="left-desc">Area terbatas. Segala aktivitas dalam panel ini dicatat secara penuh oleh sistem audit.</p>
+    <section class="stats-grid">
+        <div class="card" style="border-top:4px solid #ef4444;">
+            <div class="card-icon" style="background:#fef2f2;color:#ef4444;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+            <span class="card-num" style="color:#ef4444;"><?php echo $count_verif; ?></span>
+            <span class="card-title">Menunggu Verifikasi</span>
+        </div>
+        <div class="card" style="border-top:4px solid #3b82f6;">
+            <div class="card-icon" style="background:#eff6ff;color:#3b82f6;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+            </div>
+            <span class="card-num"><?php echo $count_lap; ?></span>
+            <span class="card-title">Total Semua Laporan</span>
+        </div>
+        <div class="card" style="border-top:4px solid #10b981;">
+            <div class="card-icon" style="background:#f0fdf4;color:#10b981;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span class="card-num"><?php echo $count_mhs; ?></span>
+            <span class="card-title">Total User Mahasiswa</span>
+        </div>
+        <div class="card" style="border-top:4px solid #f59e0b;">
+            <div class="card-icon" style="background:#fffbeb;color:#f59e0b;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+            </div>
+            <span class="card-num"><?php echo $count_tim; ?></span>
+            <span class="card-title">Total Akun Investigasi</span>
+        </div>
+        <div class="card" style="border-top:4px solid #8b5cf6;">
+            <div class="card-icon" style="background:#f5f3ff;color:#8b5cf6;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21v-1a7 7 0 0 1 7-7 7 7 0 0 1 7 7v1"/><path d="M19.4 9.5a2 2 0 1 0-2.83 2.83"/></svg>
+            </div>
+            <span class="card-num"><?php echo $count_admin; ?></span>
+            <span class="card-title">Total Akun Admin</span>
+        </div>
+    </section>
+
+    <div class="data-grid">
+        <div class="table-container">
+            <div class="table-header">
+                <div>
+                    <h3>Antrean Validasi Laporan Masuk</h3>
+                    <p>Laporan berstatus "menunggu" yang perlu diverifikasi</p>
+                </div>
+                <a href="verifikasi_laporan.php" style="text-decoration:none;">
+                    <button class="btn-view-all">Lihat Semua →</button>
+                </a>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>KODE</th>
+                        <th>JUDUL LAPORAN</th>
+                        <th>JENIS KEKERASAN</th>
+                        <th>TANGGAL MASUK</th>
+                        <th>AKSI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                $q = mysqli_query($conn, "SELECT * FROM laporan WHERE status_laporan='menunggu' ORDER BY tanggal_laporan DESC LIMIT 5");
+                if(mysqli_num_rows($q) > 0){
+                    while($row = mysqli_fetch_assoc($q)){
+                        $kode = $row['kode_laporan'] ?? '#KS-'.$row['id_laporan'];
+                        echo "<tr>
+                            <td class='id-case'>".htmlspecialchars($kode)."</td>
+                            <td><strong>".htmlspecialchars($row['judul_laporan'])."</strong></td>
+                            <td>".htmlspecialchars($row['jenis_kekerasan'])."</td>
+                            <td>".date('d M Y', strtotime($row['tanggal_laporan']))."</td>
+                            <td><button class='btn-verif' onclick=\"location.href='verifikasi_laporan.php?id=".$row['id_laporan']."'\">Verifikasi</button></td>
+                        </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='5' style='padding:0;'>
+                        <div class='empty-state'>
+                            <svg width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><path d='m9 12 2 2 4-4'/></svg>
+                            <p>Semua laporan telah diverifikasi. Tidak ada antrean saat ini.</p>
+                        </div>
+                    </td></tr>";
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
     </div>
+</main>
 
-
-  </div>
-
-  <!-- RIGHT -->
-  <div class="panel-right">
-    <div class="form-box">
-      <h2 class="ftitle">Masuk ke Panel</h2>
-      <p class="fsub">Gunakan kredensial admin yang telah didaftarkan.</p>
-
-      <?php if(isset($error)): ?>
-        <div class="err-box">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <?php echo htmlspecialchars($error); ?>
-        </div>
-      <?php endif; ?>
-
-      <form method="POST" action="">
-        <div class="fg">
-          <label for="username">Username Admin</label>
-          <div class="iw">
-            <input type="text" id="username" name="username" placeholder="nama_admin" required autocomplete="username" />
-          </div>
-        </div>
-
-        <div class="fg">
-          <label for="pw">Password</label>
-          <div class="iw">
-            <input type="password" id="pw" name="password" placeholder="••••••••" required autocomplete="current-password" />
-            <button type="button" class="tpw" onclick="togglePw()" aria-label="Toggle password">
-              <svg id="eye-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <button class="bsub" type="submit" name="admin_login">Masuk</button>
-      </form>
-
-      
-  </div>
-
-</div>
-
-<script>
-function togglePw() {
-  const input = document.getElementById('pw');
-  const icon  = document.getElementById('eye-icon');
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
-  } else {
-    input.type = 'password';
-    icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
-  }
-}
-</script>
 </body>
 </html>
