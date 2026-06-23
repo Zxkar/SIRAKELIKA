@@ -487,10 +487,10 @@ $faqs = [
                 <div class="flex flex-col gap-3">
                     <?php
                     $steps = [
-                        ["icon" => "fa-right-to-bracket", "color" => "blue",    "num" => "1", "title" => "Login ke Dashboard",         "desc" => "Masuk menggunakan akun mahasiswa ITH kamu."],
+                        ["icon" => "fa-right-to-bracket", "color" => "blue",    "num" => "1", "title" => "Login ke Dashboard",         "desc" => "Masuk menggunakan akun yang telah kamu buat."],
                         ["icon" => "fa-list-check",        "color" => "indigo",  "num" => "2", "title" => "Pilih Jenis Pelaporan",       "desc" => "Laporan Umum (anonim) atau Laporan Khusus (dengan identitas)."],
                         ["icon" => "fa-pen-to-square",     "color" => "violet",  "num" => "3", "title" => "Isi Kronologi Kejadian",      "desc" => "Ceritakan apa yang terjadi: jenis kekerasan, waktu, dan lokasi."],
-                        ["icon" => "fa-paperclip",         "color" => "purple",  "num" => "4", "title" => "Lampirkan Bukti (Opsional)", "desc" => "Foto, dokumen, atau screenshot — kalau ada."],
+                        ["icon" => "fa-paperclip",         "color" => "purple",  "num" => "4", "title" => "Lampirkan Bukti ", "desc" => " Upload foto, dokumen,audio, atau video."],
                         ["icon" => "fa-paper-plane",       "color" => "fuchsia", "num" => "5", "title" => "Kirim & Pantau Status",       "desc" => "Setelah terkirim, pantau perkembangannya di menu \"Laporan Saya\"."],
                     ];
                     foreach ($steps as $step):
