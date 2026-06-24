@@ -2,7 +2,7 @@
 session_start();
 include 'conn.php';
 
-if(!isset($_SESSION['admin_logged_in']) || $_SESSION['role'] !== 'admin, superadmin'){
+if(!isset($_SESSION['admin_logged_in']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])){
     header("Location: login_admin.php");
     exit;
 }
@@ -76,40 +76,7 @@ $total = mysqli_num_rows($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Laporan - SIRAKELIKA</title>
     <link rel="stylesheet" href="dashboard_admin.css">
-    <style>
-        .filter-bar { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
-        .filter-btn { padding:7px 16px; border-radius:20px; border:1px solid #e2e8f0; background:#fff;
-                      font-size:12px; font-weight:600; cursor:pointer; color:#64748b; text-decoration:none; transition:all 0.2s; }
-        .filter-btn:hover, .filter-btn.active { background:#dc2626; color:#fff; border-color:#dc2626; }
-        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; align-items:center; justify-content:center; }
-        .modal-overlay.show { display:flex; }
-        .modal { background:#fff; border-radius:16px; padding:32px; width:460px; max-width:95vw; }
-        .modal h3 { font-size:18px; font-weight:700; margin-bottom:4px; }
-        .modal p.sub { font-size:13px; color:#64748b; margin-bottom:20px; }
-        .form-group { margin-bottom:16px; }
-        .form-group label { font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:6px; }
-        .form-group select, .form-group textarea {
-            width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px;
-            font-size:13px; color:#1e293b; font-family:inherit; outline:none; }
-        .form-group select:focus, .form-group textarea:focus { border-color:#dc2626; }
-        .form-group textarea { resize:vertical; min-height:80px; }
-        .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
-        .btn-cancel { padding:9px 20px; border-radius:8px; border:1px solid #e2e8f0; background:#fff;
-                      font-size:13px; font-weight:600; cursor:pointer; color:#64748b; }
-        .btn-submit { padding:9px 20px; border-radius:8px; border:none; background:#dc2626;
-                      font-size:13px; font-weight:600; cursor:pointer; color:#fff; }
-        .btn-submit:hover { background:#b91c1c; }
-        .alert-success { background:#f0fdf4; border:1px solid #bbf7d0; color:#16a34a;
-                         padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:13px; font-weight:600; }
-        .badge-status { font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px; display:inline-block; }
-        .s-menunggu       { background:#fef9c3; color:#ca8a04; }
-        .s-diproses       { background:#eff6ff; color:#2563eb; }
-        .s-ditindaklanjuti{ background:#fdf4ff; color:#9333ea; }
-        .s-selesai        { background:#f0fdf4; color:#16a34a; }
-        .s-ditolak        { background:#fef2f2; color:#dc2626; }
-        .btn-view-all { background:#f0f5ff; color:#2563eb; border:none; padding:6px 12px;
-                        border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; }
-    </style>
+    <link rel="stylesheet" href="verifikasi_laporan.css">
 </head>
 <body>
 
