@@ -99,7 +99,7 @@ $total = mysqli_num_rows($query);
     <header class="topbar">
         <div></div>
         <div class="user-profile">
-            <div class="avatar">ADM</div>
+            <div class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 2)); ?></div>
             <div class="user-info">
                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
                 <span class="user-role">Sistem Administrator</span>
@@ -160,7 +160,7 @@ $total = mysqli_num_rows($query);
                 </td>
                 <td><?= date('d M Y', strtotime($row['created_at'])) ?></td>
                 <td style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button type="button" class="btn-edit" onclick="openEditModal(<?= $row['id_user'] ?>, '<?= htmlspecialchars($row['username'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['email'], ENT_QUOTES) ?>')">Edit</button>
+                    <button type="button" class="btn-edit" onclick="openEditModal(<?= $row['id_user'] ?>, <?= htmlspecialchars(json_encode($row['username']), ENT_QUOTES) ?>, <?= htmlspecialchars(json_encode($row['email']), ENT_QUOTES) ?>)">Edit</button>
                     <form method="POST" style="margin:0;">
                         <input type="hidden" name="toggle_status" value="1">
                         <input type="hidden" name="id_user" value="<?= $row['id_user'] ?>">

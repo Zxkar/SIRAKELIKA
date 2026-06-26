@@ -31,8 +31,14 @@ if(isset($_POST['tambah_akun'])){
 if(isset($_POST['toggle_status'])){
     $id = (int)$_POST['id_user'];
     $status_baru = $_POST['status_akun'] === 'aktif' ? 'nonaktif' : 'aktif';
-    
     $allowed_roles_sql = $is_superadmin ? "'investigasi','manajemen','admin'" : "'investigasi','manajemen'";
+
+    $cek_akun = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM users WHERE id_user=$id AND role IN ($allowed_roles_sql)"));
+    if(!$cek_akun){
+        header("Location: kelola_internal.php?error=forbidden");
+        exit;
+    }
+
     mysqli_query($conn, "UPDATE users SET status_akun='$status_baru' WHERE id_user=$id AND role IN ($allowed_roles_sql)");
     header("Location: kelola_internal.php?success=2");
     exit;
@@ -40,8 +46,14 @@ if(isset($_POST['toggle_status'])){
 
 if(isset($_POST['hapus_akun'])){
     $id = (int)$_POST['id_user'];
-    
     $allowed_roles_sql = $is_superadmin ? "'investigasi','manajemen','admin'" : "'investigasi','manajemen'";
+
+    $cek_akun = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM users WHERE id_user=$id AND role IN ($allowed_roles_sql)"));
+    if(!$cek_akun){
+        header("Location: kelola_internal.php?error=forbidden");
+        exit;
+    }
+
     mysqli_query($conn, "DELETE FROM users WHERE id_user=$id AND role IN ($allowed_roles_sql)");
     header("Location: kelola_internal.php?deleted=1");
     exit;
@@ -54,6 +66,13 @@ if(isset($_POST['edit_akun'])){
     
     $allowed_roles = $is_superadmin ? ['investigasi','manajemen','admin'] : ['investigasi','manajemen'];
     $role     = in_array($_POST['role'], $allowed_roles) ? $_POST['role'] : 'investigasi';
+    $allowed_roles_sql = $is_superadmin ? "'investigasi','manajemen','admin'" : "'investigasi','manajemen'";
+
+    $cek_akun = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM users WHERE id_user=$id AND role IN ($allowed_roles_sql)"));
+    if(!$cek_akun){
+        header("Location: kelola_internal.php?error=forbidden");
+        exit;
+    }
 
     $cek = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM users WHERE (email='$email' OR username='$username') AND id_user != $id"));
     if($cek){
@@ -61,7 +80,6 @@ if(isset($_POST['edit_akun'])){
         exit;
     }
 
-    $allowed_roles_sql = $is_superadmin ? "'investigasi','manajemen','admin'" : "'investigasi','manajemen'";
     if(!empty($_POST['password'])){
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         mysqli_query($conn, "UPDATE users SET username='$username', email='$email', role='$role', password='$password' WHERE id_user=$id AND role IN ($allowed_roles_sql)");
@@ -136,7 +154,7 @@ $total = mysqli_num_rows($query);
     <header class="topbar">
         <div></div>
         <div class="user-profile">
-            <div class="avatar"><?= $is_superadmin ? 'SAD' : 'ADM' ?></div>
+            <div class="avatar"><?= strtoupper(substr($_SESSION['admin_name'], 0, 2)) ?></div>
             <div class="user-info">
                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
                 <span class="user-role"><?= $is_superadmin ? 'Super Administrator' : 'Sistem Administrator' ?></span>
@@ -157,6 +175,9 @@ $total = mysqli_num_rows($query);
     <?php endif; ?>
     <?php if(isset($_GET['error']) && $_GET['error']==='duplikat'): ?>
     <div class="alert-error">⚠ Username atau email sudah terdaftar di sistem.</div>
+    <?php endif; ?>
+    <?php if(isset($_GET['error']) && $_GET['error']==='forbidden'): ?>
+    <div class="alert-error">⚠ Anda tidak memiliki otoritas untuk mengubah akun ini.</div>
     <?php endif; ?>
 
     <form method="GET" class="search-bar">
@@ -218,7 +239,7 @@ $total = mysqli_num_rows($query);
                 <td><span class="badge-<?= $row['status_akun'] ?>"><?= ucfirst($row['status_akun']) ?></span></td>
                 <td><?= date('d M Y', strtotime($row['created_at'])) ?></td>
                 <td style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button type="button" class="btn-edit" onclick="openEditModal(<?= $row['id_user'] ?>, '<?= htmlspecialchars($row['username'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['email'], ENT_QUOTES) ?>', '<?= $row['role'] ?>')">Edit</button>
+                    <button type="button" class="btn-edit" onclick="openEditModal(<?= $row['id_user'] ?>, <?= htmlspecialchars(json_encode($row['username']), ENT_QUOTES) ?>, <?= htmlspecialchars(json_encode($row['email']), ENT_QUOTES) ?>, <?= htmlspecialchars(json_encode($row['role']), ENT_QUOTES) ?>)">Edit</button>
                     <form method="POST" style="margin:0;">
                         <input type="hidden" name="toggle_status" value="1">
                         <input type="hidden" name="id_user" value="<?= $row['id_user'] ?>">

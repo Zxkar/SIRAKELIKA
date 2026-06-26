@@ -7,21 +7,34 @@ if(!isset($_SESSION['admin_logged_in']) || !in_array($_SESSION['role'], ['admin'
     exit;
 }
 
+$valid_status = ['menunggu','diproses','ditindaklanjuti','selesai','ditolak'];
+
 if(isset($_POST['update_status'])){
     $id      = (int)$_POST['id_laporan'];
-    $status  = mysqli_real_escape_string($conn, $_POST['status_baru']);
+    $status  = $_POST['status_baru'];
     $catatan = mysqli_real_escape_string($conn, $_POST['catatan']);
 
-    $lap_lama    = mysqli_fetch_assoc(mysqli_query($conn, "SELECT status_laporan, judul_laporan, kode_laporan FROM laporan WHERE id_laporan=$id"));
+    if(!in_array($status, $valid_status)){
+        header("Location: verifikasi_laporan.php?error=status_invalid");
+        exit;
+    }
+
+    $lap_lama = mysqli_fetch_assoc(mysqli_query($conn, "SELECT status_laporan, judul_laporan, kode_laporan, id_user FROM laporan WHERE id_laporan=$id"));
+    if(!$lap_lama){
+        header("Location: verifikasi_laporan.php?error=laporan_invalid");
+        exit;
+    }
+
     $status_lama = $lap_lama['status_laporan'];
     $judul       = mysqli_real_escape_string($conn, $lap_lama['judul_laporan']);
     $kode        = $lap_lama['kode_laporan'] ?? 'KS-'.$id;
+    $status_esc  = mysqli_real_escape_string($conn, $status);
 
-    mysqli_query($conn, "UPDATE laporan SET status_laporan='$status' WHERE id_laporan=$id");
+    mysqli_query($conn, "UPDATE laporan SET status_laporan='$status_esc' WHERE id_laporan=$id");
 
     $admin_id = $_SESSION['admin_id'] ?? 0;
     mysqli_query($conn, "INSERT INTO status_laporan_log (id_laporan, id_user_petugas, status_lama, status_baru, catatan)
-                         VALUES ($id, $admin_id, '$status_lama', '$status', '$catatan')");
+                         VALUES ($id, $admin_id, '$status_lama', '$status_esc', '$catatan')");
 
     if($status === 'ditindaklanjuti'){
         $tim = mysqli_query($conn, "SELECT id_user FROM users WHERE role='investigasi' AND status_akun='aktif'");
@@ -36,8 +49,7 @@ if(isset($_POST['update_status'])){
         }
     }
 
-    $pelapor = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM laporan WHERE id_laporan=$id"));
-    if($pelapor['id_user']){
+    if(!empty($lap_lama['id_user'])){
         $pesan_map = [
             'diproses'         => 'Laporan kamu sedang dalam proses review oleh admin.',
             'ditindaklanjuti'  => 'Laporan kamu sudah diteruskan ke Tim Investigasi Kampus.',
@@ -48,7 +60,7 @@ if(isset($_POST['update_status'])){
         $pesan_notif = mysqli_real_escape_string($conn, $pesan_map[$status] ?? 'Status laporan kamu telah diperbarui.');
         mysqli_query($conn, "INSERT INTO notifikasi (id_user, id_laporan, judul, pesan)
             VALUES (
-                {$pelapor['id_user']},
+                {$lap_lama['id_user']},
                 $id,
                 'Update Status Laporan [$kode]',
                 '$pesan_notif'
@@ -60,7 +72,6 @@ if(isset($_POST['update_status'])){
 }
 
 $filter = isset($_GET['filter']) ? mysqli_real_escape_string($conn, $_GET['filter']) : 'menunggu';
-$valid_status = ['menunggu','diproses','ditindaklanjuti','selesai','ditolak'];
 if(!in_array($filter, $valid_status)) $filter = 'menunggu';
 
 $query = mysqli_query($conn, "SELECT l.*, u.username FROM laporan l
@@ -114,7 +125,7 @@ $total = mysqli_num_rows($query);
     <header class="topbar">
         <div></div>
         <div class="user-profile">
-            <div class="avatar">ADM</div>
+            <div class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 2)); ?></div>
             <div class="user-info">
                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
                 <span class="user-role">Sistem Administrator</span>
@@ -129,6 +140,12 @@ $total = mysqli_num_rows($query);
 
     <?php if(isset($_GET['success'])): ?>
     <div class="alert-success">✓ Status laporan berhasil diperbarui.</div>
+    <?php endif; ?>
+    <?php if(isset($_GET['error']) && $_GET['error']==='status_invalid'): ?>
+    <div class="alert-error">⚠ Status yang dikirim tidak valid.</div>
+    <?php endif; ?>
+    <?php if(isset($_GET['error']) && $_GET['error']==='laporan_invalid'): ?>
+    <div class="alert-error">⚠ Laporan tidak ditemukan.</div>
     <?php endif; ?>
 
     <!-- Filter Bar -->
