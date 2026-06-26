@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Jun 2026 pada 10.20
+-- Waktu pembuatan: 26 Jun 2026 pada 14.28
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -103,16 +103,17 @@ CREATE TABLE `laporan` (
   `tanggal_laporan` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `jenis_laporan` varchar(100) DEFAULT 'Umum',
-  `rekomendasi_tim` text DEFAULT NULL
+  `rekomendasi_tim` text DEFAULT NULL,
+  `arahan_manajemen` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `laporan`
 --
 
-INSERT INTO `laporan` (`id_laporan`, `id_user`, `judul_laporan`, `deskripsi`, `jenis_kekerasan`, `jenis_pelaporan`, `waktu_kejadian`, `lokasi_kejadian`, `status_laporan`, `kode_laporan`, `tanggal_laporan`, `updated_at`, `jenis_laporan`, `rekomendasi_tim`) VALUES
-(6, NULL, '', '', '', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-26 05:52:53', '2026-06-26 05:55:20', 'Umum', 'Rekomendasi Pemberhentian Tetap (Drop Out) secara tidak hormat terhadap pelaku sesuai Permendikbudristek No. 30 Tahun 2021.\n\n[SK TERBIT] No SK: #KS-6-UMUM  - Putusan Sanksi: Diberhentikan '),
-(10, NULL, '', '', 'fisik', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-24 07:24:38', '2026-06-24 07:43:04', 'Kekerasan Seksual', 'Rekomendasi dari Satgas berupa sanksi berat Pemberhentian Tetap (Drop Out) bagi pelaku mahasiswa yang bersangkutan\n\n[SK TERBIT] No SK: #KS-10-FISIK/2026 - Putusan Sanksi: \"Diberhentikan secara tidak hormat (Drop Out) sebagai mahasiswa.\"');
+INSERT INTO `laporan` (`id_laporan`, `id_user`, `judul_laporan`, `deskripsi`, `jenis_kekerasan`, `jenis_pelaporan`, `waktu_kejadian`, `lokasi_kejadian`, `status_laporan`, `kode_laporan`, `tanggal_laporan`, `updated_at`, `jenis_laporan`, `rekomendasi_tim`, `arahan_manajemen`) VALUES
+(6, NULL, '', '', '', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-26 05:52:53', '2026-06-26 05:55:20', 'Umum', 'Rekomendasi Pemberhentian Tetap (Drop Out) secara tidak hormat terhadap pelaku sesuai Permendikbudristek No. 30 Tahun 2021.\n\n[SK TERBIT] No SK: #KS-6-UMUM  - Putusan Sanksi: Diberhentikan ', NULL),
+(10, NULL, '', '', 'fisik', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-24 07:24:38', '2026-06-24 07:43:04', 'Kekerasan Seksual', 'Rekomendasi dari Satgas berupa sanksi berat Pemberhentian Tetap (Drop Out) bagi pelaku mahasiswa yang bersangkutan\n\n[SK TERBIT] No SK: #KS-10-FISIK/2026 - Putusan Sanksi: \"Diberhentikan secara tidak hormat (Drop Out) sebagai mahasiswa.\"', NULL);
 
 -- --------------------------------------------------------
 
