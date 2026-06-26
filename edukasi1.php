@@ -2,61 +2,6 @@
 session_start();
 require_once 'conn.php';
 
-// ======================== PROSES FORM KONSULTASI ========================
-$konsultasi_success = '';
-$konsultasi_error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kirim_konsultasi'])) {
-    $nama_pengirim = trim($_POST['nama'] ?? '');
-    $topik = trim($_POST['topik'] ?? '');
-    $pesan_isi = trim($_POST['pesan'] ?? '');
-    $id_mahasiswa = $_SESSION['id_mahasiswa'] ?? null;
-    $is_anonim = (empty($nama_pengirim) || strtolower($nama_pengirim) === 'anonim') ? 1 : 0;
-
-    if (empty($pesan_isi)) {
-        $konsultasi_error = 'Pesan tidak boleh kosong.';
-    } else {
-        // Gabungkan topik + nama (jika ada) ke dalam pesan yang disimpan
-        $pesan_lengkap = '';
-        if (!empty($topik)) {
-            $pesan_lengkap .= "[Topik: $topik]\n";
-        }
-        if (!$is_anonim) {
-            $pesan_lengkap .= "Nama: $nama_pengirim\n";
-        }
-        $pesan_lengkap .= $pesan_isi;
-
-        // Simpan ke database (tabel konsultasi)
-        $stmt = $conn->prepare("INSERT INTO konsultasi (id_mahasiswa, id_admin, pesan, pengirim, is_anonim) VALUES (?, NULL, ?, 'mahasiswa', ?)");
-        $stmt->bind_param("isi", $id_mahasiswa, $pesan_lengkap, $is_anonim);
-
-        if ($stmt->execute()) {
-            // Kirim email notifikasi ke admin
-            $to = "sirakelika@gmail.com";
-            $subject = "Pesan Konsultasi Baru - SIRAKELIKA";
-            $nama_tampil = $is_anonim ? 'Anonim' : htmlspecialchars($nama_pengirim);
-            $topik_tampil = !empty($topik) ? htmlspecialchars($topik) : '-';
-
-            $body = "Ada pesan konsultasi baru dari sistem SIRAKELIKA.\n\n";
-            $body .= "Nama: $nama_tampil\n";
-            $body .= "Topik: $topik_tampil\n";
-            $body .= "Pesan:\n" . $pesan_isi . "\n\n";
-            $body .= "Waktu: " . date('d-m-Y H:i:s') . "\n";
-
-            $headers = "From: SIRAKELIKA <no-reply@itbj.ac.id>\r\n";
-            $headers .= "Reply-To: no-reply@itbj.ac.id\r\n";
-            $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
-            // Kirim email (membutuhkan server mendukung fungsi mail())
-            @mail($to, $subject, $body, $headers);
-
-            $konsultasi_success = 'Pesan Anda berhasil dikirim. Tim kami akan segera merespon.';
-        } else {
-            $konsultasi_error = 'Gagal menyimpan pesan. Silakan coba lagi.';
-        }
-        $stmt->close();
-    }
-}
 
 
 $all_articles = [
@@ -225,58 +170,8 @@ $faqs = [
         tailwind.config = { corePlugins: { preflight: false } }
     </script>
     <style>a { text-decoration: none !important; }</style>
-    <script>
-    </script>
     <link rel="stylesheet" href="dashboard.css">
-    <style>
-        .faq-item .faq-answer { display: none; }
-        .faq-item.open .faq-answer { display: block; }
-        .faq-item.open .faq-icon { transform: rotate(45deg); }
-        .faq-icon { transition: transform 0.25s ease; }
-        .section-anchor { scroll-margin-top: 24px; }
-        .tab-btn.active-tab {
-            background: #2563eb;
-            color: #fff;
-        }
-        .article-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.55);
-            z-index: 60;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .article-modal-overlay.open { display: flex; }
-        .article-modal-box {
-            background: #fff;
-            border-radius: 20px;
-            max-width: 640px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 32px;
-            position: relative;
-        }
-        .article-modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
-            border-radius: 999px;
-            background: #f1f5f9;
-            color: #475569;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .article-modal-close:hover { background: #e2e8f0; }
-    </style>
+    <link rel="stylesheet" href="edukasi1.css">
 </head>
 <body class="bg-[#F8FAFC] font-sans">
 
@@ -337,16 +232,16 @@ $faqs = [
 
         <!-- NAVIGASI SECTION (Tab) -->
         <div class="flex gap-2 mb-8 flex-wrap">
-            <button onclick="scrollToSection('artikel')" class="tab-btn active-tab px-5 py-2 rounded-full text-xs font-bold border border-blue-600 transition">📰 Artikel</button>
+            <button onclick="scrollToSection('kenali')" class="tab-btn active-tab px-5 py-2 rounded-full text-xs font-bold border border-blue-600 transition">🧠 Kenali Kekerasan</button>
             <button onclick="scrollToSection('video')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50">🎥 Video</button>
             <button onclick="scrollToSection('faq')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50">❓ FAQ</button>
             <button onclick="scrollToSection('kontak')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50">📞 Kontak</button>
         </div>
 
         <!-- ======================== SECTION: KENALI JENIS KEKERASAN (Flip Cards) ======================== -->
-        <section id="artikel" class="section-anchor mb-10">
+        <section id="kenali" class="section-anchor mb-10">
             <div class="mb-5">
-                <h2 class="text-base font-bold text-gray-800 mb-1">🧠 Kenali Jenis Kekerasan</h2>
+                <h2 class="text-base font-bold text-gray-800 mb-1"> Kenali Jenis Kekerasan</h2>
                 <p class="text-xs text-gray-400">Tap kartu untuk lihat apa yang bisa kamu lakukan.</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
@@ -364,7 +259,7 @@ $faqs = [
                             <ul class="flip-back-list">
                                 <li>Dipukul, ditampar, atau dianiaya</li>
                                 <li>Diancam akan disakiti jika melawan</li>
-                                <li>Merasa tubuhmu tidak aman di dekat pelaku</li>
+                                <li>Diintimidasi hingga merasa terancam dan tidak aman berada di dekat pelaku</li>
                             </ul>
                             <a href="laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
@@ -404,7 +299,7 @@ $faqs = [
                             <ul class="flip-back-list">
                                 <li>Disentuh, diraba, atau dicium tanpa persetujuan</li>
                                 <li>Dikirim konten atau ucapan seksual yang tidak kamu minta</li>
-                                <li>Merasa jijik, takut, dan ingin menghilang dari hadapan pelaku</li>
+                                <li>Merasa trauma, takut, atau tertekan sehingga cenderung menghindari pelaku</li>
                             </ul>
                             <a href="laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
@@ -435,7 +330,7 @@ $faqs = [
 
             <!-- ======================== QUIZ SINGKAT ======================== -->
             <div class="mb-10">
-                <h2 class="text-base font-bold text-gray-800 mb-1">🤔 Apakah Ini Termasuk Kekerasan?</h2>
+                <h2 class="text-base font-bold text-gray-800 mb-1"> Apakah Ini Termasuk Kekerasan?</h2>
                 <p class="text-xs text-gray-400 mb-5">Pilih salah satu skenario — kamu akan langsung tahu jawabannya.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="quizGrid">
 
@@ -518,43 +413,6 @@ $faqs = [
 
         </section>
 
-        <style>
-            /* Flip Cards — fade swap (aman di semua browser) */
-            .flip-card { position: relative; height: 190px; cursor: pointer; border-radius: 18px; overflow: hidden; }
-            .flip-front, .flip-back { position: absolute; inset: 0; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; transition: opacity 0.3s ease, transform 0.3s ease; }
-            .flip-back { color: #fff; align-items: flex-start; justify-content: flex-start; padding: 18px; opacity: 0; transform: scale(0.96); pointer-events: none; }
-            .flip-card.flipped .flip-front { opacity: 0; transform: scale(0.96); pointer-events: none; }
-            .flip-card.flipped .flip-back { opacity: 1; transform: scale(1); pointer-events: auto; }
-            .flip-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
-            .flip-label { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
-            .flip-hint { font-size: 10px; opacity: .6; }
-            .flip-back-title { font-size: 10px; font-weight: 800; opacity: .8; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-            .flip-back-list { list-style: none; padding: 0; margin: 0 0 10px; width: 100%; }
-            .flip-back-list li { font-size: 10px; line-height: 1.6; padding: 2px 0; opacity: .95; }
-            .flip-back-list li::before { content: "✓ "; font-weight: 800; }
-            .flip-back-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-decoration: none; margin-top: auto; }
-            .flip-back-btn:hover { background: rgba(255,255,255,.35); }
-            /* Quiz */
-            .quiz-card:hover { border-color: #bfdbfe; }
-            .quiz-answer.hidden { display: none; }
-            .quiz-answer { display: block; }
-        </style>
-
-        <script>
-            // Pastikan semua flip card mulai dari sisi depan
-            document.querySelectorAll('.flip-card').forEach(c => c.classList.remove('flipped'));
-
-            function revealQuiz(card) {
-                const hint = card.querySelector('.quiz-tap-hint');
-                const answer = card.querySelector('.quiz-answer');
-                if (answer.classList.contains('hidden')) {
-                    answer.classList.remove('hidden');
-                    if (hint) hint.style.display = 'none';
-                    card.style.cursor = 'default';
-                }
-            }
-        </script>
-
         <!-- ======================== SECTION: VIDEO ======================== -->
         <section id="video" class="section-anchor mb-10">
             <h2 class="text-base font-bold text-gray-800 mb-4">🎥 Video Edukasi</h2>
@@ -613,9 +471,6 @@ $faqs = [
                         </div>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-50">
-                        <!-- Tombol Email dengan Auto-Fill Subjek dan Isi Pesan -->
-                    <!-- Tombol Email Terbaru menggunakan sirakelika@gmail.com -->
-                    <!-- Tombol Email yang Dijamin 100% Terbuka di Laptop lewat Browser -->
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sirakelika@gmail.com&su=Kendala%20Sistem%20SIRAKELIKA&body=Halo%20Tim%20Support%20SIRAKELIKA,%0A%0Asaya%20membutuhkan%20bantuan%20terkait..." 
                     target="_blank" 
                     class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition w-full justify-center">
@@ -667,6 +522,21 @@ $faqs = [
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab', 'bg-blue-600', 'text-white'));
         event.currentTarget.classList.add('active-tab');
     }
+
+    function revealQuiz(card) {
+        const hint = card.querySelector('.quiz-tap-hint');
+        const answer = card.querySelector('.quiz-answer');
+        if (answer.classList.contains('hidden')) {
+            answer.classList.remove('hidden');
+            if (hint) hint.style.display = 'none';
+            card.style.cursor = 'default';
+        }
+    }
+
+    // Pastikan semua flip card mulai dari sisi depan
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.flip-card').forEach(c => c.classList.remove('flipped'));
+    });
 </script>
 
 </body>

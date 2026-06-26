@@ -1,12 +1,17 @@
+/* ======================== FAQ ======================== */
 .faq-item .faq-answer { display: none; }
 .faq-item.open .faq-answer { display: block; }
 .faq-item.open .faq-icon { transform: rotate(45deg); }
 .faq-icon { transition: transform 0.25s ease; }
+
+/* ======================== GENERAL ======================== */
 .section-anchor { scroll-margin-top: 24px; }
 .tab-btn.active-tab {
     background: #2563eb;
     color: #fff;
 }
+
+/* ======================== ARTICLE MODAL ======================== */
 .article-modal-overlay {
     display: none;
     position: fixed;
@@ -46,22 +51,31 @@
 }
 .article-modal-close:hover { background: #e2e8f0; }
 
-/* Flip Cards */
-.flip-card { perspective: 900px; height: 170px; cursor: pointer; }
-.flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(.4,0,.2,1); transform-style: preserve-3d; }
-.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
-.flip-front, .flip-back { position: absolute; inset: 0; border-radius: 18px; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; }
-.flip-back { transform: rotateY(180deg); color: #fff; align-items: flex-start; justify-content: flex-start; padding: 18px; }
+/* ======================== FLIP CARDS (fade swap) ======================== */
+.flip-card { position: relative; height: 190px; cursor: pointer; border-radius: 18px; overflow: hidden; }
+.flip-front, .flip-back {
+    position: absolute; inset: 0; border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 16px; text-align: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.flip-back {
+    color: #fff; align-items: flex-start; justify-content: flex-start;
+    padding: 18px; opacity: 0; transform: scale(0.96); pointer-events: none;
+}
+.flip-card.flipped .flip-front { opacity: 0; transform: scale(0.96); pointer-events: none; }
+.flip-card.flipped .flip-back  { opacity: 1; transform: scale(1);    pointer-events: auto; }
 .flip-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
-.flip-label { font-size: 12px; font-weight: 800; margin-bottom: 6px; }
-.flip-hint { font-size: 10px; opacity: .6; }
+.flip-label { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+.flip-hint  { font-size: 10px; opacity: .6; }
 .flip-back-title { font-size: 10px; font-weight: 800; opacity: .8; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
 .flip-back-list { list-style: none; padding: 0; margin: 0 0 10px; width: 100%; }
-.flip-back-list li { font-size: 10px; line-height: 1.5; padding: 2px 0; opacity: .95; }
+.flip-back-list li { font-size: 10px; line-height: 1.6; padding: 2px 0; opacity: .95; }
 .flip-back-list li::before { content: "✓ "; font-weight: 800; }
 .flip-back-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-decoration: none; margin-top: auto; }
 .flip-back-btn:hover { background: rgba(255,255,255,.35); }
 
-/* Quiz Cards */
+/* ======================== QUIZ CARDS ======================== */
 .quiz-card:hover { border-color: #bfdbfe; }
 .quiz-answer.hidden { display: none; }
+.quiz-answer { display: block; }
