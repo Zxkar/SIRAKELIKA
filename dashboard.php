@@ -2,10 +2,11 @@
 session_start();
 include 'conn.php';
 
-if(!isset($_SESSION['username'])){
-    header("Location: login.php");
+if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'mahasiswa'){
+    header("Location: login.php"); 
     exit;
 }
+
 
 $query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
 $query_baru    = mysqli_query($conn, "SELECT COUNT(*) as baru FROM laporan WHERE status_laporan='Baru'");
@@ -48,7 +49,6 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             </a>
 
             <div class="nav-group">PENGELOLAAN</div>
-            </a>
             <a href="#" class="nav-link">
                 <span class="nav-text">Edukasi & Informasi</span>
             </a>
@@ -57,11 +57,8 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             </a>
 
             <div class="nav-group">AKUN</div>
-            <a href="#" class="nav-link">
+            <a href="profil.php" class="nav-link">
                 <span class="nav-text">Profil</span>
-            </a>
-            <a href="#" class="nav-link">
-                <span class="nav-text">Pengaturan</span>
             </a>
             <a href="logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
@@ -131,7 +128,7 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID KASUS</th>
+                            <th>ID LAPORAN</th>
                             <th>JENIS KEKERASAN</th>
                             <th>LOKASI</th>
                             <th>TANGGAL</th>
