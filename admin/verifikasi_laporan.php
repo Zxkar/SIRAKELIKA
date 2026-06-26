@@ -32,9 +32,10 @@ if(isset($_POST['update_status'])){
 
     mysqli_query($conn, "UPDATE laporan SET status_laporan='$status_esc' WHERE id_laporan=$id");
 
-    $admin_id = $_SESSION['admin_id'] ?? 0;
+    $admin_id     = (isset($_SESSION['admin_id']) && (int)$_SESSION['admin_id'] > 0) ? (int)$_SESSION['admin_id'] : null;
+    $admin_id_sql = $admin_id !== null ? $admin_id : 'NULL';
     mysqli_query($conn, "INSERT INTO status_laporan_log (id_laporan, id_user_petugas, status_lama, status_baru, catatan)
-                         VALUES ($id, $admin_id, '$status_lama', '$status_esc', '$catatan')");
+                         VALUES ($id, $admin_id_sql, '$status_lama', '$status_esc', '$catatan')");
 
     if($status === 'ditindaklanjuti'){
         $tim = mysqli_query($conn, "SELECT id_user FROM users WHERE role='investigasi' AND status_akun='aktif'");
