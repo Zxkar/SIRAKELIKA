@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include '..config/conn.php';
 
 if(isset($_POST['login'])){
 
@@ -27,13 +27,13 @@ if(isset($_POST['login'])){
 
         switch($data['role']){
           case 'mahasiswa':
-            header("Location: dashboard.php");
+            header("Location: ../mahasiswa/dashboard.php");
             break;
           case 'investigasi':
-            header("Location: dashboard_investigasi.php");
+            header("Location: ../tim-investigasi/dashboard_investigasi.php");
             break;
           case 'manajemen':
-            header("Location: dashboard_manajemen.php");
+            header("Location: ../manajemen_kampus/dashboard_manajemen.php");
             break;
           default:
             header("Location: login.php");
