@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include '../config/conn.php';
 
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'investigasi') {
     header("Location: login.php");

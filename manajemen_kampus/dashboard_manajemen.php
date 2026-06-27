@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include '../config/conn.php';
 
 // Proteksi Halaman: Pastikan hanya User Manajemen Kampus yang bisa masuk
 if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'manajemen'){

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include '../config/conn.php';
 
 if(!isset($_SESSION['admin_logged_in']) || $_SESSION['role'] !== 'superadmin'){
     header("Location: login_admin.php");

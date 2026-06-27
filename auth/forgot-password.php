@@ -1,5 +1,5 @@
 <?php
-include 'conn.php';
+include '../config/conn.php';
 
 if(isset($_POST['reset'])){
 
