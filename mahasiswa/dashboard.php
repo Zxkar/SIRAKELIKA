@@ -1,11 +1,21 @@
 <?php
 session_start();
+
+
+// Prevent browser caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
+
+
 include 'conn.php';
 
 if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'mahasiswa'){
     header("Location: login.php"); 
     exit;
 }
+
 
 
 $query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
@@ -29,6 +39,11 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script>
+    window.addEventListener('pageshow', function(e) {
+        if (e.persisted) window.location.reload();
+    });
+</script>
 
     <aside class="sidebar">
         <div class="logo-area">
@@ -44,15 +59,15 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             <a href="#" class="nav-link active">
                 <span class="nav-text">Dashboard</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="laporan_saya.php" class="nav-link">
                 <span class="nav-text">Laporan Saya</span>
             </a>
 
             <div class="nav-group">PENGELOLAAN</div>
-            <a href="#" class="nav-link">
+            <a href="edukasi1.php" class="nav-link">
                 <span class="nav-text">Edukasi & Informasi</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="kenali.php" class="nav-link">
                 <span class="nav-text">Kenali Situasi Anda</span>
             </a>
 
@@ -87,7 +102,9 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
                 <h2>Selamat Datang di SIRAKELIKA</h2>
                 <p>Sistem Pelaporan Kekerasan di Lingkungan Kampus. Laporkan dengan aman, anonim, dan terlindungi. Kami ada untuk kamu.</p>
             </div>
+            <a href="buat_laporan.php">
             <button class="btn-report">+ Buat Laporan Baru</button>
+            </a>
         </section>
 
         <div class="content-title">

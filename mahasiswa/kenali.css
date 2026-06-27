@@ -1,0 +1,106 @@
+a { text-decoration: none !important; }
+
+/* Sidebar protection */
+.sidebar {
+    width: 260px !important;
+    background-color: #ffffff !important;
+    border-right: 1px solid #e2e8f0 !important;
+    padding: 24px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    height: 100vh !important;
+}
+.nav-link {
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 12px !important;
+    color: #64748b !important;
+    text-decoration: none !important;
+    outline: none !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    border-radius: 8px !important;
+    margin: 0 !important;
+}
+.nav-link:hover { background-color: #f1f5f9 !important; color: #1e293b !important; }
+.nav-link.active { background-color: #e0f2fe !important; color: #0369a1 !important; font-weight: 600 !important; }
+.nav-link.logout { color: #ef4444 !important; }
+.nav-link.logout:hover { background-color: #fef2f2 !important; }
+.nav-group {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #94a3b8 !important;
+    margin-top: 16px !important;
+    margin-bottom: 8px !important;
+    padding-left: 8px !important;
+}
+.nav-container { display: flex !important; flex-direction: column !important; gap: 4px !important; }
+.logo-area { display: flex !important; align-items: center !important; gap: 12px !important; margin-bottom: 32px !important; padding-left: 8px !important; }
+.main-content { margin-left: 260px !important; }
+
+/* Option cards */
+.option-card {
+    transition: all 0.2s ease;
+    border: 1.5px solid #e2e8f0;
+    color: inherit !important;
+}
+.option-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.10); }
+.option-card.red:hover   { border-color: #f87171; background: #fff5f5; }
+.option-card.amber:hover { border-color: #fbbf24; background: #fffbeb; }
+.option-card.purple:hover{ border-color: #a78bfa; background: #f5f3ff; }
+.option-card * { text-decoration: none !important; }
+
+/* Progress */
+.progress-bar-fill { transition: width 0.4s ease; }
+
+/* Step card animation */
+.step-card { animation: fadeUp 0.35s ease; }
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Result badge */
+.result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+/* Ilustrasi visual pengganti gambar */
+.visual-banner {
+    width: 100%;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.visual-banner-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+.visual-banner-text h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.visual-banner-text p  { font-size: 12px; opacity: .75; line-height: 1.6; }
+
+/* Kategori preview kartu step 1 */
+.kategori-card {
+    border-radius: 16px;
+    padding: 18px;
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.kategori-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
