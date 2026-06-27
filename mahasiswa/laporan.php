@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "connection.php";
+include "../config/conn.php";
 
 // Hanya mahasiswa yang login boleh mengakses halaman ini
 if (!isset($_SESSION['id_user'])) {
