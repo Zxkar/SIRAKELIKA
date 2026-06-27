@@ -52,10 +52,10 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             <a href="#" class="nav-link">
                 <span class="nav-text">Manajemen Kasus</span>
             </a>
-            <a href="edukasi.php" class="nav-link">
+            <a href="../edukasi/edukasi1.php" class="nav-link">
                 <span class="nav-text">Edukasi & Informasi</span>
             </a>
-            <a href="kenali.php" class="nav-link">
+            <a href="../kenali-situasi/kenali.php" class="nav-link">
                 <span class="nav-text">Kenali Situasi Anda</span>
             </a>
 
