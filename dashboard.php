@@ -2,10 +2,10 @@
 session_start();
 include 'conn.php';
 
-if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'mahasiswa'){
-    header("Location: login.php"); 
-    exit;
-}
+// if(!isset($_SESSION['username'])){
+//     header("Location: login.php");
+//     exit;
+// }
 
 
 $query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
@@ -44,15 +44,18 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             <a href="#" class="nav-link active">
                 <span class="nav-text">Dashboard</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="laporan.php" class="nav-link">
                 <span class="nav-text">Laporan Saya</span>
             </a>
 
             <div class="nav-group">PENGELOLAAN</div>
             <a href="#" class="nav-link">
+                <span class="nav-text">Manajemen Kasus</span>
+            </a>
+            <a href="edukasi.php" class="nav-link">
                 <span class="nav-text">Edukasi & Informasi</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="kenali.php" class="nav-link">
                 <span class="nav-text">Kenali Situasi Anda</span>
             </a>
 
@@ -87,7 +90,9 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
                 <h2>Selamat Datang di SIRAKELIKA</h2>
                 <p>Sistem Pelaporan Kekerasan di Lingkungan Kampus. Laporkan dengan aman, anonim, dan terlindungi. Kami ada untuk kamu.</p>
             </div>
-            <button class="btn-report">+ Buat Laporan Baru</button>
+           <a href="buat_laporan.php" style="text-decoration: none;">
+    <button class="btn-report">+ Buat Laporan Baru</button>
+</a>
         </section>
 
         <div class="content-title">
