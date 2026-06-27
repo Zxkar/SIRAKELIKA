@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include '../config/conn.php';
 
 // 1. PERBAIKAN: Jika sudah login, alihkan ke dashboard masing-masing, BUKAN ke login_admin.php
 if (isset($_SESSION['admin_logged_in'])) {
