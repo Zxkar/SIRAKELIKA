@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Jun 2026 pada 14.28
+-- Waktu pembuatan: 27 Jun 2026 pada 11.09
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -104,16 +104,19 @@ CREATE TABLE `laporan` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `jenis_laporan` varchar(100) DEFAULT 'Umum',
   `rekomendasi_tim` text DEFAULT NULL,
-  `arahan_manajemen` text DEFAULT NULL
+  `arahan_manajemen` text DEFAULT NULL,
+  `file_sk` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `laporan`
 --
 
-INSERT INTO `laporan` (`id_laporan`, `id_user`, `judul_laporan`, `deskripsi`, `jenis_kekerasan`, `jenis_pelaporan`, `waktu_kejadian`, `lokasi_kejadian`, `status_laporan`, `kode_laporan`, `tanggal_laporan`, `updated_at`, `jenis_laporan`, `rekomendasi_tim`, `arahan_manajemen`) VALUES
-(6, NULL, '', '', '', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-26 05:52:53', '2026-06-26 05:55:20', 'Umum', 'Rekomendasi Pemberhentian Tetap (Drop Out) secara tidak hormat terhadap pelaku sesuai Permendikbudristek No. 30 Tahun 2021.\n\n[SK TERBIT] No SK: #KS-6-UMUM  - Putusan Sanksi: Diberhentikan ', NULL),
-(10, NULL, '', '', 'fisik', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-24 07:24:38', '2026-06-24 07:43:04', 'Kekerasan Seksual', 'Rekomendasi dari Satgas berupa sanksi berat Pemberhentian Tetap (Drop Out) bagi pelaku mahasiswa yang bersangkutan\n\n[SK TERBIT] No SK: #KS-10-FISIK/2026 - Putusan Sanksi: \"Diberhentikan secara tidak hormat (Drop Out) sebagai mahasiswa.\"', NULL);
+INSERT INTO `laporan` (`id_laporan`, `id_user`, `judul_laporan`, `deskripsi`, `jenis_kekerasan`, `jenis_pelaporan`, `waktu_kejadian`, `lokasi_kejadian`, `status_laporan`, `kode_laporan`, `tanggal_laporan`, `updated_at`, `jenis_laporan`, `rekomendasi_tim`, `arahan_manajemen`, `file_sk`) VALUES
+(6, NULL, '', '', '', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-26 05:52:53', '2026-06-26 05:55:20', 'Umum', 'Rekomendasi Pemberhentian Tetap (Drop Out) secara tidak hormat terhadap pelaku sesuai Permendikbudristek No. 30 Tahun 2021.\n\n[SK TERBIT] No SK: #KS-6-UMUM  - Putusan Sanksi: Diberhentikan ', NULL, NULL),
+(10, NULL, '', '', 'fisik', 'UMUM', '0000-00-00 00:00:00', '', 'selesai', NULL, '2026-06-24 07:24:38', '2026-06-24 07:43:04', 'Kekerasan Seksual', 'Rekomendasi dari Satgas berupa sanksi berat Pemberhentian Tetap (Drop Out) bagi pelaku mahasiswa yang bersangkutan\n\n[SK TERBIT] No SK: #KS-10-FISIK/2026 - Putusan Sanksi: \"Diberhentikan secara tidak hormat (Drop Out) sebagai mahasiswa.\"', NULL, NULL),
+(11, 11, 'Ancaman Verbal dan Tekanan Mental Berkelanjutan', 'Saya menerima pesan penuh ancaman secara berkala dari oknum mahasiswa pasca pemilihan ketua himpunan. Pelaku mengancam akan menyebarkan fitnah dan mempersulit posisi saya di kelas jika saya tidak mengundurkan diri dari kepengurusan. Tindakan ini merusak fokus belajar dan kesehatan mental saya.', 'psikologis', 'UMUM', '2026-06-26 15:00:00', 'Area Gazebo Utama Kampus', 'selesai', 'KS-015', '2026-06-26 14:35:55', '2026-06-26 14:40:05', 'Umum', NULL, NULL, NULL),
+(12, 10, 'dibuly', 'dipukul sampe bonyok', 'fisik', 'UMUM', '2026-06-06 13:29:00', 'Gudang', 'selesai', 'KS-2026-F59AAA', '2026-06-27 04:29:16', '2026-06-27 07:00:31', 'Umum', 'Hasil Investigasi selesai', NULL, 'SK_12_1782543631.jpeg');
 
 -- --------------------------------------------------------
 
@@ -130,6 +133,13 @@ CREATE TABLE `notifikasi` (
   `is_read` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `notifikasi`
+--
+
+INSERT INTO `notifikasi` (`id_notifikasi`, `id_user`, `id_laporan`, `judul`, `pesan`, `is_read`, `created_at`) VALUES
+(1, 10, 12, 'Update Status Laporan [KS-2026-F59AAA]', 'Laporan kamu sedang dalam proses review oleh admin.', 0, '2026-06-27 04:46:50');
 
 -- --------------------------------------------------------
 
@@ -153,7 +163,16 @@ CREATE TABLE `status_laporan_log` (
 
 INSERT INTO `status_laporan_log` (`id_log`, `id_laporan`, `id_user_petugas`, `status_lama`, `status_baru`, `catatan`, `tanggal_update`) VALUES
 (5, 10, NULL, 'ditindaklanjuti', 'selesai', 'SK Sanksi Resmi No #KS-10-FISIK/2026 Berhasil Disahkan.', '2026-06-24 07:43:04'),
-(6, 6, NULL, 'ditindaklanjuti', 'selesai', 'SK Sanksi Resmi No #KS-6-UMUM  Berhasil Disahkan.', '2026-06-26 05:55:20');
+(6, 6, NULL, 'ditindaklanjuti', 'selesai', 'SK Sanksi Resmi No #KS-6-UMUM  Berhasil Disahkan.', '2026-06-26 05:55:20'),
+(7, 11, NULL, 'menunggu', 'ditindaklanjuti', NULL, '2026-06-26 14:37:29'),
+(8, 11, NULL, 'ditindaklanjuti', 'selesai', NULL, '2026-06-26 14:40:05'),
+(9, 12, NULL, 'menunggu', 'diproses', '', '2026-06-27 04:46:50'),
+(10, 12, NULL, 'diproses', 'ditindaklanjuti', NULL, '2026-06-27 04:47:41'),
+(11, 12, NULL, 'ditindaklanjuti', 'diproses', NULL, '2026-06-27 04:47:58'),
+(12, 12, NULL, 'diproses', 'diproses', NULL, '2026-06-27 04:48:17'),
+(13, 12, NULL, 'diproses', 'diproses', 'Investigasi Selesai', '2026-06-27 05:13:09'),
+(14, 12, NULL, 'diproses', 'ditindaklanjuti', 'Berkas hasil investigasi resmi dikirim ke Manajemen Kampus.', '2026-06-27 05:18:22'),
+(15, 12, NULL, 'ditindaklanjuti', 'selesai', 'Surat Keputusan Sanksi No #KS-12-FISIK resmi diterbitkan lewat dokumen berkas.', '2026-06-27 07:00:31');
 
 -- --------------------------------------------------------
 
@@ -169,6 +188,14 @@ CREATE TABLE `tindak_lanjut` (
   `deskripsi_tindakan` text NOT NULL,
   `tanggal_tindakan` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `tindak_lanjut`
+--
+
+INSERT INTO `tindak_lanjut` (`id_tindak_lanjut`, `id_laporan`, `id_admin`, `id_tim`, `deskripsi_tindakan`, `tanggal_tindakan`) VALUES
+(1, 12, NULL, 7, 'Investigasi Selesai', '2026-06-27 05:13:09'),
+(2, 12, NULL, 7, 'Mengirimkan rekomendasi hasil investigasi: Hasil Investigasi selesai', '2026-06-27 05:18:22');
 
 -- --------------------------------------------------------
 
@@ -198,9 +225,9 @@ INSERT INTO `users` (`id_user`, `username`, `email`, `password`, `no_hp`, `foto_
 (4, 'pihakkampus1', 'manajemen1@gmail.com', '$2y$10$2SHJ.9P2psdgzIWmxgmEuejdWki.bXJMTYhmQHS3nlFgJpCbLfXEO', NULL, NULL, 'manajemen', 'aktif', '2026-06-20 08:35:26', '2026-06-24 06:10:16'),
 (5, 'tio', 'tiojjs69@gmail.com', '$2y$10$aBhiBZS8HKgHBUcN/SL71.v4aLUvy1yxxLDuMwlelLW9lrZ2JAEKy', NULL, NULL, 'mahasiswa', 'aktif', '2026-06-20 08:47:18', '2026-06-24 06:15:04'),
 (7, 'tim investigasi1', 'tim1investigasi@gmail.com', '$2y$10$h1gsYL6/YCci89z02Eh2lOKgIIL0Q5YUfGHGsdRfKrUBs0kZTbJu.', NULL, NULL, 'investigasi', 'aktif', '2026-06-20 09:26:33', '2026-06-26 06:20:34'),
-(8, 'admin1', 'admin1@gmail.com', '$2y$10$BHgytkTzdAjQvlq4roFL8u1EN6K9nwwRSipm5AAA50jQq6u4y0Aje', NULL, NULL, 'admin', 'aktif', '2026-06-20 11:16:11', '2026-06-23 06:31:05'),
+(8, 'admin1', 'admin1@gmail.com', '$2y$10$AdpFeR55XJr1esve3CpHz.uTaIY1U0dgHU30TA5DVAxnN/nKLUVDS', NULL, NULL, 'admin', 'aktif', '2026-06-20 11:16:11', '2026-06-27 04:40:42'),
 (9, 'cambaros', 'classicusers001@gmail.com', '$2y$10$o4RxUBXXM8QjaVUYgpWDD.jbwhwfh7vxybeFhvfbnJqlMS1LmShpG', NULL, NULL, 'mahasiswa', 'aktif', '2026-06-21 10:28:40', '2026-06-21 10:28:40'),
-(10, 'merdeka', 'christianosamuel33@gmail.com', '$2y$10$71CzBUCBA78WfkfZMF.PBeyAUXs8uEFoYWJYP3TZshbr8yzkSZFZS', NULL, NULL, 'mahasiswa', 'aktif', '2026-06-21 10:32:24', '2026-06-23 10:47:23'),
+(10, 'merdeka', 'christianosamuel33@gmail.com', '$2y$10$8EXzlouvxNNZiCpwKDqlV.51CywziDgM.4mr1K0DwTvDZMo8da1gW', NULL, NULL, 'mahasiswa', 'aktif', '2026-06-21 10:32:24', '2026-06-27 04:26:27'),
 (11, 'muhammad alif al fathir', 'aliffathir123@gmail.com', '$2y$10$F7.mY9IjTG/j1Vcb9gMP6eneja..LSRNZc/.l3ybrTpAegGgF3/r6', NULL, NULL, 'mahasiswa', 'aktif', '2026-06-23 10:48:35', '2026-06-23 10:48:35'),
 (12, 'master_admin', 'master_adminsirakelika@url.id', 'adminsirakelika1', NULL, NULL, 'superadmin', 'aktif', '2026-06-23 11:00:17', '2026-06-26 07:23:10'),
 (13, 'gads', 'gads241011075@ith.ac.id', '$2y$10$ggkNOX5BMB5.NhxPNR3wcOgyMhok55mlEoAPti5KuLcK9HpYDc7fi', NULL, NULL, 'mahasiswa', 'aktif', '2026-06-23 14:08:51', '2026-06-23 14:08:51'),
@@ -311,25 +338,25 @@ ALTER TABLE `konsultasi`
 -- AUTO_INCREMENT untuk tabel `laporan`
 --
 ALTER TABLE `laporan`
-  MODIFY `id_laporan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_laporan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `status_laporan_log`
 --
 ALTER TABLE `status_laporan_log`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `tindak_lanjut`
 --
 ALTER TABLE `tindak_lanjut`
-  MODIFY `id_tindak_lanjut` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tindak_lanjut` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
