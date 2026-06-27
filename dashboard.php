@@ -7,6 +7,7 @@ include 'conn.php';
 //     exit;
 // }
 
+
 $query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
 $query_baru    = mysqli_query($conn, "SELECT COUNT(*) as baru FROM laporan WHERE status_laporan='Baru'");
 $query_proses  = mysqli_query($conn, "SELECT COUNT(*) as proses FROM laporan WHERE status_laporan='Diproses'");
@@ -61,9 +62,6 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             <div class="nav-group">AKUN</div>
             <a href="#" class="nav-link">
                 <span class="nav-text">Profil</span>
-            </a>
-            <a href="#" class="nav-link">
-                <span class="nav-text">Pengaturan</span>
             </a>
             <a href="logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
@@ -135,7 +133,7 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>ID KASUS</th>
+                            <th>ID LAPORAN</th>
                             <th>JENIS KEKERASAN</th>
                             <th>LOKASI</th>
                             <th>TANGGAL</th>
