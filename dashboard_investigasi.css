@@ -49,4 +49,15 @@
 .status-rejected {
     background-color: #f1f5f9;
     color: #64748b;
+
+/* Warna Khusus Status Selesai - Hijau Estetik */
+.status-badge.status-done {
+    background-color: #dcfce7; /* Latar hijau muda */
+    color: #15803d;            /* Teks hijau tua */
+    padding: 4px 10px;
+    border-radius: 50px;       /* Membuat bentuk oval (pill) */
+    font-weight: 600;
+    font-size: 11px;
+    display: inline-block;
+}
 }
