@@ -1,72 +1,24 @@
 <?php
 session_start();
-include 'connection.php';
+include 'conn.php';
 
-// 1. SINKRONISASI LOGIN MAHASISWA & TIM: Memastikan session berasal dari form login biasa
 if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'investigasi'){
     header("Location: login.php"); 
     exit;
 }
 
 $username_aktif = $_SESSION['username']; 
-$inisial = '';
-foreach (explode(' ', $username_aktif) as $part) { $inisial .= strtoupper(substr($part, 0, 1)); }
-$inisial = substr($inisial, 0, 2) ?: 'TI';
 
-$query_total_kasus    = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
-$query_perlu_tindakan = mysqli_query($conn, "SELECT COUNT(*) as tindakan FROM laporan WHERE status_laporan='menunggu'");
-$query_sedang_selidik = mysqli_query($conn, "SELECT COUNT(*) as selidik FROM laporan WHERE status_laporan IN ('diproses','ditindaklanjuti','mediasi')");
-$query_kasus_selesai  = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE status_laporan='selesai'");
+
+$query_total_kasus = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
+$query_perlu_tindakan = mysqli_query($conn, "SELECT COUNT(*) as tindakan FROM laporan WHERE status_laporan='Baru'");
+$query_sedang_selidik = mysqli_query($conn, "SELECT COUNT(*) as selidik FROM laporan WHERE status_laporan='Diproses'");
+$query_kasus_selesai  = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE status_laporan='Selesai'");
 
 $total_kasus    = mysqli_fetch_assoc($query_total_kasus)['total'];
 $perlu_tindakan = mysqli_fetch_assoc($query_perlu_tindakan)['tindakan'];
 $sedang_selidik = mysqli_fetch_assoc($query_sedang_selidik)['selidik'];
 $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
-
-function statusBadgeClass($status) {
-    $map = [
-        'menunggu'        => 'status-new',
-        'diproses'        => 'status-process',
-        'ditindaklanjuti' => 'status-process',
-        'mediasi'         => 'status-process',
-        'selesai'         => 'status-done',
-        'ditolak'         => 'status-rejected',
-    ];
-    return $map[strtolower(trim($status))] ?? 'status-new';
-}
-
-// =============================================
-//  LOG INVESTIGASI TERKINI (gabungan status_laporan_log + tindak_lanjut)
-// =============================================
-$timeline = [];
-
-$res = $conn->query("SELECT sl.id_laporan, sl.status_lama, sl.status_baru, sl.tanggal_update AS waktu,
-                             'status' AS tipe, l.kode_laporan
-                      FROM status_laporan_log sl
-                      JOIN laporan l ON sl.id_laporan = l.id_laporan
-                      ORDER BY sl.tanggal_update DESC LIMIT 5");
-if ($res) while ($row = $res->fetch_assoc()) $timeline[] = $row;
-
-$res = $conn->query("SELECT tl.id_laporan, tl.deskripsi_tindakan, tl.tanggal_tindakan AS waktu,
-                             'tindakan' AS tipe, l.kode_laporan
-                      FROM tindak_lanjut tl
-                      JOIN laporan l ON tl.id_laporan = l.id_laporan
-                      ORDER BY tl.tanggal_tindakan DESC LIMIT 5");
-if ($res) while ($row = $res->fetch_assoc()) $timeline[] = $row;
-
-usort($timeline, function($a, $b) {
-    return strtotime($b['waktu']) <=> strtotime($a['waktu']);
-});
-$timeline = array_slice($timeline, 0, 5);
-
-function waktuRelatif($tanggal) {
-    $diff = time() - strtotime($tanggal);
-    if ($diff < 60)       return 'Baru saja';
-    if ($diff < 3600)     return floor($diff / 60) . ' menit lalu';
-    if ($diff < 86400)    return floor($diff / 3600) . ' jam lalu';
-    if ($diff < 604800)   return floor($diff / 86400) . ' hari lalu';
-    return date('d M Y', strtotime($tanggal));
-}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -75,8 +27,66 @@ function waktuRelatif($tanggal) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Dashboard Investigasi</title>
     <link rel="stylesheet" href="dashboard.css"> 
-    <link rel="stylesheet" href="dashboard_investigasi.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Welcome Banner - Slate Theme */
+        .welcome-banner-investigasi {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            padding: 32px;
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 28px;
+        }
+
+        .welcome-banner-investigasi h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner-investigasi p {
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        /* Action Button */
+        .btn-action-investigasi {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-action-investigasi:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-action-investigasi:active {
+            transform: scale(0.97);
+        }
+
+        /* TAMBAHAN UPDATE: Pengaturan Style Badge Status Warna Hijau untuk Kasus Selesai */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        .status-badge.status-done {
+            background-color: #dcfce7; /* Hijau muda lembut */
+            color: #15803d;            /* Teks hijau tua */
+        }
+    </style>
 </head>
 <body>
 
@@ -91,7 +101,7 @@ function waktuRelatif($tanggal) {
 
         <nav class="nav-container">
             <div class="nav-group">NAVIGASI UTAMA</div>
-            <a href="dashboard_investigasi.php" class="nav-link active">
+            <a href="#" class="nav-link active">
                 <span class="nav-text">Dashboard Tim</span>
             </a>
             
@@ -99,12 +109,13 @@ function waktuRelatif($tanggal) {
             <a href="manajemen_kasus.php" class="nav-link">
                 <span class="nav-text">Manajemen Kasus Masuk</span>
             </a>
+            
             <a href="log_aktivitas.php" class="nav-link">
                 <span class="nav-text">Log Aktivitas Kasus</span>
             </a>
 
             <div class="nav-group">AKUN SYSTEM</div>
-            <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
+            <a href="logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
             </a>
         </nav>
@@ -113,6 +124,14 @@ function waktuRelatif($tanggal) {
     <main class="main-content">
         
         <header class="topbar">
+            <div></div> 
+            <div class="user-profile">
+                <div class="avatar">TI</div>
+                <div class="user-info">
+                    <span class="user-name"><?php echo htmlspecialchars($username_aktif); ?></span>
+                    <span class="user-role">Tim Investigasi</span>
+                </div>
+            </div>
         </header>
 
         <section class="welcome-banner-investigasi">
@@ -173,16 +192,22 @@ function waktuRelatif($tanggal) {
                         
                         if(mysqli_num_rows($query_laporan) > 0) {
                             while($row = mysqli_fetch_assoc($query_laporan)) {
-                                $badge_class = statusBadgeClass($row['status_laporan']);
-                                $kode = $row['kode_laporan'] ?? 'KS-' . $row['id_laporan'];
+                                $badge_class = 'status-new';
+                                
+                                // TAMBAHAN UPDATE: Menggunakan strtolower agar huruf besar/kecil dari database tetap terbaca pas
+                                if(strtolower($row['status_laporan']) == 'diproses') { 
+                                    $badge_class = 'status-process'; 
+                                } elseif(strtolower($row['status_laporan']) == 'selesai') { 
+                                    $badge_class = 'status-done'; 
+                                }
                                 
                                 echo "<tr>";
-                                echo "<td class='id-case'>#" . htmlspecialchars($kode) . "</td>";
-                                echo "<td><strong>" . htmlspecialchars(ucfirst($row['jenis_kekerasan'])) . "</strong></td>";
+                                echo "<td class='id-case'>#KS-" . $row['id_laporan'] . "</td>";
+                                echo "<td><strong>" . htmlspecialchars($row['jenis_laporan']) . "</strong></td>";
                                 echo "<td>" . htmlspecialchars($row['lokasi_kejadian']) . "</td>";
                                 echo "<td>" . date('d M Y', strtotime($row['tanggal_laporan'])) . "</td>";
-                                echo "<td><span class='status-badge {$badge_class}'>" . htmlspecialchars(ucfirst($row['status_laporan'])) . "</span></td>";
-                                echo "<td><button class='btn-action-investigasi' onclick=\"location.href='manajemen_kasus.php?search=" . urlencode($kode) . "'\">Kelola Kasus</button></td>";
+                                echo "<td><span class='status-badge {$badge_class}'>" . htmlspecialchars($row['status_laporan']) . "</span></td>";
+                                echo "<td><button class='btn-action-investigasi' onclick=\"location.href='manajemen_kasus.php?id=" . $row['id_laporan'] . "'\">Kelola Kasus</button></td>";
                                 echo "</tr>";
                             }
                         } else {
@@ -198,27 +223,18 @@ function waktuRelatif($tanggal) {
                 <p class="activity-sub">Histori perubahan status berkas</p>
                 
                 <div class="timeline">
-                    <?php if (empty($timeline)): ?>
-                    <div class="empty-state" style="padding:30px 10px">
-                        <p style="text-align:center; color:#64748b; font-size:13px;">Belum ada aktivitas tercatat.</p>
+                    <div class="timeline-item item-blue">
+                        <p class="timeline-text">Berita Acara Pemeriksaan (BAP) untuk kasus <strong>#KS-2026-002</strong> berhasil dibuat.</p>
+                        <span class="timeline-time">Hari ini</span>
                     </div>
-                    <?php else: foreach ($timeline as $item):
-                        $kode = htmlspecialchars($item['kode_laporan']);
-                        if ($item['tipe'] === 'status') {
-                            $cls  = 'item-blue';
-                            $text = "Status kasus <strong>#$kode</strong> diperbarui dari <strong>" 
-                                    . htmlspecialchars(ucfirst($item['status_lama'] ?: '—')) . "</strong> ke <strong>" 
-                                    . htmlspecialchars(ucfirst($item['status_baru'])) . "</strong>.";
-                        } else {
-                            $cls  = 'item-green';
-                            $text = "Catatan tindak lanjut ditambahkan pada kasus <strong>#$kode</strong>.";
-                        }
-                    ?>
-                    <div class="timeline-item <?= $cls ?>">
-                        <p class="timeline-text"><?= $text ?></p>
-                        <span class="timeline-time"><?= waktuRelatif($item['waktu']) ?></span>
+                    <div class="timeline-item item-green">
+                        <p class="timeline-text">Rekomendasi sanksi kasus <strong>#KS-2026-001</strong> dikirim ke Manajemen Kampus.</p>
+                        <span class="timeline-time">3 hari lalu</span>
                     </div>
-                    <?php endforeach; endif; ?>
+                    <div class="timeline-item item-red">
+                        <p class="timeline-text">Notifikasi masuk: Kasus baru <strong>#KS-2026-003</strong> dialihkan oleh Admin.</p>
+                        <span class="timeline-time">1 minggu lalu</span>
+                    </div>
                 </div>
             </div>
 
