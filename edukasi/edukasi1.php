@@ -170,7 +170,7 @@ $faqs = [
         tailwind.config = { corePlugins: { preflight: false } }
     </script>
     <style>a { text-decoration: none !important; }</style>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="../mahasiswa/dashboard.css">
     <link rel="stylesheet" href="edukasi1.css">
 </head>
 <body class="bg-[#F8FAFC] font-sans">
@@ -188,16 +188,16 @@ $faqs = [
         </div>
         <nav class="nav-container">
             <div class="nav-group">MENU UTAMA</div>
-            <a href="dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
-            <a href="laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
+            <a href="../mahasiswa/dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
+            <a href="../mahasiswa/laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
             <div class="nav-group">PENGELOLAAN</div>
             
-            <a href="edukasi.php" class="nav-link active"><span class="nav-text">Edukasi & Informasi</span></a>
-            <a href="kenali.php" class="nav-link"><span class="nav-text">Kenali Situasi Anda</span></a>
+            <a href="../edukasi/edukasi1.php" class="nav-link active"><span class="nav-text">Edukasi & Informasi</span></a>
+            <a href="../kenali-situasi/kenali.php" class="nav-link"><span class="nav-text">Kenali Situasi Anda</span></a>
             <div class="nav-group">AKUN</div>
             <a href="#" class="nav-link"><span class="nav-text">Profil</span></a>
             <a href="#" class="nav-link"><span class="nav-text">Pengaturan</span></a>
-            <a href="logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
+            <a href="../auth/logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
         </nav>
     </aside>
 
@@ -224,7 +224,7 @@ $faqs = [
             <div class="banner-text">
                 <h2>Edukasi & Informasi</h2>
                 <p>Sebelum melapor, kenali dulu apa yang sedang Anda atau orang di sekitar Anda alami. Semua artikel dan video di bawah bisa dibaca atau ditonton dalam hitungan menit.</p>
-                <a href="kenali.php" class="inline-flex items-center gap-2 bg-white text-blue-700 text-xs font-bold px-4 py-2.5 rounded-xl mt-4 hover:bg-blue-50 transition">
+                <a href="../kenali-situasi/kenali.php" class="inline-flex items-center gap-2 bg-white text-blue-700 text-xs font-bold px-4 py-2.5 rounded-xl mt-4 hover:bg-blue-50 transition">
                     <i class="fa fa-compass"></i> Belum tahu harus mulai dari mana? Coba "Kenali Situasi Anda"
                 </a>
             </div>
@@ -261,7 +261,7 @@ $faqs = [
                                 <li>Diancam akan disakiti jika melawan</li>
                                 <li>Diintimidasi hingga merasa terancam dan tidak aman berada di dekat pelaku</li>
                             </ul>
-                            <a href="laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
+                            <a href="../mahasiswa/laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -281,7 +281,7 @@ $faqs = [
                                 <li>Kata-katanya terus terngiang dan menyakiti</li>
                                 <li>Diancam lewat ucapan agar kamu diam dan patuh</li>
                             </ul>
-                            <a href="laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
+                            <a href="../mahasiswa/laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -301,7 +301,7 @@ $faqs = [
                                 <li>Dikirim konten atau ucapan seksual yang tidak kamu minta</li>
                                 <li>Merasa trauma, takut, atau tertekan sehingga cenderung menghindari pelaku</li>
                             </ul>
-                            <a href="laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
+                            <a href="../mahasiswa/laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -321,7 +321,7 @@ $faqs = [
                                 <li>Dipermalukan terus-menerus sampai kamu malu untuk hadir</li>
                                 <li>Takut masuk kampus karena tahu pelaku ada di sana</li>
                             </ul>
-                            <a href="laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
+                            <a href="../mahasiswa/laporan.php" class="flip-back-btn">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -364,7 +364,7 @@ $faqs = [
                             </div>
                             <p class="text-xs text-gray-500 leading-relaxed"><?= $quiz['explain'] ?></p>
                             <?php if ($quiz['verdict'] === 'ya'): ?>
-                            <a href="laporan.php" class="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-red-600 hover:underline">
+                            <a href="../mahasiswa/laporan.php" class="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-red-600 hover:underline">
                                 <i class="fa fa-flag"></i> Buat laporan →
                             </a>
                             <?php endif; ?>
@@ -405,7 +405,7 @@ $faqs = [
                     <?php endforeach; ?>
                 </div>
                 <div class="mt-4 flex justify-end">
-                    <a href="laporan.php" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition">
+                    <a href="../mahasiswa/laporan.php" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition">
                         <i class="fa fa-flag"></i> Buat Laporan Sekarang
                     </a>
                 </div>
