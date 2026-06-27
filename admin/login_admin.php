@@ -340,7 +340,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             <div class="spacer"></div>
 
-            <div class="institute">Institut Teknologi B.J. Habibie</div>
+            
         </div>
 
         <div class="panel-form">
@@ -378,9 +378,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             <hr class="divider">
 
-            <div class="back-link">
-                <a href="index.php">← Kembali ke halaman utama</a>
-            </div>
+         
         </div>
 
     </div>
