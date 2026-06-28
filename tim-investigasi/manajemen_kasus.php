@@ -142,7 +142,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Kasus Masuk – SIRAKELIKA</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="dashboard_investigasi.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .page-header-investigasi { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
@@ -208,7 +208,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
         <a href="manajemen_kasus.php" class="nav-link active"><span class="nav-text">Manajemen Kasus Masuk</span></a>
         <a href="log_aktivitas.php" class="nav-link"><span class="nav-text">Log Aktivitas Kasus</span></a>
         <div class="nav-group">AKUN SYSTEM</div>
-        <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')"><span class="nav-text">Keluar</span></a>
+        <a href="../auth/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')"><span class="nav-text">Keluar</span></a>
     </nav>
 </aside>
 
