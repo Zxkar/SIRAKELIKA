@@ -83,11 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $b_nama_file = $conn->real_escape_string($bukti_nama);
                 $b_nama_asli = $conn->real_escape_string($nama_asli);
                 $b_tipe      = $conn->real_escape_string($tipe_file);
-                $b_ukuran    = (int)$ukuran_file;
 
-                // 2. Insert data berkas ke dalam tabel `bukti` sesuai database asli Anda
-                $sql_bukti = "INSERT INTO bukti (id_laporan, file_bukti, nama_asli, tipe_file, ukuran_file) 
-                              VALUES ($id_laporan_baru, '$b_nama_file', '$b_nama_asli', '$b_tipe', $b_ukuran)";
+                // 2. Insert data berkas ke dalam tabel `bukti`
+                $sql_bukti = "INSERT INTO bukti (id_laporan, file_bukti, nama_asli, tipe_file) 
+                              VALUES ($id_laporan_baru, '$b_nama_file', '$b_nama_asli', '$b_tipe')";
                 
                 $conn->query($sql_bukti);
 
