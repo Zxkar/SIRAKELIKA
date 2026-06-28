@@ -41,11 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $upload_dir = 'uploads/bukti/';
             if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
-            $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi','mp3','wav','m4a','ogg','aac'];
+            $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi'];
             $ext = strtolower(pathinfo($_FILES['bukti']['name'], PATHINFO_EXTENSION));
 
             if (!in_array($ext, $ext_allowed)) {
-                $error = 'Format file tidak didukung. Gunakan JPG, PNG, PDF, video, atau audio (MP3/WAV/M4A).';
+                $error = 'Format file tidak didukung. Gunakan JPG, PNG, PDF, atau video.';
             } elseif ($_FILES['bukti']['size'] > 20 * 1024 * 1024) {
                 $error = 'Ukuran file maksimal 20MB.';
             } else {
@@ -66,11 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bn_sql    = $bn ? "'$bn'" : 'NULL';
 
             $sql = "INSERT INTO laporan 
-                    (id_user, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan)
-                    VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
+                    (id_user, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan, bukti_file)
+                    VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu', $bn_sql)";
 
             if ($conn->query($sql)) {
-                header("Location: laporan.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
+                header("Location: laporan_saya.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
                 exit;
             } else {
                 $error = 'Gagal menyimpan laporan: ' . $conn->error;
@@ -465,14 +465,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan.php" class="nav-link active">Laporan Saya</a>
+        <a href="laporan_saya.php" class="nav-link active">Laporan Saya</a>
         <div class="nav-group">PENGELOLAAN</div>
-        <a href="manajemen.php" class="nav-link">Manajemen Kasus</a>
-        <a href="edukasi.php" class="nav-link">Edukasi &amp; Informasi</a>
+     
+        <a href="edukasi1.php" class="nav-link">Edukasi &amp; Informasi</a>
         <a href="kenali.php" class="nav-link">Kenali Situasi Anda</a>
         <div class="nav-group">AKUN</div>
         <a href="profil.php" class="nav-link">Profil</a>
-        <a href="pengaturan.php" class="nav-link">Pengaturan</a>
+       
         <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin keluar?')">Keluar</a>
     </nav>
 </aside>
@@ -558,22 +558,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="jenis-card umum" id="cardUmum" onclick="pilihJenis('UMUM')">
                             <div class="jenis-icon">
                                 <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
                                 </svg>
                             </div>
                             <h3>Umum</h3>
-                            <p>Laporkan secara anonim. Identitasmu tidak akan diketahui oleh siapapun, termasuk pihak kampus.</p>
+                            <p>Laporkan kejadian secara terbuka dengan identitas yang dapat diketahui pihak kampus.</p>
                         </div>
                         <div class="jenis-card khusus" id="cardKhusus" onclick="pilihJenis('KHUSUS')">
                             <div class="jenis-icon">
                                 <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-                                    <circle cx="12" cy="7" r="4"/>
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0110 0v4"/>
                                 </svg>
                             </div>
                             <h3>Khusus</h3>
-                            <p>Laporkan dengan mencantumkan identitasmu. Identitas dapat diketahui pihak kampus untuk keperluan penanganan kasus.</p>
+                            <p>Laporkan secara anonim atau rahasia. Identitasmu terlindungi sepenuhnya.</p>
                         </div>
                     </div>
 
@@ -585,7 +586,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="jenis_pelaporan" id="jenis_pelaporan" value="">
                 </div>
                 <div class="modal-footer">
-                    <a href="laporan.php" class="btn btn-outline">Batal</a>
+                    <button type="button" class="btn btn-outline" onclick="tutupModal()">Batal</button>
                     <button type="button" class="btn btn-primary" id="btnStep1" onclick="goStep(2)" disabled>
                         Selanjutnya
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
@@ -597,16 +598,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="step-panel" id="step2">
                 <div class="modal-body">
 
-                    <!-- Identitas Pelapor (Khusus saja - identitas dicantumkan) -->
+                    <!-- Identitas Pelapor (Khusus saja) -->
                     <div class="identitas-section" id="identitasSection" style="display:none">
-                        <h4>Identitas Pelapor (Wajib untuk Laporan Khusus)</h4>
+                        <h4>Identitas Pelapor (Opsional — akan dirahasiakan)</h4>
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">Nama Lengkap <span class="req">*</span></label>
-                                <input type="text" name="nama_pelapor" class="form-control" placeholder="Nama lengkap kamu">
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" name="nama_pelapor" class="form-control" placeholder="Nama atau inisial">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">NIM <span class="req">*</span></label>
+                                <label class="form-label">NIM</label>
                                 <input type="text" name="nim_pelapor" class="form-control" placeholder="NIM kamu">
                             </div>
                         </div>
@@ -662,12 +663,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="step-panel" id="step3">
                 <div class="modal-body">
                     <p style="font-size:13px;color:#64748b;margin-bottom:16px">
-                        Upload bukti pendukung laporan kamu. Bukti dapat berupa foto, video, rekaman suara, atau dokumen PDF.
+                        Upload bukti pendukung laporan kamu. Bukti dapat berupa foto, video, atau dokumen PDF.
                         <strong style="color:#0f172a"> (Opsional)</strong>
                     </p>
 
                     <div class="upload-area" id="uploadArea">
-                        <input type="file" name="bukti" id="inputBukti" accept="image/*,video/*,audio/*,.pdf"
+                        <input type="file" name="bukti" id="inputBukti" accept="image/*,video/*,.pdf"
                                onchange="previewFile(this)">
                         <div class="upload-icon">
                             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -684,14 +685,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="file-tag">PDF</span>
                             <span class="file-tag">MP4</span>
                             <span class="file-tag">MOV</span>
-                            <span class="file-tag">MP3</span>
-                            <span class="file-tag">WAV</span>
-                            <span class="file-tag">M4A</span>
                         </div>
                     </div>
 
                     <div class="file-preview" id="filePreview">
-                        <svg id="filePreviewIcon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
                             <polyline points="14,2 14,8 20,8"/>
                         </svg>
@@ -699,8 +697,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <span id="fileSize" style="color:#94a3b8;font-size:12px"></span>
                         <button type="button" class="file-remove" onclick="hapusFile()" title="Hapus file">×</button>
                     </div>
-
-                    <audio id="audioPreview" controls style="display:none;width:100%;margin-top:10px;height:36px"></audio>
 
                     <div style="margin-top:20px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px 14px;font-size:12px;color:#7f1d1d;line-height:1.5">
                         <strong>⚠ Privasi:</strong> Bukti yang kamu upload hanya dapat diakses oleh tim penanganan yang berwenang dan disimpan secara aman.
@@ -740,11 +736,11 @@ function pilihJenis(jenis) {
     note.style.display = 'block';
 
     if (jenis === 'UMUM') {
-        title.textContent = 'Laporan Umum (Anonim) dipilih.';
-        desc.textContent  = 'Identitasmu sepenuhnya dirahasiakan. Pihak kampus tidak akan mengetahui siapa yang membuat laporan ini.';
+        title.textContent = 'Laporan Umum dipilih.';
+        desc.textContent  = 'Identitas kamu dapat diketahui oleh pihak kampus yang berwenang untuk keperluan penanganan kasus.';
     } else {
         title.textContent = 'Laporan Khusus dipilih.';
-        desc.textContent  = 'Identitasmu akan tercantum dalam laporan dan dapat diketahui oleh pihak kampus yang berwenang untuk keperluan penanganan kasus.';
+        desc.textContent  = 'Identitasmu sepenuhnya dirahasiakan. Kamu tetap bisa memantau status laporan lewat kode yang diberikan.';
     }
 }
 
@@ -784,7 +780,7 @@ function goStep(n) {
     const titles = ['', 'Buat Laporan Baru', 'Detail Kejadian', 'Upload Bukti'];
     document.getElementById('modalTitle').textContent = titles[currentStep];
 
-    // Tampilkan identitas jika KHUSUS (identitas dicantumkan)
+    // Tampilkan identitas jika Khusus
     if (currentStep === 2) {
         document.getElementById('identitasSection').style.display =
             jenisSelected === 'KHUSUS' ? 'block' : 'none';
@@ -792,9 +788,7 @@ function goStep(n) {
 }
 
 function tutupModal() {
-    if (confirm('Batalkan laporan ini? Data yang sudah diisi akan hilang.')) {
-        window.location.href = 'laporan.php';
-    }
+    history.back();
 }
 
 function previewFile(input) {
@@ -806,22 +800,6 @@ function previewFile(input) {
         document.getElementById('filePreview').classList.add('show');
         document.getElementById('uploadArea').style.borderColor = '#10b981';
         document.getElementById('uploadArea').style.background  = '#f0fdf4';
-
-        const icon = document.getElementById('filePreviewIcon');
-        const audioPreview = document.getElementById('audioPreview');
-        const isAudio = file.type.startsWith('audio/') || /\.(mp3|wav|m4a|ogg|aac)$/i.test(file.name);
-
-        if (isAudio) {
-            // Ikon mikrofon
-            icon.innerHTML = '<path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>';
-            audioPreview.src = URL.createObjectURL(file);
-            audioPreview.style.display = 'block';
-        } else {
-            // Ikon dokumen (default)
-            icon.innerHTML = '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/>';
-            audioPreview.style.display = 'none';
-            audioPreview.removeAttribute('src');
-        }
     }
 }
 
@@ -830,11 +808,6 @@ function hapusFile() {
     document.getElementById('filePreview').classList.remove('show');
     document.getElementById('uploadArea').style.borderColor = '';
     document.getElementById('uploadArea').style.background  = '';
-
-    const audioPreview = document.getElementById('audioPreview');
-    audioPreview.pause();
-    audioPreview.style.display = 'none';
-    audioPreview.removeAttribute('src');
 }
 
 // Drag & drop
