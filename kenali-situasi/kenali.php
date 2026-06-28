@@ -332,7 +332,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                        class="py-3 border-2 border-gray-200 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-50 text-center transition flex items-center justify-center gap-2">
                         <i class="fa fa-rotate-left"></i> Cek Situasi Lain
                     </a>
-                    <a href="buat_laporan.php"
+                    <a href="../mahasiswa/buat_laporan.php"
                        class="py-3 <?= $btn_color ?> text-white rounded-xl text-xs font-bold text-center shadow-md transition flex items-center justify-center gap-2">
                         <i class="fa fa-file-pen"></i> Ajukan Laporan Sekarang
                     </a>
