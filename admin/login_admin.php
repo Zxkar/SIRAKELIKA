@@ -4,15 +4,16 @@ include '../config/conn.php';
 
 // 1. PERBAIKAN: Jika sudah login, alihkan ke dashboard masing-masing, BUKAN ke login_admin.php
 if (isset($_SESSION['admin_logged_in'])) {
-    if ($_SESSION['role'] === 'superadmin') {
-        header("Location: dashboard_superadmin.php");
-        exit;
-    } else if ($_SESSION['role'] === 'admin') {
-        header("Location: dashboard_admin.php");
-        exit;
+    if (isset($_SESSION['admin_logged_in'])) {
+        if ($_SESSION['role'] === 'superadmin') {
+            header("Location: ../super_admin/dashboard_superadmin.php");
+            exit;
+        } else if ($_SESSION['role'] === 'admin') {
+            header("Location: dashboard_admin.php");
+            exit;
+        }
     }
 }
-
 $error = '';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
