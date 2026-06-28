@@ -75,6 +75,7 @@ if(isset($_POST['update_status'])){
 $filter = isset($_GET['filter']) ? mysqli_real_escape_string($conn, $_GET['filter']) : 'menunggu';
 if(!in_array($filter, $valid_status)) $filter = 'menunggu';
 
+// Menambahkan l.bukti_nama ke query select agar data file bukti ikut terbaca
 $query = mysqli_query($conn, "SELECT l.*, u.username FROM laporan l
                                LEFT JOIN users u ON l.id_user = u.id_user
                                WHERE l.status_laporan = '$filter'
@@ -82,18 +83,7 @@ $query = mysqli_query($conn, "SELECT l.*, u.username FROM laporan l
 $laporan_list = mysqli_fetch_all($query, MYSQLI_ASSOC);
 $total = count($laporan_list);
 
-// Ambil semua bukti terkait laporan yang tampil saat ini (1 laporan bisa punya banyak bukti)
-$bukti_map = [];
-if($total > 0){
-    $ids = array_map(fn($r) => (int)$r['id_laporan'], $laporan_list);
-    $bukti_q = mysqli_query($conn, "SELECT * FROM bukti WHERE id_laporan IN (" . implode(',', $ids) . ") ORDER BY tanggal_upload ASC");
-    while($b = mysqli_fetch_assoc($bukti_q)){
-        $bukti_map[$b['id_laporan']][] = $b;
-    }
-}
-
-// Path URL ke folder bukti — sesuai buat_laporan.php yang simpan ke 'uploads/bukti/'
-// relatif dari folder laporan/. Sesuaikan jika struktur folder berbeda.
+// MENYESUAIKAN PATH BERKAS: Mengarah ke folder uploads/bukti/ milik halaman buat laporan
 define('BUKTI_BASE_PATH', '../laporan/uploads/bukti/');
 define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
 ?>
@@ -118,23 +108,13 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
     </div>
     <nav class="nav-container">
         <div class="nav-group">SYSTEM CONTROL</div>
-        <a href="dashboard_admin.php" class="nav-link">
-            <span class="nav-text">Dashboard</span>
-        </a>
+        <a href="dashboard_admin.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
         <div class="nav-group">MANAJEMEN</div>
-        <a href="verifikasi_laporan.php" class="nav-link active">
-            <span class="nav-text">Verifikasi Laporan Masuk</span>
-        </a>
-        <a href="kelola_mahasiswa.php" class="nav-link">
-            <span class="nav-text">Kelola Akun Mahasiswa</span>
-        </a>
-        <a href="kelola_internal.php" class="nav-link">
-            <span class="nav-text">Kelola Akun Pihak Internal</span>
-        </a>
+        <a href="verifikasi_laporan.php" class="nav-link active"><span class="nav-text">Verifikasi Laporan Masuk</span></a>
+        <a href="kelola_mahasiswa.php" class="nav-link"><span class="nav-text">Kelola Akun Mahasiswa</span></a>
+        <a href="kelola_internal.php" class="nav-link"><span class="nav-text">Kelola Akun Pihak Internal</span></a>
         <div class="nav-group">AKUN UTAMA</div>
-        <a href="logout.php" class="nav-link logout">
-            <span class="nav-text">Keluar</span>
-        </a>
+        <a href="logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
     </nav>
 </aside>
 
@@ -165,12 +145,9 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
     <div class="alert-error">⚠ Laporan tidak ditemukan.</div>
     <?php endif; ?>
 
-    <!-- Filter Bar -->
     <div class="filter-bar">
         <?php foreach($valid_status as $s): ?>
-        <a href="?filter=<?= $s ?>" class="filter-btn <?= $filter===$s ? 'active' : '' ?>">
-            <?= ucfirst($s) ?>
-        </a>
+        <a href="?filter=<?= $s ?>" class="filter-btn <?= $filter===$s ? 'active' : '' ?>"><?= ucfirst($s) ?></a>
         <?php endforeach; ?>
     </div>
 
@@ -198,7 +175,6 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
                 $id_lap  = $row['id_laporan'];
                 $kode    = htmlspecialchars($row['kode_laporan'] ?? '#KS-'.$id_lap);
                 $pelapor = $row['id_user'] ? htmlspecialchars($row['username']) : '<em style="color:#94a3b8">Anonim</em>';
-                $bukti_list = $bukti_map[$id_lap] ?? [];
                 $waktu_kejadian_fmt = (!empty($row['waktu_kejadian']) && $row['waktu_kejadian'] !== '0000-00-00 00:00:00')
                     ? date('d M Y, H:i', strtotime($row['waktu_kejadian'])) : '-';
             ?>
@@ -262,35 +238,38 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
                             <p class="detail-text"><?= nl2br(htmlspecialchars($row['deskripsi'] ?: '-')) ?></p>
                         </div>
 
+                        <!-- MODIFIKASI BLOK BUKTI: Membaca langsung bukti_nama dari tabel laporan -->
                         <div class="detail-block">
-                            <span class="detail-label">Bukti Pendukung (<?= count($bukti_list) ?>)</span>
-                            <?php if(empty($bukti_list)): ?>
+                            <span class="detail-label">Bukti Pendukung</span>
+                            <?php 
+                            $nama_file_bukti = $row['bukti_nama'] ?? ''; 
+                            if(empty($nama_file_bukti)): 
+                            ?>
                                 <p class="no-bukti">Tidak ada bukti yang diupload pelapor.</p>
-                            <?php else: ?>
+                            <?php 
+                            else: 
+                                $url      = BUKTI_BASE_PATH . $nama_file_bukti;
+                                $srv_path = BUKTI_SERVER_PATH . $nama_file_bukti;
+                                $ext      = strtolower(pathinfo($nama_file_bukti, PATHINFO_EXTENSION));
+                                
+                                if (file_exists($srv_path)):
+                            ?>
                                 <div class="bukti-grid">
-                                <?php foreach($bukti_list as $b):
-                                    $url      = BUKTI_BASE_PATH . $b['file_bukti'];
-                                    $srv_path = BUKTI_SERVER_PATH . $b['file_bukti'];
-                                    $ext      = strtolower(pathinfo($b['file_bukti'], PATHINFO_EXTENSION));
-                                    $tipe     = $b['tipe_file'] ?? '';
-                                    // Skip jika file tidak ada di server
-                                    if (!file_exists($srv_path)) continue;
-                                ?>
                                     <div class="bukti-item">
-                                    <?php if(in_array($ext, ['jpg','jpeg','png']) || str_starts_with($tipe, 'image/')): ?>
+                                    <?php if(in_array($ext, ['jpg','jpeg','png'])): ?>
                                         <a href="<?= htmlspecialchars($url) ?>" target="_blank"><img src="<?= htmlspecialchars($url) ?>" class="bukti-img" alt="Bukti laporan"></a>
-                                    <?php elseif(in_array($ext, ['mp4','mov','avi']) || str_starts_with($tipe, 'video/')): ?>
+                                    <?php elseif(in_array($ext, ['mp4','mov','avi'])): ?>
                                         <video src="<?= htmlspecialchars($url) ?>" controls class="bukti-video"></video>
-                                    <?php elseif(in_array($ext, ['mp3','wav','m4a','ogg','aac']) || str_starts_with($tipe, 'audio/')): ?>
-                                        <audio src="<?= htmlspecialchars($url) ?>" controls class="bukti-audio"></audio>
                                     <?php elseif($ext === 'pdf'): ?>
-                                        <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📄 <?= htmlspecialchars($b['nama_asli'] ?: $b['file_bukti']) ?></a>
+                                        <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📄 <?= htmlspecialchars($nama_file_bukti) ?></a>
                                     <?php else: ?>
-                                        <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📎 <?= htmlspecialchars($b['nama_asli'] ?: $b['file_bukti']) ?></a>
+                                        <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📎 <?= htmlspecialchars($nama_file_bukti) ?></a>
                                     <?php endif; ?>
                                     </div>
-                                <?php endforeach; ?>
                                 </div>
+                                <?php else: ?>
+                                    <p class="no-bukti" style="color:#ef4444;">⚠ Berkas bukti tercatat (<?= htmlspecialchars($nama_file_bukti) ?>) tetapi file fisik tidak ditemukan di folder server.</p>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
 
@@ -330,14 +309,12 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
     </div>
 </main>
 
-
 <script>
 function toggleDetail(id){
     const row = document.getElementById('detailRow' + id);
     const btn = document.getElementById('btnToggle' + id);
     const isOpen = row.classList.contains('show');
 
-    // Tutup semua baris detail lain yang sedang terbuka
     document.querySelectorAll('.detail-row.show').forEach(function(r){
         r.classList.remove('show');
         const otherBtn = document.getElementById('btnToggle' + r.id.replace('detailRow',''));
