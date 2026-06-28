@@ -111,7 +111,7 @@ function statusBadgeClass($status) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Aktivitas Kasus – SIRAKELIKA</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="dashboard_investigasi.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .page-header-investigasi {
@@ -323,7 +323,7 @@ function statusBadgeClass($status) {
         </a>
 
         <div class="nav-group">AKUN SYSTEM</div>
-        <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
+        <a href="../config/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
             <span class="nav-text">Keluar</span>
         </a>
     </nav>
