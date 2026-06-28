@@ -30,7 +30,6 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Welcome Banner - Slate Theme */
         .welcome-banner-investigasi {
             background: linear-gradient(135deg, #1e293b, #334155);
             padding: 32px;
@@ -73,7 +72,6 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
             transform: scale(0.97);
         }
 
-        /* TAMBAHAN UPDATE: Pengaturan Style Badge Status Warna Hijau untuk Kasus Selesai */
         .status-badge {
             padding: 4px 10px;
             border-radius: 50px;
@@ -83,8 +81,8 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
         }
 
         .status-badge.status-done {
-            background-color: #dcfce7; /* Hijau muda lembut */
-            color: #15803d;            /* Teks hijau tua */
+            background-color: #dcfce7;
+            color: #15803d;
         }
     </style>
 </head>
@@ -115,7 +113,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
             </a>
 
             <div class="nav-group">AKUN SYSTEM</div>
-            <a href="../auth/logout.php" class="nav-link logout">
+            <a href="logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
             </a>
         </nav>
@@ -194,7 +192,6 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
                             while($row = mysqli_fetch_assoc($query_laporan)) {
                                 $badge_class = 'status-new';
                                 
-                                // TAMBAHAN UPDATE: Menggunakan strtolower agar huruf besar/kecil dari database tetap terbaca pas
                                 if(strtolower($row['status_laporan']) == 'diproses') { 
                                     $badge_class = 'status-process'; 
                                 } elseif(strtolower($row['status_laporan']) == 'selesai') { 
@@ -203,7 +200,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
                                 
                                 echo "<tr>";
                                 echo "<td class='id-case'>#KS-" . $row['id_laporan'] . "</td>";
-                                echo "<td><strong>" . htmlspecialchars($row['jenis_laporan']) . "</strong></td>";
+                                echo "<td><strong>" . ucwords(htmlspecialchars($row['jenis_kekerasan'])) . "</strong></td>";
                                 echo "<td>" . htmlspecialchars($row['lokasi_kejadian']) . "</td>";
                                 echo "<td>" . date('d M Y', strtotime($row['tanggal_laporan'])) . "</td>";
                                 echo "<td><span class='status-badge {$badge_class}'>" . htmlspecialchars($row['status_laporan']) . "</span></td>";
@@ -244,4 +241,3 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
 
 </body>
 </html>
-
