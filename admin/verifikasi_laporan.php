@@ -78,8 +78,9 @@ if($total > 0){
     }
 }
 
-define('BUKTI_BASE_PATH', '../laporan/uploads/bukti/');
-define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
+// buat_laporan.php (mahasiswa/) simpan ke mahasiswa/uploads/bukti/
+define('BUKTI_BASE_PATH', '../mahasiswa/uploads/bukti/');
+define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/mahasiswa/uploads/bukti/');
 ?>
 <!DOCTYPE html>
 <html lang="id">
