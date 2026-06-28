@@ -7,7 +7,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
 
-include 'conn.php';
+include '../config/conn.php';
 
 $step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
 $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';

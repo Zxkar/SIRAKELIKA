@@ -9,7 +9,7 @@ header("Pragma: no-cache");
 header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
 
 
-include 'conn.php';
+include '../config/conn.php';
 
 if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'mahasiswa'){
     header("Location: login.php"); 
