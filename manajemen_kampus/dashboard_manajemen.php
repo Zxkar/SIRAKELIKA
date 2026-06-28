@@ -29,7 +29,7 @@ $kasus_putus     = mysqli_fetch_assoc($q_kasus_putus)['selesai'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Dashboard Manajemen Kampus</title>
-    <link rel="stylesheet" href="dashboard.css"> 
+    <link rel="stylesheet" href="../mahasiswa/dashboard.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -137,7 +137,7 @@ $kasus_putus     = mysqli_fetch_assoc($q_kasus_putus)['selesai'];
             
 
             <div class="nav-group">AKUN SYSTEM</div>
-            <a href="logout.php" class="nav-link logout">
+            <a href="../auth/logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
             </a>
         </nav>
