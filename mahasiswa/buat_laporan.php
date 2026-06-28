@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Handle upload bukti
         $bukti_nama = null;
         if (!empty($_FILES['bukti']['name'])) {
-            $upload_dir = 'uploads/bukti/';
+            $upload_dir = '../uploads/bukti/';
             if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
             $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi'];
@@ -471,9 +471,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="../edukasi/edukasi1.php" class="nav-link">Edukasi &amp; Informasi</a>
         <a href="../kenali-situasi/kenali.php" class="nav-link">Kenali Situasi Anda</a>
         <div class="nav-group">AKUN</div>
-        <a href="profil.php" class="nav-link">Profil</a>
-        <a href="pengaturan.php" class="nav-link">Pengaturan</a>
-        <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin keluar?')">Keluar</a>
+        <a href="../mahasiswa/profil.php" class="nav-link">Profil</a>
+        <a href="../mahasiswa/pengaturan.php" class="nav-link">Pengaturan</a>
+        <a href="../auth/logout.php" class="nav-link logout" onclick="return confirm('Yakin keluar?')">Keluar</a>
     </nav>
 </aside>
 
