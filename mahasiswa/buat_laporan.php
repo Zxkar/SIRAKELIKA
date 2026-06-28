@@ -75,13 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($conn->query($sql)) {
                 $id_laporan_baru = $conn->insert_id;
-                if ($bukti_nama) {
-                    $bn = $conn->real_escape_string($bukti_nama);
-                    $na = $conn->real_escape_string($nama_asli);
-                    $tf = $conn->real_escape_string($tipe_file);
-                    $conn->query("INSERT INTO bukti (id_laporan, file_bukti, nama_asli, tipe_file)
-                                  VALUES ($id_laporan_baru, '$bn', '$na', '$tf')");
-                }
+                $bn = $conn->real_escape_string($bukti_nama);
+                $na = $conn->real_escape_string($nama_asli);
+                $tf = $conn->real_escape_string($tipe_file);
+                $conn->query("INSERT INTO bukti (id_laporan, file_bukti, nama_asli, tipe_file)
+                              VALUES ($id_laporan_baru, '$bn', '$na', '$tf')");
                 header("Location: laporan_saya.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
                 exit;
             } else {
@@ -836,7 +834,7 @@ ua.addEventListener('drop', e => {
     }
 });
 
-// Submit - wajib ada bukti
+// Submit loading state
 document.getElementById('formLaporan').addEventListener('submit', function(e) {
     const input = document.getElementById('inputBukti');
     if (!input.files || input.files.length === 0) {
