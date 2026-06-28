@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jenis_pelaporan = $_POST['jenis_pelaporan'] ?? '';
     $judul_laporan   = trim($_POST['judul_laporan'] ?? '');
     
-    // Tangkap input Nama dan NIM baru
+    // Tangkap nama dan nim dari form
     $nama_pelapor    = trim($_POST['nama_pelapor'] ?? '');
     $nim_pelapor     = trim($_POST['nim_pelapor'] ?? '');
     
@@ -71,23 +71,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $kode      = generateKode($conn);
             $jp        = $conn->real_escape_string($jenis_pelaporan);
             $jl        = $conn->real_escape_string($judul_laporan);
-            
-            // Escape data Nama dan NIM
-            $nama_p    = $conn->real_escape_string($nama_pelapor);
-            $nim_p     = $conn->real_escape_string($nim_pelapor);
-            
-            $ds        = $conn->real_escape_string($deskripsi);
             $jk        = $conn->real_escape_string($jenis_kekerasan);
             $wk        = $conn->real_escape_string($waktu_kejadian);
             $lk        = $conn->real_escape_string($lokasi_kejadian);
 
-            // 1. Insert ke tabel laporan (dengan kolom nama_pelapor dan nim_pelapor)
+            // LOGIKA SMART: Jika laporan KHUSUS, gabungkan Nama dan NIM ke dalam isi Deskripsi
+            if ($jenis_pelaporan === 'KHUSUS' && !empty($nama_pelapor) && !empty($nim_pelapor)) {
+                $deskripsi_lengkap = "--- IDENTITAS PELAPOR (KHUSUS) ---\nNama: " . $nama_pelapor . "\nNIM: " . $nim_pelapor . "\n\n--- KRONOLOGI KEJADIAN ---\n" . $deskripsi;
+            } else {
+                $deskripsi_lengkap = $deskripsi;
+            }
+            
+            $ds = $conn->real_escape_string($deskripsi_lengkap);
+
+            // Query di bawah ini kembali murni menggunakan struktur database bawaan kamu yang lama (aman dari error!)
             $sql = "INSERT INTO laporan 
-                    (id_user, kode_laporan, judul_laporan, nama_pelapor, nim_pelapor, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan)
-                    VALUES ($id_user, '$kode', '$jl', '$nama_p', '$nim_p', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
+                    (id_user, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan)
+                    VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
 
             if ($conn->query($sql)) {
-                $id_laporan_baru = $conn->insert_id; // Ambil ID laporan yang baru saja digenerate
+                $id_laporan_baru = $conn->insert_id;
 
                 // Escaping data berkas untuk keamanan query
                 $b_nama_file = $conn->real_escape_string($bukti_nama);
@@ -259,12 +262,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="step-panel" id="step2">
                 <div class="modal-body">
                     
-                    <!-- Field Identitas Nama & NIM diletakkan di bagian paling atas -->
+                    <!-- Input Nama & NIM diletakkan paling atas khusus opsi KHUSUS -->
                     <div id="fieldIdentitas" style="display: none; margin-bottom: 16px;">
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label">Nama Pelapor / Korban <span class="req">*</span></label>
-                                <input type="text" name="nama_pelapor" id="inputNama" class="form-control" placeholder="Nama lengkap">
+                                <input type="text" name="nama_pelapor" id="inputNama" class="form-control" placeholder="Nama lengkap ">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">NIM <span class="req">*</span></label>
@@ -375,7 +378,6 @@ function pilihJenis(jenis) {
     document.getElementById('jenisNoteTitle').textContent = jenis === 'UMUM' ? 'Laporan Umum dipilih.' : 'Laporan Khusus dipilih.';
     document.getElementById('jenisNoteDesc').textContent = jenis === 'UMUM' ? 'Identitas terbuka untuk keperluan penanganan.' : 'Identitasmu sepenuhnya dirahasiakan.';
 
-    // Menampilkan field Identitas Nama & NIM hanya jika opsi KHUSUS dipilih
     const fieldIdentitas = document.getElementById('fieldIdentitas');
     if (jenis === 'KHUSUS') {
         fieldIdentitas.style.display = 'block';
@@ -394,7 +396,6 @@ function goStep(n) {
     if (n === 3) {
         const required = ['judul_laporan','jenis_kekerasan','waktu_kejadian','lokasi_kejadian','deskripsi'];
         
-        // Validasi Nama dan NIM ikut diperiksa jika tipe laporan KHUSUS
         if (jenisSelected === 'KHUSUS') {
             required.push('nama_pelapor', 'nim_pelapor');
         }
