@@ -599,7 +599,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
                         'waktu'           => date('d M Y, H:i', strtotime($l['waktu_kejadian'])),
                         'tanggal'         => $tgl,
                         'status'          => $l['status_laporan'],
-                        'pelapor'         => $isKhusus ? ($l['nama_mahasiswa'] ?? '-') : '🔒 Anonim',
+                        'pelapor'         => $isKhusus ? ($l['nama_mahasiswa'] ?? '-') : 'DiRahasiakan',
                     ]), ENT_QUOTES);
                 ?>
                 <tr>
