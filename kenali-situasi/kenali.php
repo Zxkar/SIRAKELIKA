@@ -30,11 +30,11 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
         </div>
         <nav class="nav-container">
             <div class="nav-group">MENU UTAMA</div>
-            <a href="dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
-            <a href="laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
+            <a href="../mahasiswa/dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
+            <a href="../mahasiswa/laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
             <div class="nav-group">PENGELOLAAN</div>
             <a href="edukasi1.php" class="nav-link"><span class="nav-text">Edukasi & Informasi</span></a>
-            <a href="kenali.php" class="nav-link active"><span class="nav-text">Kenali Situasi Anda</span></a>
+            <a href="../kenali-situasi/kenali.php" class="nav-link active"><span class="nav-text">Kenali Situasi Anda</span></a>
             <div class="nav-group">AKUN</div>
             <a href="#" class="nav-link"><span class="nav-text">Profil</span></a>
             <a href="#" class="nav-link"><span class="nav-text">Pengaturan</span></a>
@@ -361,3 +361,4 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
 
 </body>
 </html>
+

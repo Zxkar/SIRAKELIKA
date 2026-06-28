@@ -329,13 +329,13 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
 
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
-        <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan.php" class="nav-link">Laporan Saya</a>
+        <a href="../mahasiswa/dashboard.php" class="nav-link">Dashboard</a>
+        <a href="../mahasiswa/laporan.php" class="nav-link">Laporan Saya</a>
 
         <div class="nav-group">PENGELOLAAN</div>
         <a href="manajemen.php" class="nav-link">Manajemen Kasus</a>
-        <a href="edukasi.php" class="nav-link">Edukasi &amp; Informasi</a>
-        <a href="kenali.php" class="nav-link">Kenali Situasi Anda</a>
+        <a href="../edukasi/edukasi1.php" class="nav-link">Edukasi &amp; Informasi</a>
+        <a href="../kenali-situasi/kenali.php" class="nav-link">Kenali Situasi Anda</a>
 
         <div class="nav-group">AKUN</div>
         <a href="profil.php" class="nav-link active">Profil</a>
@@ -350,7 +350,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
     <!-- TOPBAR -->
     <header class="topbar">
         <div class="breadcrumb">
-            <a href="dashboard.php">Beranda</a>
+            <a href="../mahasiswa/dashboard.php">Beranda</a>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
             <span>Profil</span>
         </div>
@@ -464,7 +464,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
         <div class="panel">
             <div class="panel-head">
                 <h3>Aktivitas Terbaru</h3>
-                <a href="laporan.php" class="panel-link">Lihat Semua &rarr;</a>
+                <a href="../mahasiswa/laporan.php" class="panel-link">Lihat Semua &rarr;</a>
             </div>
 
             <?php if (empty($laporan_list)): ?>
@@ -498,7 +498,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
         <div class="panel">
             <div class="panel-head">
                 <h3>Ringkasan Laporan</h3>
-                <a href="laporan.php" class="panel-link">Lihat Semua &rarr;</a>
+                <a href="../mahasiswa/laporan.php" class="panel-link">Lihat Semua &rarr;</a>
             </div>
 
             <?php if (empty($laporan_list)): ?>
@@ -542,3 +542,4 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
 </main>
 </body>
 </html>
+
