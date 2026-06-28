@@ -77,10 +77,8 @@ if($total > 0){
     }
 }
 
-// =================== PATH SEKARANG SUDAH DIPERBAIKI ===================
 define('BUKTI_BASE_PATH', '../uploads/bukti/');
 define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
-// =========================================================================
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -91,7 +89,6 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
     <link rel="stylesheet" href="dashboard_admin.css">
     <link rel="stylesheet" href="verifikasi_laporan.css">
     <style>
-        /* Desain badge penanda Kategori Laporan */
         .badge-kategori {
             padding: 4px 8px;
             border-radius: 4px;
@@ -104,6 +101,7 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
 </head>
 <body>
 
+<!-- SIDEBAR FIX: Dikembalikan lengkap sesuai dashboard_admin.php -->
 <aside class="sidebar">
     <div class="logo-area">
         <div class="logo-icon"></div>
@@ -112,8 +110,14 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
     <nav class="nav-container">
         <div class="nav-group">SYSTEM CONTROL</div>
         <a href="dashboard_admin.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
+        
         <div class="nav-group">MANAJEMEN</div>
         <a href="verifikasi_laporan.php" class="nav-link active"><span class="nav-text">Verifikasi Laporan Masuk</span></a>
+        <!-- Silakan sesuaikan nama file href di bawah jika nama file aslimu berbeda -->
+        <a href="kelola_mahasiswa.php" class="nav-link"><span class="nav-text">Kelola Akun Mahasiswa</span></a>
+        <a href="kelola_internal.php" class="nav-link"><span class="nav-text">Kelola Akun Pihak Internal</span></a>
+        
+        <div class="nav-group">AKUN UTAMA</div>
         <a href="logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
     </nav>
 </aside>
@@ -161,7 +165,7 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 $kode    = htmlspecialchars($row['kode_laporan'] ?? '#KS-'.$id_lap);
                 $pelapor = $row['id_user'] ? htmlspecialchars($row['username']) : '<em style="color:#94a3b8">Anonim</em>';
                 
-                // FIX: Membaca kolom jenis_pelaporan dari database laporan
+                // FIX: Tetap membaca kolom jenis_pelaporan sesuai database
                 $kategori = isset($row['jenis_pelaporan']) ? strtolower($row['jenis_pelaporan']) : 'umum';
             ?>
             <tr>
