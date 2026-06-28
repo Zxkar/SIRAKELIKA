@@ -203,7 +203,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
                                 
                                 echo "<tr>";
                                 echo "<td class='id-case'>#KS-" . $row['id_laporan'] . "</td>";
-                                echo "<td><strong>" . htmlspecialchars($row['jenis_laporan']) . "</strong></td>";
+                                echo "<td><strong>" . ucwords(htmlspecialchars($row['jenis_kekerasan'])) . "</strong></td>";
                                 echo "<td>" . htmlspecialchars($row['lokasi_kejadian']) . "</td>";
                                 echo "<td>" . date('d M Y', strtotime($row['tanggal_laporan'])) . "</td>";
                                 echo "<td><span class='status-badge {$badge_class}'>" . htmlspecialchars($row['status_laporan']) . "</span></td>";
