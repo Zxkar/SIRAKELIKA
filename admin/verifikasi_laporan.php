@@ -147,7 +147,7 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 <tr>
                     <th>KODE</th>
                     <th>JUDUL LAPORAN</th>
-                    <th>KATEGORI</th> <!-- Tambah kolom header kategori -->
+                    <th>KATEGORI</th>
                     <th>PELAPOR</th>
                     <th>JENIS KEKERASAN</th>
                     <th>TANGGAL</th>
@@ -161,13 +161,12 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 $kode    = htmlspecialchars($row['kode_laporan'] ?? '#KS-'.$id_lap);
                 $pelapor = $row['id_user'] ? htmlspecialchars($row['username']) : '<em style="color:#94a3b8">Anonim</em>';
                 
-                // Mengambil string kategori dari DB. Jika kolom Anda bernama lain silakan disesuaikan.
-                $kategori = isset($row['kategori']) ? strtolower($row['kategori']) : 'umum';
+                // FIX: Membaca kolom jenis_pelaporan dari database laporan
+                $kategori = isset($row['jenis_pelaporan']) ? strtolower($row['jenis_pelaporan']) : 'umum';
             ?>
             <tr>
                 <td class="id-case"><?= $kode ?></td>
                 <td><strong><?= htmlspecialchars($row['judul_laporan'] ?: '(tanpa judul)') ?></strong></td>
-                <!-- Isi Kolom Kategori -->
                 <td>
                     <?php if($kategori === 'khusus'): ?>
                         <span class="badge-kategori kat-khusus">Khusus</span>
@@ -182,14 +181,13 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 <td><button type="button" class="btn-verif" id="btnToggle<?= $id_lap ?>" onclick="toggleDetail(<?= $id_lap ?>)">Lihat & Verifikasi</button></td>
             </tr>
             <tr class="detail-row" id="detailRow<?= $id_lap ?>">
-                <td colspan="8"> <!-- Mengubah colspan menjadi 8 menyesuaikan jumlah kolom -->
+                <td colspan="8">
                     <div class="detail-panel">
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <span class="detail-label">Waktu & Lokasi Kejadian</span>
                                 <span class="detail-value"><?= htmlspecialchars($row['lokasi_kejadian']) ?></span>
                             </div>
-                            <!-- Detail Informasi Kategori -->
                             <div class="detail-item">
                                 <span class="detail-label">Sifat Laporan</span>
                                 <span class="detail-value"><strong><?= ucfirst($kategori) ?></strong></span>
