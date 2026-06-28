@@ -34,24 +34,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$judul_laporan || !$deskripsi || !$jenis_kekerasan || !$waktu_kejadian || !$lokasi_kejadian) {
         $error = 'Semua field wajib diisi.';
+    } 
+    // VALIDASI BACKEND: Cek apakah file bukti kosong
+    elseif (empty($_FILES['bukti']['name']) || $_FILES['bukti']['error'] === UPLOAD_ERR_NO_FILE) {
+        $error = 'Bukti laporan wajib diupload.';
     } else {
-        // Handle upload bukti
+        // Handle upload bukti (Sekarang statusnya wajib)
         $bukti_nama = null;
-        if (!empty($_FILES['bukti']['name'])) {
-            $upload_dir = 'uploads/bukti/';
-            if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+        $upload_dir = 'uploads/bukti/';
+        if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
-            $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi'];
-            $ext = strtolower(pathinfo($_FILES['bukti']['name'], PATHINFO_EXTENSION));
+        $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi'];
+        $ext = strtolower(pathinfo($_FILES['bukti']['name'], PATHINFO_EXTENSION));
 
-            if (!in_array($ext, $ext_allowed)) {
-                $error = 'Format file tidak didukung. Gunakan JPG, PNG, PDF, atau video.';
-            } elseif ($_FILES['bukti']['size'] > 20 * 1024 * 1024) {
-                $error = 'Ukuran file maksimal 20MB.';
-            } else {
-                $bukti_nama = uniqid('bukti_') . '.' . $ext;
-                move_uploaded_file($_FILES['bukti']['tmp_name'], $upload_dir . $bukti_nama);
-            }
+        if (!in_array($ext, $ext_allowed)) {
+            $error = 'Format file tidak didukung. Gunakan JPG, PNG, PDF, atau video.';
+        } elseif ($_FILES['bukti']['size'] > 20 * 1024 * 1024) {
+            $error = 'Ukuran file maksimal 20MB.';
+        } else {
+            $bukti_nama = uniqid('bukti_') . '.' . $ext;
+            move_uploaded_file($_FILES['bukti']['tmp_name'], $upload_dir . $bukti_nama);
         }
 
         if (!$error) {
@@ -62,12 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $jk        = $conn->real_escape_string($jenis_kekerasan);
             $wk        = $conn->real_escape_string($waktu_kejadian);
             $lk        = $conn->real_escape_string($lokasi_kejadian);
-            $bn        = $bukti_nama ? $conn->real_escape_string($bukti_nama) : null;
-            $bn_sql    = $bn ? "'$bn'" : 'NULL';
+            $bn        = $conn->real_escape_string($bukti_nama);
 
+            // MENAMBAHKAN kolom bukti_nama dan nilainya ke dalam query SQL
             $sql = "INSERT INTO laporan 
-                    (id_user, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan)
-                    VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
+                    (id_user, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan, bukti_nama)
+                    VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu', '$bn')";
 
             if ($conn->query($sql)) {
                 header("Location: laporan_saya.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
@@ -134,7 +136,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </header>
 
-    <!-- Konten latar (dashboard di belakang modal) -->
     <div style="filter: blur(2px); pointer-events:none; opacity:0.4;">
         <section class="welcome-banner">
             <div class="banner-text">
@@ -161,7 +162,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="modal-close" onclick="tutupModal()" title="Tutup">×</button>
         </div>
 
-        <!-- Step Indicator -->
         <div class="step-indicator">
             <div class="step-item active" id="si1">
                 <div class="step-num">1</div>
@@ -187,11 +187,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <?php endif; ?>
 
-            <!-- ===== STEP 1: PILIH JENIS ===== -->
+            <!-- ===== STEP 1 ===== -->
             <div class="step-panel active" id="step1">
                 <div class="modal-body">
                     <p style="font-size:13px;color:#64748b;margin-bottom:16px">Pilih jenis pelaporan yang sesuai dengan situasimu.</p>
-
                     <div class="jenis-grid">
                         <div class="jenis-card umum" id="cardUmum" onclick="pilihJenis('UMUM')">
                             <div class="jenis-icon">
@@ -215,12 +214,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <p>Laporkan secara anonim atau rahasia. Identitasmu terlindungi sepenuhnya.</p>
                         </div>
                     </div>
-
                     <div class="jenis-note" id="jenisNote" style="display:none">
                         <strong id="jenisNoteTitle"></strong><br>
                         <span id="jenisNoteDesc"></span>
                     </div>
-
                     <input type="hidden" name="jenis_pelaporan" id="jenis_pelaporan" value="">
                 </div>
                 <div class="modal-footer">
@@ -232,11 +229,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <!-- ===== STEP 2: DETAIL KEJADIAN ===== -->
+            <!-- ===== STEP 2 ===== -->
             <div class="step-panel" id="step2">
                 <div class="modal-body">
-
-                    <!-- Identitas Pelapor (Khusus saja) -->
                     <div class="identitas-section" id="identitasSection" style="display:none">
                         <h4>Identitas Pelapor (Opsional — akan dirahasiakan)</h4>
                         <div class="form-row">
@@ -250,12 +245,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label">Judul Laporan <span class="req">*</span></label>
                         <input type="text" name="judul_laporan" class="form-control" placeholder="Ringkasan singkat kejadian" required>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">Jenis Kekerasan <span class="req">*</span></label>
@@ -274,12 +267,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="datetime-local" name="waktu_kejadian" class="form-control" required>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label">Lokasi Kejadian <span class="req">*</span></label>
                         <input type="text" name="lokasi_kejadian" class="form-control" placeholder="Contoh: Gedung A, Lantai 2, Kampus Utama" required>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label">Deskripsi Kejadian <span class="req">*</span></label>
                         <textarea name="deskripsi" class="form-control" placeholder="Ceritakan kronologi kejadian secara detail. Semakin lengkap, semakin mudah ditangani." required></textarea>
@@ -297,17 +288,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <!-- ===== STEP 3: UPLOAD BUKTI ===== -->
+            <!-- ===== STEP 3 ===== -->
             <div class="step-panel" id="step3">
                 <div class="modal-body">
                     <p style="font-size:13px;color:#64748b;margin-bottom:16px">
                         Upload bukti pendukung laporan kamu. Bukti dapat berupa foto, video, atau dokumen PDF.
-                        <strong style="color:#0f172a"> (Opsional)</strong>
+                        <strong style="color:#ef4444"> (Wajib Diisi *)</strong>
                     </p>
-
                     <div class="upload-area" id="uploadArea">
+                        <!-- MENAMBAHKAN atribut required -->
                         <input type="file" name="bukti" id="inputBukti" accept="image/*,video/*,.pdf"
-                               onchange="previewFile(this)">
+                               onchange="previewFile(this)" required>
                         <div class="upload-icon">
                             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
@@ -318,14 +309,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h4>Klik atau seret file ke sini</h4>
                         <p>Ukuran maksimal 20MB</p>
                         <div class="file-types">
-                            <span class="file-tag">JPG</span>
-                            <span class="file-tag">PNG</span>
-                            <span class="file-tag">PDF</span>
-                            <span class="file-tag">MP4</span>
-                            <span class="file-tag">MOV</span>
+                            <span class="file-tag">JPG</span><span class="file-tag">PNG</span><span class="file-tag">PDF</span><span class="file-tag">MP4</span><span class="file-tag">MOV</span>
                         </div>
                     </div>
-
                     <div class="file-preview" id="filePreview">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
@@ -335,7 +321,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <span id="fileSize" style="color:#94a3b8;font-size:12px"></span>
                         <button type="button" class="file-remove" onclick="hapusFile()" title="Hapus file">×</button>
                     </div>
-
                     <div style="margin-top:20px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px 14px;font-size:12px;color:#7f1d1d;line-height:1.5">
                         <strong>⚠ Privasi:</strong> Bukti yang kamu upload hanya dapat diakses oleh tim penanganan yang berwenang dan disimpan secara aman.
                     </div>
@@ -351,7 +336,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </button>
                 </div>
             </div>
-
         </form>
     </div>
 </div>
@@ -363,7 +347,6 @@ let jenisSelected = '';
 function pilihJenis(jenis) {
     jenisSelected = jenis;
     document.getElementById('jenis_pelaporan').value = jenis;
-
     document.getElementById('cardUmum').classList.toggle('selected', jenis === 'UMUM');
     document.getElementById('cardKhusus').classList.toggle('selected', jenis === 'KHUSUS');
     document.getElementById('btnStep1').disabled = false;
@@ -383,7 +366,6 @@ function pilihJenis(jenis) {
 }
 
 function goStep(n) {
-    // Validasi step 2
     if (n === 3) {
         const required = ['judul_laporan','jenis_kekerasan','waktu_kejadian','lokasi_kejadian','deskripsi'];
         for (const f of required) {
@@ -398,13 +380,10 @@ function goStep(n) {
     }
 
     document.getElementById('step' + currentStep).classList.remove('active');
-
-    // Step indicator
     const si = document.getElementById('si' + currentStep);
     si.classList.remove('active');
     si.classList.add('done');
-    si.querySelector('.step-num').innerHTML =
-        '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>';
+    si.querySelector('.step-num').innerHTML = '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>';
 
     if (currentStep < 3) {
         document.getElementById('sl' + currentStep).classList.add('done');
@@ -413,21 +392,14 @@ function goStep(n) {
     currentStep = n;
     document.getElementById('step' + currentStep).classList.add('active');
     document.getElementById('si' + currentStep).classList.add('active');
+    document.getElementById('modalTitle').textContent = ['', 'Buat Laporan Baru', 'Detail Kejadian', 'Upload Bukti'][currentStep];
 
-    // Update title
-    const titles = ['', 'Buat Laporan Baru', 'Detail Kejadian', 'Upload Bukti'];
-    document.getElementById('modalTitle').textContent = titles[currentStep];
-
-    // Tampilkan identitas jika Khusus
     if (currentStep === 2) {
-        document.getElementById('identitasSection').style.display =
-            jenisSelected === 'KHUSUS' ? 'block' : 'none';
+        document.getElementById('identitasSection').style.display = jenisSelected === 'KHUSUS' ? 'block' : 'none';
     }
 }
 
-function tutupModal() {
-    history.back();
-}
+function tutupModal() { history.back(); }
 
 function previewFile(input) {
     if (input.files && input.files[0]) {
@@ -448,7 +420,6 @@ function hapusFile() {
     document.getElementById('uploadArea').style.background  = '';
 }
 
-// Drag & drop
 const ua = document.getElementById('uploadArea');
 ua.addEventListener('dragover',  e => { e.preventDefault(); ua.classList.add('drag-over'); });
 ua.addEventListener('dragleave', () => ua.classList.remove('drag-over'));
@@ -462,13 +433,18 @@ ua.addEventListener('drop', e => {
     }
 });
 
-// Submit loading state
-document.getElementById('formLaporan').addEventListener('submit', () => {
+// VALIDASI SUBMIT JAVASCRIPT: Proteksi agar file bukti tidak kosong
+document.getElementById('formLaporan').addEventListener('submit', (e) => {
+    const inputBukti = document.getElementById('inputBukti');
+    if (!inputBukti.files || inputBukti.files.length === 0) {
+        e.preventDefault();
+        alert('Silakan upload file bukti terlebih dahulu sebelum mengirim laporan!');
+        return false;
+    }
     const btn = document.getElementById('btnSubmit');
     btn.disabled = true;
     btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg> Mengirim...';
 });
 </script>
-
 </body>
 </html>
