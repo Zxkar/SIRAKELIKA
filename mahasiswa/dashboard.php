@@ -44,7 +44,7 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
             <a href="#" class="nav-link active">
                 <span class="nav-text">Dashboard</span>
             </a>
-            <a href="laporan.php" class="nav-link">
+            <a href="../mahasiswa/laporan.php" class="nav-link">
                 <span class="nav-text">Laporan Saya</span>
             </a>
 
@@ -192,3 +192,4 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
 
 </body>
 </html>
+

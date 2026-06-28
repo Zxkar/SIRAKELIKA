@@ -103,13 +103,13 @@ if ($detail_id) {
 
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
-        <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan.php" class="nav-link active">Laporan Saya</a>
+        <a href="../mahasiswa/dashboard.php" class="nav-link">Dashboard</a>
+        <a href="../mahasiswa/laporan.php" class="nav-link active">Laporan Saya</a>
 
         <div class="nav-group">PENGELOLAAN</div>
         <a href="manajemen.php" class="nav-link">Manajemen Kasus</a>
-        <a href="edukasi.php" class="nav-link">Edukasi &amp; Informasi</a>
-        <a href="kenali.php" class="nav-link">Kenali Situasi Anda</a>
+        <a href="../edukasi/edukasi1.php" class="nav-link">Edukasi &amp; Informasi</a>
+        <a href="../kenali-situasi/kenali.php" class="nav-link">Kenali Situasi Anda</a>
 
         <div class="nav-group">AKUN</div>
         <a href="profil.php" class="nav-link">Profil</a>
@@ -124,7 +124,7 @@ if ($detail_id) {
     <!-- TOPBAR -->
     <header class="topbar">
         <div class="breadcrumb">
-            <a href="dashboard.php">Beranda</a>
+            <a href="../mahasiswa/dashboard.php">Beranda</a>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
             <span>Laporan Saya</span>
         </div>
@@ -169,7 +169,7 @@ if ($detail_id) {
             <h2>Detail Laporan</h2>
             <p>#<?= htmlspecialchars($kode) ?> &nbsp;·&nbsp; Dibuat <?= $dibuat ?></p>
         </div>
-        <a href="laporan.php" class="btn btn-outline">
+        <a href="../mahasiswa/laporan.php" class="btn btn-outline">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15,18 9,12 15,6"/></svg>
             Kembali
         </a>
@@ -389,7 +389,7 @@ if ($detail_id) {
         <h3><?= ($search || $filter !== 'semua') ? 'Tidak ada laporan ditemukan' : 'Belum ada laporan' ?></h3>
         <p><?= ($search || $filter !== 'semua') ? 'Coba ubah filter atau kata kunci pencarian.' : 'Laporan yang kamu buat akan muncul di sini.' ?></p>
         <?php if ($search || $filter !== 'semua'): ?>
-        <a href="laporan.php" class="btn btn-outline" style="margin-top:16px">Reset Filter</a>
+        <a href="../mahasiswa/laporan.php" class="btn btn-outline" style="margin-top:16px">Reset Filter</a>
         <?php endif; ?>
     </div>
 
@@ -504,3 +504,4 @@ if (searchInput) {
 </script>
 </body>
 </html>
+

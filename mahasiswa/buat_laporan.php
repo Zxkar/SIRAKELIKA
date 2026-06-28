@@ -464,12 +464,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
-        <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan.php" class="nav-link active">Laporan Saya</a>
+        <a href="../mahasiswa/dashboard.php" class="nav-link">Dashboard</a>
+        <a href="../mahasiswa/laporan.php" class="nav-link active">Laporan Saya</a>
         <div class="nav-group">PENGELOLAAN</div>
         <a href="manajemen.php" class="nav-link">Manajemen Kasus</a>
-        <a href="edukasi.php" class="nav-link">Edukasi &amp; Informasi</a>
-        <a href="kenali.php" class="nav-link">Kenali Situasi Anda</a>
+        <a href="../edukasi/edukasi1.php" class="nav-link">Edukasi &amp; Informasi</a>
+        <a href="../kenali-situasi/kenali.php" class="nav-link">Kenali Situasi Anda</a>
         <div class="nav-group">AKUN</div>
         <a href="profil.php" class="nav-link">Profil</a>
         <a href="pengaturan.php" class="nav-link">Pengaturan</a>
@@ -586,7 +586,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="jenis_pelaporan" id="jenis_pelaporan" value="">
                 </div>
                 <div class="modal-footer">
-                    <a href="laporan.php" class="btn btn-outline">Batal</a>
+                    <a href="../mahasiswa/laporan.php" class="btn btn-outline">Batal</a>
                     <button type="button" class="btn btn-primary" id="btnStep1" onclick="goStep(2)" disabled>
                         Selanjutnya
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
@@ -839,3 +839,4 @@ document.getElementById('formLaporan').addEventListener('submit', () => {
 </style>
 </body>
 </html>
+

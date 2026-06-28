@@ -30,3 +30,4 @@ function db_query($conn, $sql, $params = [], $types = '') {
     $stmt->execute();
     return $stmt->get_result();
 }
+
