@@ -35,13 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$judul_laporan || !$deskripsi || !$jenis_kekerasan || !$waktu_kejadian || !$lokasi_kejadian) {
         $error = 'Semua field wajib diisi.';
     } else {
-        // Handle upload bukti (WAJIB)
+        // Handle upload bukti
         $bukti_nama = null;
-        $nama_asli  = null;
-        $tipe_file  = null;
-        if (empty($_FILES['bukti']['name']) || $_FILES['bukti']['error'] !== UPLOAD_ERR_OK) {
-            $error = 'Bukti pendukung wajib diupload.';
-        } else {
+        if (!empty($_FILES['bukti']['name'])) {
             $upload_dir = 'uploads/bukti/';
             if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
@@ -54,8 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Ukuran file maksimal 20MB.';
             } else {
                 $bukti_nama = uniqid('bukti_') . '.' . $ext;
-                $nama_asli  = $_FILES['bukti']['name'];
-                $tipe_file  = $_FILES['bukti']['type'];
                 move_uploaded_file($_FILES['bukti']['tmp_name'], $upload_dir . $bukti_nama);
             }
         }
@@ -68,18 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $jk        = $conn->real_escape_string($jenis_kekerasan);
             $wk        = $conn->real_escape_string($waktu_kejadian);
             $lk        = $conn->real_escape_string($lokasi_kejadian);
+            $bn        = $bukti_nama ? $conn->real_escape_string($bukti_nama) : null;
+            $bn_sql    = $bn ? "'$bn'" : 'NULL';
 
             $sql = "INSERT INTO laporan 
                     (id_user, kode_laporan, judul_laporan, deskripsi, jenis_kekerasan, jenis_pelaporan, waktu_kejadian, lokasi_kejadian, status_laporan)
                     VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
 
             if ($conn->query($sql)) {
-                $id_laporan_baru = $conn->insert_id;
-                $bn = $conn->real_escape_string($bukti_nama);
-                $na = $conn->real_escape_string($nama_asli);
-                $tf = $conn->real_escape_string($tipe_file);
-                $conn->query("INSERT INTO bukti (id_laporan, file_bukti, nama_asli, tipe_file)
-                              VALUES ($id_laporan_baru, '$bn', '$na', '$tf')");
                 header("Location: laporan_saya.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
                 exit;
             } else {
@@ -97,369 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Buat Laporan – SIRAKELIKA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
-    <style>
-        /* ===== MULTI-STEP MODAL ===== */
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(15,23,42,0.5);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-box {
-            background: #fff;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 560px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.18);
-            animation: modalIn 0.25s ease;
-        }
-
-        @keyframes modalIn {
-            from { opacity:0; transform: translateY(16px) scale(0.98); }
-            to   { opacity:1; transform: translateY(0) scale(1); }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px 16px;
-            border-bottom: 1px solid #f1f5f9;
-            position: sticky;
-            top: 0;
-            background: #fff;
-            z-index: 1;
-            border-radius: 16px 16px 0 0;
-        }
-
-        .modal-header h2 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .modal-close {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: none;
-            background: #f1f5f9;
-            color: #64748b;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .modal-close:hover { background: #e2e8f0; }
-
-        /* STEP INDICATOR */
-        .step-indicator {
-            display: flex;
-            align-items: center;
-            padding: 16px 24px;
-            gap: 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .step-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .step-num {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 700;
-            background: #e2e8f0;
-            color: #94a3b8;
-            flex-shrink: 0;
-            transition: all 0.3s;
-        }
-
-        .step-item.active .step-num  { background: #2563eb; color: #fff; }
-        .step-item.done .step-num    { background: #10b981; color: #fff; }
-
-        .step-text {
-            font-size: 11px;
-            font-weight: 600;
-            color: #94a3b8;
-            transition: color 0.3s;
-        }
-
-        .step-item.active .step-text { color: #2563eb; }
-        .step-item.done .step-text   { color: #10b981; }
-
-        .step-line {
-            flex: 1;
-            height: 2px;
-            background: #e2e8f0;
-            margin: 0 8px;
-            transition: background 0.3s;
-        }
-
-        .step-line.done { background: #10b981; }
-
-        /* MODAL BODY */
-        .modal-body { padding: 24px; }
-
-        /* PILIH JENIS */
-        .jenis-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .jenis-card {
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 20px 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: #fff;
-        }
-
-        .jenis-card:hover { border-color: #93c5fd; background: #f8fafc; }
-
-        .jenis-card.selected {
-            border-color: #2563eb;
-            background: #eff6ff;
-        }
-
-        .jenis-card .jenis-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-        }
-
-        .jenis-card.umum .jenis-icon  { background: #eff6ff; color: #2563eb; }
-        .jenis-card.khusus .jenis-icon { background: #faf5ff; color: #7c3aed; }
-
-        .jenis-card h3 { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
-        .jenis-card p  { font-size: 12px; color: #64748b; line-height: 1.5; }
-
-        .jenis-note {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-radius: 8px;
-            padding: 12px 14px;
-            font-size: 12px;
-            color: #92400e;
-            line-height: 1.5;
-            margin-bottom: 4px;
-        }
-
-        /* FORM FIELDS */
-        .form-group { margin-bottom: 16px; }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        .form-label .req { color: #ef4444; margin-left: 2px; }
-
-        .form-control {
-            width: 100%;
-            padding: 9px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #1e293b;
-            background: #fff;
-            outline: none;
-            transition: border 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .form-control:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-
-        textarea.form-control { resize: vertical; min-height: 90px; }
-
-        select.form-control { cursor: pointer; }
-
-        /* UPLOAD AREA */
-        .upload-area {
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 32px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: #f8fafc;
-            position: relative;
-        }
-
-        .upload-area:hover, .upload-area.drag-over {
-            border-color: #3b82f6;
-            background: #eff6ff;
-        }
-
-        .upload-area input[type="file"] {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-            width: 100%;
-            height: 100%;
-        }
-
-        .upload-icon {
-            width: 48px;
-            height: 48px;
-            background: #e0f2fe;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            color: #0284c7;
-        }
-
-        .upload-area h4 { font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
-        .upload-area p  { font-size: 12px; color: #64748b; }
-
-        .file-types {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 12px;
-        }
-
-        .file-tag {
-            background: #f1f5f9;
-            color: #475569;
-            font-size: 10px;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-
-        .file-preview {
-            display: none;
-            align-items: center;
-            gap: 10px;
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-top: 10px;
-            font-size: 13px;
-            color: #166534;
-            font-weight: 500;
-        }
-
-        .file-preview.show { display: flex; }
-
-        .file-remove {
-            margin-left: auto;
-            background: none;
-            border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 16px;
-            line-height: 1;
-        }
-
-        /* ALERT */
-        .alert-error {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            padding: 12px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-bottom: 16px;
-        }
-
-        /* FOOTER */
-        .modal-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            border-top: 1px solid #f1f5f9;
-            gap: 10px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 18px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            text-decoration: none;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary { background: #2563eb; color: #fff; }
-        .btn-primary:hover { background: #1d4ed8; }
-        .btn-primary:disabled { background: #93c5fd; cursor: not-allowed; }
-
-        .btn-outline { background: #fff; color: #475569; border: 1px solid #e2e8f0; }
-        .btn-outline:hover { background: #f8fafc; }
-
-        .btn-ghost { background: transparent; color: #64748b; padding: 9px 12px; }
-        .btn-ghost:hover { background: #f1f5f9; }
-
-        /* KHUSUS: identitas pelapor */
-        .identitas-section {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        .identitas-section h4 {
-            font-size: 12px;
-            font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        /* STEP PANELS */
-        .step-panel { display: none; }
-        .step-panel.active { display: block; }
-    </style>
+    <link rel="stylesheet" href="buat_laporan.css">
 </head>
 <body>
 
@@ -674,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="modal-body">
                     <p style="font-size:13px;color:#64748b;margin-bottom:16px">
                         Upload bukti pendukung laporan kamu. Bukti dapat berupa foto, video, atau dokumen PDF.
-                        <strong style="color:#dc2626"> (Wajib diupload)</strong>
+                        <strong style="color:#0f172a"> (Opsional)</strong>
                     </p>
 
                     <div class="upload-area" id="uploadArea">
@@ -835,32 +463,12 @@ ua.addEventListener('drop', e => {
 });
 
 // Submit loading state
-document.getElementById('formLaporan').addEventListener('submit', function(e) {
-    const input = document.getElementById('inputBukti');
-    if (!input.files || input.files.length === 0) {
-        e.preventDefault();
-        const area = document.getElementById('uploadArea');
-        area.style.borderColor = '#ef4444';
-        area.style.background  = '#fef2f2';
-        let msg = document.getElementById('buktiError');
-        if (!msg) {
-            msg = document.createElement('p');
-            msg.id = 'buktiError';
-            msg.style.cssText = 'color:#ef4444;font-size:13px;margin-top:8px;font-weight:600;';
-            area.insertAdjacentElement('afterend', msg);
-        }
-        msg.textContent = '⚠ Bukti wajib diupload sebelum mengirim laporan.';
-        area.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-    }
+document.getElementById('formLaporan').addEventListener('submit', () => {
     const btn = document.getElementById('btnSubmit');
     btn.disabled = true;
     btn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg> Mengirim...';
 });
 </script>
 
-<style>
-@keyframes spin { to { transform: rotate(360deg); } }
-</style>
 </body>
 </html>
