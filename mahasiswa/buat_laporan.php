@@ -75,16 +75,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($conn->query($sql)) {
                 $id_laporan_baru = $conn->insert_id;
-
-                // Insert bukti ke tabel bukti jika ada file yang berhasil diupload
                 if ($bukti_nama) {
-                    $bn  = $conn->real_escape_string($bukti_nama);
-                    $na  = $conn->real_escape_string($nama_asli);
-                    $tf  = $conn->real_escape_string($tipe_file);
+                    $bn = $conn->real_escape_string($bukti_nama);
+                    $na = $conn->real_escape_string($nama_asli);
+                    $tf = $conn->real_escape_string($tipe_file);
                     $conn->query("INSERT INTO bukti (id_laporan, file_bukti, nama_asli, tipe_file)
                                   VALUES ($id_laporan_baru, '$bn', '$na', '$tf')");
                 }
-
                 header("Location: laporan_saya.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
                 exit;
             } else {
@@ -839,7 +836,7 @@ ua.addEventListener('drop', e => {
     }
 });
 
-
+// Submit - wajib ada bukti
 document.getElementById('formLaporan').addEventListener('submit', function(e) {
     const input = document.getElementById('inputBukti');
     if (!input.files || input.files.length === 0) {
@@ -854,7 +851,7 @@ document.getElementById('formLaporan').addEventListener('submit', function(e) {
             msg.style.cssText = 'color:#ef4444;font-size:13px;margin-top:8px;font-weight:600;';
             area.insertAdjacentElement('afterend', msg);
         }
-        msg.textContent = '\u26a0 Bukti wajib diupload sebelum mengirim laporan.';
+        msg.textContent = '⚠ Bukti wajib diupload sebelum mengirim laporan.';
         area.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
     }
