@@ -264,7 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label">Nama Pelapor / Korban <span class="req">*</span></label>
-                                <input type="text" name="nama_pelapor" id="inputNama" class="form-control" placeholder="Nama lengkap Anda">
+                                <input type="text" name="nama_pelapor" id="inputNama" class="form-control" placeholder="Nama lengkap">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">NIM <span class="req">*</span></label>
