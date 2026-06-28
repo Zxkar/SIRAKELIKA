@@ -26,7 +26,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Dashboard Investigasi</title>
-    <link rel="stylesheet" href="dashboard.css"> 
+    <link rel="stylesheet" href="dashboard_investigasi.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -115,7 +115,7 @@ $kasus_selesai  = mysqli_fetch_assoc($query_kasus_selesai)['selesai'];
             </a>
 
             <div class="nav-group">AKUN SYSTEM</div>
-            <a href="logout.php" class="nav-link logout">
+            <a href="../auth/logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
             </a>
         </nav>
