@@ -323,7 +323,7 @@ function statusBadgeClass($status) {
         </a>
 
         <div class="nav-group">AKUN SYSTEM</div>
-        <a href="../config/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
+        <a href="../auth/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
             <span class="nav-text">Keluar</span>
         </a>
     </nav>
