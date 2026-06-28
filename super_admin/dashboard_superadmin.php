@@ -20,7 +20,7 @@ $count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Admin Panel</title>
-    <link rel="stylesheet" href="dashboard_superadmin.css">
+    <link rel="stylesheet" href="dashboard_admin.css">
 </head>
 <body>
 
