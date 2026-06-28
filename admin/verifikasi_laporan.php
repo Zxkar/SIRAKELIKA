@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config/conn.php';
+include 'conn.php';
 
 if(!isset($_SESSION['admin_logged_in']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])){
     header("Location: login_admin.php");
@@ -75,11 +75,27 @@ if(isset($_POST['update_status'])){
 $filter = isset($_GET['filter']) ? mysqli_real_escape_string($conn, $_GET['filter']) : 'menunggu';
 if(!in_array($filter, $valid_status)) $filter = 'menunggu';
 
-$query = mysqli_query($conn, "SELECT l.*, u.username, l.bukti_file FROM laporan l
+$query = mysqli_query($conn, "SELECT l.*, u.username FROM laporan l
                                LEFT JOIN users u ON l.id_user = u.id_user
                                WHERE l.status_laporan = '$filter'
                                ORDER BY l.tanggal_laporan DESC");
-$total = mysqli_num_rows($query);
+$laporan_list = mysqli_fetch_all($query, MYSQLI_ASSOC);
+$total = count($laporan_list);
+
+// Ambil semua bukti terkait laporan yang tampil saat ini (1 laporan bisa punya banyak bukti)
+$bukti_map = [];
+if($total > 0){
+    $ids = array_map(fn($r) => (int)$r['id_laporan'], $laporan_list);
+    $bukti_q = mysqli_query($conn, "SELECT * FROM bukti WHERE id_laporan IN (" . implode(',', $ids) . ") ORDER BY tanggal_upload ASC");
+    while($b = mysqli_fetch_assoc($bukti_q)){
+        $bukti_map[$b['id_laporan']][] = $b;
+    }
+}
+
+// Path URL ke folder bukti — sesuai buat_laporan.php yang simpan ke 'uploads/bukti/'
+// relatif dari folder laporan/. Sesuaikan jika struktur folder berbeda.
+define('BUKTI_BASE_PATH', '../laporan/uploads/bukti/');
+define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/laporan/uploads/bukti/');
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -89,24 +105,6 @@ $total = mysqli_num_rows($query);
     <title>Verifikasi Laporan - SIRAKELIKA</title>
     <link rel="stylesheet" href="dashboard_admin.css">
     <link rel="stylesheet" href="verifikasi_laporan.css">
-    <style>
-        .btn-detail { background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; padding:6px 14px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; transition:all 0.2s; }
-        .btn-detail:hover { background:#dbeafe; }
-        .modal-detail { background:#fff; border-radius:16px; width:560px; max-width:95vw; max-height:88vh; overflow-y:auto; }
-        .modal-detail-head { padding:20px 24px 16px; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:#fff; z-index:1; border-radius:16px 16px 0 0; }
-        .modal-detail-head h3 { font-size:16px; font-weight:700; color:#0f172a; }
-        .modal-detail-body { padding:20px 24px 24px; }
-        .detail-section-title { font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; }
-        .detail-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f8fafc; font-size:13px; gap:12px; }
-        .detail-row span:first-child { color:#64748b; flex-shrink:0; }
-        .detail-row strong { color:#0f172a; font-weight:600; text-align:right; }
-        .detail-deskripsi { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; font-size:13px; color:#334155; line-height:1.6; white-space:pre-wrap; margin-top:8px; }
-        .bukti-img { max-width:100%; border-radius:8px; border:1px solid #e2e8f0; margin-top:8px; display:block; }
-        .bukti-link { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; background:#f0fdf4; border:1px solid #bbf7d0; color:#16a34a; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; margin-top:8px; }
-        .bukti-link:hover { background:#dcfce7; }
-        .no-bukti { font-size:13px; color:#94a3b8; font-style:italic; margin-top:6px; }
-        .modal-close-btn { background:#f1f5f9; border:none; width:28px; height:28px; border-radius:50%; color:#64748b; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-    </style>
 </head>
 <body>
 
@@ -196,39 +194,135 @@ $total = mysqli_num_rows($query);
                 </tr>
             </thead>
             <tbody>
-            <?php if($total > 0): while($row = mysqli_fetch_assoc($query)): 
-                $kode = htmlspecialchars($row['kode_laporan'] ?? '#KS-'.$row['id_laporan']);
+            <?php if($total > 0): foreach($laporan_list as $row): 
+                $id_lap  = $row['id_laporan'];
+                $kode    = htmlspecialchars($row['kode_laporan'] ?? '#KS-'.$id_lap);
                 $pelapor = $row['id_user'] ? htmlspecialchars($row['username']) : '<em style="color:#94a3b8">Anonim</em>';
+                $bukti_list = $bukti_map[$id_lap] ?? [];
+                $waktu_kejadian_fmt = (!empty($row['waktu_kejadian']) && $row['waktu_kejadian'] !== '0000-00-00 00:00:00')
+                    ? date('d M Y, H:i', strtotime($row['waktu_kejadian'])) : '-';
             ?>
             <tr>
                 <td class="id-case"><?= $kode ?></td>
-                <td><strong><?= htmlspecialchars($row['judul_laporan']) ?></strong></td>
+                <td><strong><?= htmlspecialchars($row['judul_laporan'] ?: '(tanpa judul)') ?></strong></td>
                 <td><?= $pelapor ?></td>
-                <td><?= htmlspecialchars($row['jenis_kekerasan']) ?></td>
+                <td><?= htmlspecialchars($row['jenis_kekerasan'] ?: '-') ?></td>
                 <td><?= date('d M Y', strtotime($row['tanggal_laporan'])) ?></td>
                 <td><span class="badge-status s-<?= $row['status_laporan'] ?>"><?= ucfirst($row['status_laporan']) ?></span></td>
                 <td>
-                    <button class="btn-detail" onclick="openDetail(<?= htmlspecialchars(json_encode([
-                        'kode'            => $kode,
-                        'judul'           => $row['judul_laporan'],
-                        'pelapor'         => $row['username'] ?? 'Anonim',
-                        'jenis_pelaporan' => $row['jenis_pelaporan'] ?? '-',
-                        'jenis_kekerasan' => $row['jenis_kekerasan'],
-                        'waktu_kejadian'  => $row['waktu_kejadian'] ?? '-',
-                        'lokasi'          => $row['lokasi_kejadian'],
-                        'deskripsi'       => $row['deskripsi'],
-                        'bukti'           => $row['bukti_file'] ?? '',
-                        'status'          => $row['status_laporan'],
-                        'tanggal'         => date('d M Y', strtotime($row['tanggal_laporan'])),
-                    ]), ENT_QUOTES) ?>)">Lihat Detail</button>
-                    <button class="btn-verif" onclick="openModal(
-                        <?= $row['id_laporan'] ?>,
-                        '<?= addslashes($kode) ?>',
-                        '<?= $row['status_laporan'] ?>'
-                    )">Update Status</button>
+                    <button type="button" class="btn-verif" id="btnToggle<?= $id_lap ?>" onclick="toggleDetail(<?= $id_lap ?>)">Lihat & Verifikasi</button>
                 </td>
             </tr>
-            <?php endwhile; else: ?>
+            <tr class="detail-row" id="detailRow<?= $id_lap ?>">
+                <td colspan="7">
+                    <div class="detail-panel">
+
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Jenis Laporan</span>
+                                <span class="detail-value">
+                                    <?php if(($row['jenis_pelaporan'] ?? '') === 'UMUM'): ?>
+                                        <span class="badge-pelaporan badge-umum">Umum (Anonim)</span>
+                                    <?php else: ?>
+                                        <span class="badge-pelaporan badge-khusus">Khusus</span>
+                                    <?php endif; ?>
+                                </span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Jenis Kekerasan</span>
+                                <span class="detail-value"><?= htmlspecialchars(ucfirst($row['jenis_kekerasan'] ?: '-')) ?></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Waktu Kejadian</span>
+                                <span class="detail-value"><?= $waktu_kejadian_fmt ?></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Lokasi Kejadian</span>
+                                <span class="detail-value"><?= htmlspecialchars($row['lokasi_kejadian'] ?: '-') ?></span>
+                            </div>
+                            <?php if(($row['jenis_pelaporan'] ?? '') === 'KHUSUS' && (!empty($row['nama_pelapor']) || !empty($row['nim_pelapor']))): ?>
+                            <div class="detail-item detail-span2">
+                                <span class="detail-label">Identitas Pelapor</span>
+                                <span class="detail-value"><?= htmlspecialchars($row['nama_pelapor'] ?: '-') ?> — NIM <?= htmlspecialchars($row['nim_pelapor'] ?: '-') ?></span>
+                            </div>
+                            <?php endif; ?>
+                            <div class="detail-item detail-span2">
+                                <span class="detail-label">Akun Pengirim</span>
+                                <span class="detail-value"><?= $row['id_user'] ? htmlspecialchars($row['username']) : 'Anonim (tanpa akun tercatat)' ?></span>
+                            </div>
+                        </div>
+
+                        <div class="detail-block">
+                            <span class="detail-label">Judul Laporan</span>
+                            <p class="detail-text"><?= htmlspecialchars($row['judul_laporan'] ?: '-') ?></p>
+                        </div>
+
+                        <div class="detail-block">
+                            <span class="detail-label">Kronologi / Deskripsi Kejadian</span>
+                            <p class="detail-text"><?= nl2br(htmlspecialchars($row['deskripsi'] ?: '-')) ?></p>
+                        </div>
+
+                        <div class="detail-block">
+                            <span class="detail-label">Bukti Pendukung (<?= count($bukti_list) ?>)</span>
+                            <?php if(empty($bukti_list)): ?>
+                                <p class="no-bukti">Tidak ada bukti yang diupload pelapor.</p>
+                            <?php else: ?>
+                                <div class="bukti-grid">
+                                <?php foreach($bukti_list as $b):
+                                    $url      = BUKTI_BASE_PATH . $b['file_bukti'];
+                                    $srv_path = BUKTI_SERVER_PATH . $b['file_bukti'];
+                                    $ext      = strtolower(pathinfo($b['file_bukti'], PATHINFO_EXTENSION));
+                                    $tipe     = $b['tipe_file'] ?? '';
+                                    // Skip jika file tidak ada di server
+                                    if (!file_exists($srv_path)) continue;
+                                ?>
+                                    <div class="bukti-item">
+                                    <?php if(in_array($ext, ['jpg','jpeg','png']) || str_starts_with($tipe, 'image/')): ?>
+                                        <a href="<?= htmlspecialchars($url) ?>" target="_blank"><img src="<?= htmlspecialchars($url) ?>" class="bukti-img" alt="Bukti laporan"></a>
+                                    <?php elseif(in_array($ext, ['mp4','mov','avi']) || str_starts_with($tipe, 'video/')): ?>
+                                        <video src="<?= htmlspecialchars($url) ?>" controls class="bukti-video"></video>
+                                    <?php elseif(in_array($ext, ['mp3','wav','m4a','ogg','aac']) || str_starts_with($tipe, 'audio/')): ?>
+                                        <audio src="<?= htmlspecialchars($url) ?>" controls class="bukti-audio"></audio>
+                                    <?php elseif($ext === 'pdf'): ?>
+                                        <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📄 <?= htmlspecialchars($b['nama_asli'] ?: $b['file_bukti']) ?></a>
+                                    <?php else: ?>
+                                        <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📎 <?= htmlspecialchars($b['nama_asli'] ?: $b['file_bukti']) ?></a>
+                                    <?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <hr class="modal-divider">
+
+                        <form method="POST" class="status-form">
+                            <input type="hidden" name="update_status" value="1">
+                            <input type="hidden" name="id_laporan" value="<?= $id_lap ?>">
+                            <div class="form-row-inline">
+                                <div class="form-group">
+                                    <label>Status Baru</label>
+                                    <select name="status_baru">
+                                        <?php foreach($valid_status as $s): ?>
+                                        <option value="<?= $s ?>" <?= $row['status_laporan']===$s ? 'selected' : '' ?>><?= ucfirst($s) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="flex:1;">
+                                    <label>Catatan (opsional)</label>
+                                    <textarea name="catatan" placeholder="Tambahkan catatan tindakan..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" onclick="toggleDetail(<?= $id_lap ?>)">Tutup</button>
+                                <button type="submit" class="btn-submit">Simpan Status</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; else: ?>
             <tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8;">Tidak ada laporan dengan status ini.</td></tr>
             <?php endif; ?>
             </tbody>
@@ -236,108 +330,26 @@ $total = mysqli_num_rows($query);
     </div>
 </main>
 
-<!-- Modal Update Status -->
-<div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-        <h3>Update Status Laporan</h3>
-        <p class="sub" id="modalKode"></p>
-        <form method="POST">
-            <input type="hidden" name="update_status" value="1">
-            <input type="hidden" name="id_laporan" id="inputId">
-            <div class="form-group">
-                <label>Status Baru</label>
-                <select name="status_baru" id="selectStatus">
-                    <option value="menunggu">Menunggu</option>
-                    <option value="diproses">Diproses</option>
-                    <option value="ditindaklanjuti">Ditindaklanjuti</option>
-                    <option value="selesai">Selesai</option>
-                    <option value="ditolak">Ditolak</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Catatan (opsional)</label>
-                <textarea name="catatan" placeholder="Tambahkan catatan tindakan..."></textarea>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
-                <button type="submit" class="btn-submit">Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal Detail Laporan -->
-<div class="modal-overlay" id="modalDetail">
-    <div class="modal-detail">
-        <div class="modal-detail-head">
-            <h3>Detail Laporan — <span id="d_kode" style="color:#dc2626"></span></h3>
-            <button class="modal-close-btn" onclick="closeDetail()">×</button>
-        </div>
-        <div class="modal-detail-body">
-            <div class="detail-section-title">Informasi Laporan</div>
-            <div class="detail-row"><span>Pelapor</span><strong id="d_pelapor"></strong></div>
-            <div class="detail-row"><span>Jenis Pelaporan</span><strong id="d_jenis_pelaporan"></strong></div>
-            <div class="detail-row"><span>Jenis Kekerasan</span><strong id="d_jenis_kekerasan"></strong></div>
-            <div class="detail-row"><span>Waktu Kejadian</span><strong id="d_waktu"></strong></div>
-            <div class="detail-row"><span>Lokasi Kejadian</span><strong id="d_lokasi"></strong></div>
-            <div class="detail-row"><span>Tanggal Laporan</span><strong id="d_tanggal"></strong></div>
-            <div class="detail-row"><span>Status</span><strong id="d_status"></strong></div>
-
-            <div class="detail-section-title" style="margin-top:16px;">Deskripsi Kejadian</div>
-            <div class="detail-deskripsi" id="d_deskripsi"></div>
-
-            <div class="detail-section-title" style="margin-top:16px;">Bukti Lampiran</div>
-            <div id="d_bukti_wrap"></div>
-        </div>
-    </div>
-</div>
 
 <script>
-function openDetail(data) {
-    document.getElementById('d_kode').textContent            = data.kode;
-    document.getElementById('d_pelapor').textContent         = data.pelapor || 'Anonim';
-    document.getElementById('d_jenis_pelaporan').textContent = data.jenis_pelaporan || '-';
-    document.getElementById('d_jenis_kekerasan').textContent = data.jenis_kekerasan || '-';
-    document.getElementById('d_waktu').textContent           = data.waktu_kejadian || '-';
-    document.getElementById('d_lokasi').textContent          = data.lokasi || '-';
-    document.getElementById('d_tanggal').textContent         = data.tanggal || '-';
-    document.getElementById('d_status').textContent          = data.status || '-';
-    document.getElementById('d_deskripsi').textContent       = data.deskripsi || '-';
+function toggleDetail(id){
+    const row = document.getElementById('detailRow' + id);
+    const btn = document.getElementById('btnToggle' + id);
+    const isOpen = row.classList.contains('show');
 
-    const wrap = document.getElementById('d_bukti_wrap');
-    if (data.bukti) {
-        const ext = data.bukti.split('.').pop().toLowerCase();
-        const url = '../mahasiswa/uploads/bukti/' + data.bukti;
-        if (['jpg','jpeg','png'].includes(ext)) {
-            wrap.innerHTML = '<img src="' + url + '" class="bukti-img">';
-        } else {
-            wrap.innerHTML = '<a href="' + url + '" target="_blank" class="bukti-link">📎 Lihat / Download Bukti (' + ext.toUpperCase() + ')</a>';
-        }
-    } else {
-        wrap.innerHTML = '<p class="no-bukti">Tidak ada bukti yang dilampirkan.</p>';
+    // Tutup semua baris detail lain yang sedang terbuka
+    document.querySelectorAll('.detail-row.show').forEach(function(r){
+        r.classList.remove('show');
+        const otherBtn = document.getElementById('btnToggle' + r.id.replace('detailRow',''));
+        if(otherBtn) otherBtn.textContent = 'Lihat & Verifikasi';
+    });
+
+    if(!isOpen){
+        row.classList.add('show');
+        btn.textContent = 'Tutup Detail';
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-
-    document.getElementById('modalDetail').classList.add('show');
 }
-function closeDetail() {
-    document.getElementById('modalDetail').classList.remove('show');
-}
-document.getElementById('modalDetail').addEventListener('click', function(e){
-    if(e.target === this) closeDetail();
-});
-
-function openModal(id, kode, statusSaat){
-    document.getElementById('inputId').value = id;
-    document.getElementById('modalKode').textContent = 'Kode: ' + kode;
-    document.getElementById('selectStatus').value = statusSaat;
-    document.getElementById('modalOverlay').classList.add('show');
-}
-function closeModal(){
-    document.getElementById('modalOverlay').classList.remove('show');
-}
-document.getElementById('modalOverlay').addEventListener('click', function(e){
-    if(e.target === this) closeModal();
-});
 </script>
 </body>
 </html>
