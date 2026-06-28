@@ -34,23 +34,21 @@ $count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
     </div>
     <nav class="nav-container">
         <div class="nav-group">SYSTEM CONTROL</div>
-        <a href="dashboard_admin.php" class="nav-link active">
-            <span class="nav-text">Dashboard</span>
-        </a>
+        <a href="dashboard_superadmin.php" class="nav-link active">
+    <span class="nav-text">Dashboard</span>
+</a>
 
-        <div class="nav-group">MANAJEMEN</div>
-        <a href="verifikasi_laporan.php" class="nav-link">
+        <a href="../admin/verifikasi_laporan.php" class="nav-link">
             <span class="nav-text">Verifikasi Laporan Masuk</span>
         </a>
-        <a href="kelola_mahasiswa.php" class="nav-link">
+        <a href="../admin/kelola_mahasiswa.php" class="nav-link">
             <span class="nav-text">Kelola Akun Mahasiswa</span>
         </a>
-        <a href="kelola_internal.php" class="nav-link">
+        <a href="../admin/kelola_internal.php" class="nav-link">
             <span class="nav-text">Kelola Akun Pihak Internal</span>
         </a>
-
-        <div class="nav-group">AKUN UTAMA</div>
-        <a href="logout.php" class="nav-link logout">
+        
+        <a href="../auth/logout.php" class="nav-link logout">
             <span class="nav-text">Keluar</span>
         </a>
     </nav>
