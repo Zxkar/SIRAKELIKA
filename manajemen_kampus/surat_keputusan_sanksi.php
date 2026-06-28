@@ -80,7 +80,7 @@ if (isset($_POST['terbitkan_sk'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIRAKELIKA - Surat Keputusan Sanksi</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="../mahasiswa/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; margin: 0; display: flex; min-height: 100vh; }
@@ -125,7 +125,7 @@ if (isset($_POST['terbitkan_sk'])) {
             
 
             <div class="nav-group">AKUN SYSTEM</div>
-            <a href="logout.php" class="nav-link logout">
+            <a href="../auth/logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
             </a>
         </nav>
