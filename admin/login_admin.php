@@ -335,7 +335,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <div class="brand-name">SIRAKELIKA</div>
             </div>
 
-            <h1>Otorisasi Personel</h1>
+            <h1>ADMIN</h1>
             <p>Halaman ini khusus untuk administrator yang telah terverifikasi. Setiap aktivitas tercatat dalam log audit sistem.</p>
 
             <div class="spacer"></div>

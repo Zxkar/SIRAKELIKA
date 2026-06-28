@@ -1,14 +1,6 @@
 <?php
 session_start();
-
-// Prevent browser caching
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
-
-include 'conn.php';
-
+include "conn.php";
 
 // Hanya mahasiswa yang login boleh mengakses halaman ini
 if (!isset($_SESSION['id_user'])) {
@@ -78,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     VALUES ($id_user, '$kode', '$jl', '$ds', '$jk', '$jp', '$wk', '$lk', 'menunggu')";
 
             if ($conn->query($sql)) {
-                header("Location: laporan.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
+                header("Location: laporan_saya.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
                 exit;
             } else {
                 $error = 'Gagal menyimpan laporan: ' . $conn->error;
@@ -95,11 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Buat Laporan – SIRAKELIKA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
-    <script>
-    const halamanAsal = <?= json_encode(
-        !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'dashboard.php'
-    ) ?>;
-</script>
     <style>
         /* ===== MULTI-STEP MODAL ===== */
         .modal-backdrop {
@@ -478,14 +465,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan.php" class="nav-link active">Laporan Saya</a>
+        <a href="laporan_saya.php" class="nav-link active">Laporan Saya</a>
         <div class="nav-group">PENGELOLAAN</div>
-        <a href="manajemen.php" class="nav-link">Manajemen Kasus</a>
-        <a href="edukasi.php" class="nav-link">Edukasi &amp; Informasi</a>
+     
+        <a href="edukasi1.php" class="nav-link">Edukasi &amp; Informasi</a>
         <a href="kenali.php" class="nav-link">Kenali Situasi Anda</a>
         <div class="nav-group">AKUN</div>
         <a href="profil.php" class="nav-link">Profil</a>
-        <a href="pengaturan.php" class="nav-link">Pengaturan</a>
+       
         <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin keluar?')">Keluar</a>
     </nav>
 </aside>
@@ -599,7 +586,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="jenis_pelaporan" id="jenis_pelaporan" value="">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-ghost" onclick="tutupModal()">Batal</button>
+                    <button type="button" class="btn btn-outline" onclick="tutupModal()">Batal</button>
                     <button type="button" class="btn btn-primary" id="btnStep1" onclick="goStep(2)" disabled>
                         Selanjutnya
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
@@ -801,9 +788,7 @@ function goStep(n) {
 }
 
 function tutupModal() {
-    if (confirm('Batalkan laporan ini? Data yang sudah diisi akan hilang.')) {
-        history.back();
-    }
+    history.back();
 }
 
 function previewFile(input) {
