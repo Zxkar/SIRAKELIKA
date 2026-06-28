@@ -68,7 +68,7 @@ $query = mysqli_query($conn, "SELECT l.*, u.username FROM laporan l LEFT JOIN us
 $laporan_list = mysqli_fetch_all($query, MYSQLI_ASSOC);
 $total = count($laporan_list);
 
-// LOGIKA PEMETAAN BUKTI RELASIONAL SESUAI STRUKTUR TABEL `bukti` ANDA
+// LOGIKA PEMETAAN BUKTI RELASIONAL SESUAI STRUKTUR TABEL `bukti`
 $bukti_map = [];
 if($total > 0){
     $ids = array_map(fn($r) => (int)$r['id_laporan'], $laporan_list);
@@ -78,9 +78,10 @@ if($total > 0){
     }
 }
 
-// buat_laporan.php (mahasiswa/) simpan ke mahasiswa/uploads/bukti/
-define('BUKTI_BASE_PATH', '../mahasiswa/uploads/bukti/');
-define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/mahasiswa/uploads/bukti/');
+// =================== PERUBAHAN PATH DI SINI (PILIHAN 1) ===================
+define('BUKTI_BASE_PATH', '../uploads/bukti/');
+define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
+// =========================================================================
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -186,7 +187,7 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/mahasiswa/uploads/bukti/');
                             ?>
                                 <div class="bukti-grid">
                                     <?php foreach($list_bukti as $b): 
-                                        $nama_file = $b['file_bukti']; // Membaca dari kolom file_bukti asli Anda
+                                        $nama_file = $b['file_bukti']; 
                                         $url       = BUKTI_BASE_PATH . $nama_file;
                                         $srv_path  = BUKTI_SERVER_PATH . $nama_file;
                                         $ext       = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
