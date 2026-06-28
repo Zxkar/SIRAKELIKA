@@ -68,7 +68,6 @@ $query = mysqli_query($conn, "SELECT l.*, u.username FROM laporan l LEFT JOIN us
 $laporan_list = mysqli_fetch_all($query, MYSQLI_ASSOC);
 $total = count($laporan_list);
 
-// LOGIKA PEMETAAN BUKTI RELASIONAL SESUAI STRUKTUR TABEL `bukti`
 $bukti_map = [];
 if($total > 0){
     $ids = array_map(fn($r) => (int)$r['id_laporan'], $laporan_list);
@@ -78,7 +77,7 @@ if($total > 0){
     }
 }
 
-// =================== PERUBAHAN PATH DI SINI (PILIHAN 1) ===================
+// =================== PENGATURAN PATH KHUSUS DI FOLDER ADMIN ===================
 define('BUKTI_BASE_PATH', '../uploads/bukti/');
 define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
 // =========================================================================
@@ -91,6 +90,16 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
     <title>Verifikasi Laporan - SIRAKELIKA</title>
     <link rel="stylesheet" href="dashboard_admin.css">
     <link rel="stylesheet" href="verifikasi_laporan.css">
+    <style>
+        .badge-kategori {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .kat-khusus { background-color: #ffe4e6; color: #e11d48; border: 1px solid #fda4af; }
+        .kat-umum { background-color: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+    </style>
 </head>
 <body>
 
@@ -137,6 +146,7 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 <tr>
                     <th>KODE</th>
                     <th>JUDUL LAPORAN</th>
+                    <th>KATEGORI</th>
                     <th>PELAPOR</th>
                     <th>JENIS KEKERASAN</th>
                     <th>TANGGAL</th>
@@ -149,10 +159,20 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 $id_lap  = $row['id_laporan'];
                 $kode    = htmlspecialchars($row['kode_laporan'] ?? '#KS-'.$id_lap);
                 $pelapor = $row['id_user'] ? htmlspecialchars($row['username']) : '<em style="color:#94a3b8">Anonim</em>';
+                
+                // Mengambil nilai kategori (Ubah 'kategori' jika nama kolom di database kamu berbeda)
+                $kategori = isset($row['kategori']) ? strtolower($row['kategori']) : 'umum';
             ?>
             <tr>
                 <td class="id-case"><?= $kode ?></td>
                 <td><strong><?= htmlspecialchars($row['judul_laporan'] ?: '(tanpa judul)') ?></strong></td>
+                <td>
+                    <?php if($kategori === 'khusus'): ?>
+                        <span class="badge-kategori kat-khusus">Khusus</span>
+                    <?php else: ?>
+                        <span class="badge-kategori kat-umum">Umum</span>
+                    <?php endif; ?>
+                </td>
                 <td><?= $pelapor ?></td>
                 <td><?= htmlspecialchars($row['jenis_kekerasan'] ?: '-') ?></td>
                 <td><?= date('d M Y', strtotime($row['tanggal_laporan'])) ?></td>
@@ -160,12 +180,16 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 <td><button type="button" class="btn-verif" id="btnToggle<?= $id_lap ?>" onclick="toggleDetail(<?= $id_lap ?>)">Lihat & Verifikasi</button></td>
             </tr>
             <tr class="detail-row" id="detailRow<?= $id_lap ?>">
-                <td colspan="7">
+                <td colspan="8">
                     <div class="detail-panel">
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <span class="detail-label">Waktu & Lokasi Kejadian</span>
                                 <span class="detail-value"><?= htmlspecialchars($row['lokasi_kejadian']) ?></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Sifat / Kategori Laporan</span>
+                                <span class="detail-value"><strong><?= ucfirst($kategori) ?></strong></span>
                             </div>
                         </div>
 
@@ -174,7 +198,6 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                             <p class="detail-text"><?= nl2br(htmlspecialchars($row['deskripsi'] ?: '-')) ?></p>
                         </div>
 
-                        <!-- BLOK BUKTI TERHUBUNG TABEL `bukti` -->
                         <div class="detail-block">
                             <span class="detail-label">Bukti Pendukung</span>
                             <?php 
@@ -234,7 +257,7 @@ define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
                 </td>
             </tr>
             <?php endforeach; else: ?>
-            <tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8;">Tidak ada laporan.</td></tr>
+            <tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8;">Tidak ada laporan.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
