@@ -112,9 +112,9 @@ if ($detail_id) {
         <a href="../kenali-situasi/kenali.php" class="nav-link">Kenali Situasi Anda</a>
 
         <div class="nav-group">AKUN</div>
-        <a href="profil.php" class="nav-link">Profil</a>
-        <a href="pengaturan.php" class="nav-link">Pengaturan</a>
-        <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">Keluar</a>
+        <a href="../mahasiswa/profil.php" class="nav-link">Profil</a>
+        <a href="../mahasiswa/pengaturan.php" class="nav-link">Pengaturan</a>
+        <a href="../auth/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">Keluar</a>
     </nav>
 </aside>
 
