@@ -261,14 +261,14 @@ $faqs = [
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
 
                 <!-- Kartu 1: Kekerasan Fisik -->
-                <div class="flip-card flip-card-fisik" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front">
-                            <div class="flip-icon"><i class="fa fa-hand-fist"></i></div>
-                            <div class="flip-label">Kekerasan Fisik</div>
+                        <div class="flip-front" style="background: linear-gradient(135deg,#fee2e2,#fecaca); border:1.5px solid #fca5a5;">
+                            <div class="flip-icon" style="background:#ef4444;color:#fff;"><i class="fa fa-hand-fist"></i></div>
+                            <div class="flip-label" style="color:#b91c1c;">Kekerasan Fisik</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; cara lapor →</div>
                         </div>
-                        <div class="flip-back" style="display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div class="flip-back" style="background:#ef4444;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
                             <ul class="flip-back-list">
                                 <li>Dipukul, ditampar, atau dianiaya</li>
@@ -281,14 +281,14 @@ $faqs = [
                 </div>
 
                 <!-- Kartu 2: Kekerasan Verbal -->
-                <div class="flip-card flip-card-verbal" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front">
-                            <div class="flip-icon"><i class="fa fa-comment-slash"></i></div>
-                            <div class="flip-label">Kekerasan Verbal</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#fef9c3,#fde68a);border:1.5px solid #fcd34d;">
+                            <div class="flip-icon" style="background:#f59e0b;color:#fff;"><i class="fa fa-comment-slash"></i></div>
+                            <div class="flip-label" style="color:#92400e;">Kekerasan Verbal</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; cara lapor →</div>
                         </div>
-                        <div class="flip-back" style="display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div class="flip-back" style="background:#f59e0b;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
                             <ul class="flip-back-list">
                                 <li>Dihina, dicaci, atau diremehkan di depan umum</li>
@@ -301,14 +301,14 @@ $faqs = [
                 </div>
 
                 <!-- Kartu 3: Pelecehan Seksual -->
-                <div class="flip-card flip-card-seksual" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front">
-                            <div class="flip-icon"><i class="fa fa-triangle-exclamation"></i></div>
-                            <div class="flip-label">Pelecehan Seksual</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);border:1.5px solid #f9a8d4;">
+                            <div class="flip-icon" style="background:#ec4899;color:#fff;"><i class="fa fa-triangle-exclamation"></i></div>
+                            <div class="flip-label" style="color:#9d174d;">Pelecehan Seksual</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; cara lapor →</div>
                         </div>
-                        <div class="flip-back" style="display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div class="flip-back" style="background:#ec4899;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
                             <ul class="flip-back-list">
                                 <li>Disentuh, diraba, atau dicium tanpa persetujuan</li>
@@ -321,14 +321,14 @@ $faqs = [
                 </div>
 
                 <!-- Kartu 4: Perundungan -->
-                <div class="flip-card flip-card-rundung" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front">
-                            <div class="flip-icon"><i class="fa fa-users-slash"></i></div>
-                            <div class="flip-label">Perundungan</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:1.5px solid #c4b5fd;">
+                            <div class="flip-icon" style="background:#7c3aed;color:#fff;"><i class="fa fa-users-slash"></i></div>
+                            <div class="flip-label" style="color:#4c1d95;">Perundungan</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; cara lapor →</div>
                         </div>
-                        <div class="flip-back" style="display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div class="flip-back" style="background:#7c3aed;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
                             <ul class="flip-back-list">
                                 <li>Dijauhi, dikucilkan, dan sengaja diabaikan banyak orang</li>
