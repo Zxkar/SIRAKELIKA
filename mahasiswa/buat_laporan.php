@@ -376,7 +376,7 @@ function pilihJenis(jenis) {
     const note = document.getElementById('jenisNote');
     note.style.display = 'block';
     document.getElementById('jenisNoteTitle').textContent = jenis === 'UMUM' ? 'Laporan Umum dipilih.' : 'Laporan Khusus dipilih.';
-    document.getElementById('jenisNoteDesc').textContent = jenis === 'UMUM' ? 'Identitas terbuka untuk keperluan penanganan.' : 'Identitasmu sepenuhnya dirahasiakan.';
+    document.getElementById('jenisNoteDesc').textContent = jenis === 'UMUM' ? 'Identitasmu sepenuhnya dirahasiakan.' : 'Identitas terbuka untuk keperluan penanganan.';
 
     const fieldIdentitas = document.getElementById('fieldIdentitas');
     if (jenis === 'KHUSUS') {
