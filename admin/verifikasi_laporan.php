@@ -77,12 +77,11 @@ if($total > 0){
     }
 }
 
-// Path URL untuk ditampilkan di browser (dari folder admin/ naik ke root, lalu ke uploads/bukti/)
-define('BUKTI_BASE_PATH', '../uploads/bukti/');
-
-// Path fisik server untuk cek file_exists()
-// __DIR__ = folder admin/ → naik satu level ke root project
-define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/uploads/bukti/');
+// buat_laporan.php ada di mahasiswa/ dan upload ke 'uploads/bukti/' (relatif dari mahasiswa/)
+// Jadi file fisik ada di: SIRAKELIKA-1/mahasiswa/uploads/bukti/
+// admin/ dan mahasiswa/ setingkat, jadi dari admin/ → ../mahasiswa/uploads/bukti/
+define('BUKTI_BASE_PATH', '../mahasiswa/uploads/bukti/');
+define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/mahasiswa/uploads/bukti/');
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -219,45 +218,25 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/uploads/bukti/');
                             ?>
                                 <div class="bukti-grid">
                                     <?php foreach($list_bukti as $b): 
-                                        $nama_file  = $b['file_bukti']; 
-                                        $nama_asli  = !empty($b['nama_asli']) ? $b['nama_asli'] : $nama_file;
-                                        $url        = BUKTI_BASE_PATH . $nama_file;
-                                        $srv_path   = BUKTI_SERVER_PATH . $nama_file;
-                                        $ext        = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
-                                        $file_ada   = file_exists($srv_path);
+                                        $nama_file = $b['file_bukti']; 
+                                        $url       = BUKTI_BASE_PATH . $nama_file;
+                                        $srv_path  = BUKTI_SERVER_PATH . $nama_file;
+                                        $ext       = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
+                                        
+                                        if (file_exists($srv_path)):
                                     ?>
-                                        <div class="bukti-item" style="margin-bottom:12px;">
-                                        <?php if($file_ada): ?>
-                                            <?php if(in_array($ext, ['jpg','jpeg','png'])): ?>
-                                                <a href="<?= htmlspecialchars($url) ?>" target="_blank">
-                                                    <img src="<?= htmlspecialchars($url) ?>" 
-                                                         class="bukti-img" 
-                                                         style="max-width:220px; border-radius:8px; display:block; border:1px solid #e2e8f0;" 
-                                                         alt="<?= htmlspecialchars($nama_asli) ?>">
-                                                </a>
-                                                <small style="color:#64748b;display:block;margin-top:4px;">📎 <?= htmlspecialchars($nama_asli) ?></small>
-                                            <?php elseif(in_array($ext, ['mp4','mov','avi'])): ?>
-                                                <video src="<?= htmlspecialchars($url) ?>" controls 
-                                                       style="max-width:320px; border-radius:8px; display:block;"></video>
-                                                <small style="color:#64748b;display:block;margin-top:4px;">🎥 <?= htmlspecialchars($nama_asli) ?></small>
-                                            <?php elseif($ext === 'pdf'): ?>
-                                                <a href="<?= htmlspecialchars($url) ?>" target="_blank" 
-                                                   style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;color:#1e40af;font-size:13px;">
-                                                    📄 <?= htmlspecialchars($nama_asli) ?>
-                                                </a>
-                                            <?php else: ?>
-                                                <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">
-                                                    📎 <?= htmlspecialchars($nama_asli) ?>
-                                                </a>
-                                            <?php endif; ?>
+                                        <div class="bukti-item" style="margin-bottom:10px;">
+                                        <?php if(in_array($ext, ['jpg','jpeg','png'])): ?>
+                                            <a href="<?= htmlspecialchars($url) ?>" target="_blank"><img src="<?= htmlspecialchars($url) ?>" class="bukti-img" style="max-width:200px; border-radius:6px;" alt="Bukti"></a>
+                                        <?php elseif(in_array($ext, ['mp4','mov','avi'])): ?>
+                                            <video src="<?= htmlspecialchars($url) ?>" controls class="bukti-video" style="max-width:300px;"></video>
                                         <?php else: ?>
-                                            <div style="padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;font-size:13px;color:#b91c1c;">
-                                                ⚠ File tidak ditemukan di server: <code><?= htmlspecialchars($nama_file) ?></code><br>
-                                                <small style="color:#6b7280;">Path dicari: <?= htmlspecialchars($srv_path) ?></small>
-                                            </div>
+                                            <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📄 <?= htmlspecialchars($b['nama_asli'] ?: $nama_file) ?></a>
                                         <?php endif; ?>
                                         </div>
-                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <p class="no-bukti" style="color:#ef4444;">⚠ File berkas (<?= htmlspecialchars($nama_file) ?>) tidak ditemukan fisik di server.</p>
+                                    <?php endif; endforeach; ?>
                                 </div>
                             <?php endif; ?>
                         </div>
