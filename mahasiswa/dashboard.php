@@ -14,17 +14,29 @@ if(!isset($_SESSION['username']) || $_SESSION['role'] !== 'mahasiswa'){
     exit;
 }
 
+$id_user = (int) $_SESSION['id_user'];
 
-
-$query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan");
-$query_baru    = mysqli_query($conn, "SELECT COUNT(*) as baru FROM laporan WHERE status_laporan='Baru'");
-$query_proses  = mysqli_query($conn, "SELECT COUNT(*) as proses FROM laporan WHERE status_laporan='Diproses'");
-$query_selesai = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE status_laporan='Selesai'");
+$query_total   = mysqli_query($conn, "SELECT COUNT(*) as total FROM laporan WHERE id_user=$id_user");
+$query_baru    = mysqli_query($conn, "SELECT COUNT(*) as baru FROM laporan WHERE id_user=$id_user AND LOWER(status_laporan)='menunggu'");
+$query_proses  = mysqli_query($conn, "SELECT COUNT(*) as proses FROM laporan WHERE id_user=$id_user AND LOWER(status_laporan) IN ('diproses','ditindaklanjuti','mediasi')");
+$query_selesai = mysqli_query($conn, "SELECT COUNT(*) as selesai FROM laporan WHERE id_user=$id_user AND LOWER(status_laporan)='selesai'");
 
 $data_total   = mysqli_fetch_assoc($query_total)['total'];
 $data_baru    = mysqli_fetch_assoc($query_baru)['baru'];
 $data_proses  = mysqli_fetch_assoc($query_proses)['proses'];
 $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
+
+// Laporan terbaru (maks 5)
+$query_terbaru = mysqli_query($conn, "SELECT * FROM laporan WHERE id_user=$id_user ORDER BY tanggal_laporan DESC LIMIT 5");
+
+function getStatusBadge($status){
+    $status = strtolower(trim($status));
+    if($status === 'menunggu') return ['Baru','status-new'];
+    if(in_array($status, ['diproses','ditindaklanjuti','mediasi'])) return ['Diproses','status-process'];
+    if($status === 'selesai') return ['Selesai','status-done'];
+    if($status === 'ditolak') return ['Ditolak','status-new'];
+    return [ucfirst($status),'status-new'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -112,19 +124,19 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
 
         <section class="stats-grid">
             <div class="card card-total">
-                <span class="card-num">3</span>
+                <span class="card-num"><?php echo $data_total; ?></span>
                 <span class="card-title">Total Laporan</span>
             </div>
             <div class="card card-new">
-                <span class="card-num">1</span>
+                <span class="card-num"><?php echo $data_baru; ?></span>
                 <span class="card-title">Laporan Baru</span>
             </div>
             <div class="card card-process">
-                <span class="card-num">1</span>
+                <span class="card-num"><?php echo $data_proses; ?></span>
                 <span class="card-title">Dalam Proses</span>
             </div>
             <div class="card card-done">
-                <span class="card-num">1</span>
+                <span class="card-num"><?php echo $data_selesai; ?></span>
                 <span class="card-title">Selesai Ditangani</span>
             </div>
         </section>
@@ -151,27 +163,25 @@ $data_selesai = mysqli_fetch_assoc($query_selesai)['selesai'];
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="id-case">#KS-2026-003</td>
-                            <td><strong>Perundungan (Bullying)</strong></td>
-                            <td>Kantin Fakultas</td>
-                            <td>09 Juni 2026</td>
-                            <td><span class="status-badge status-new">Baru</span></td>
-                        </tr>
-                        <tr>
-                            <td class="id-case">#KS-2026-002</td>
-                            <td><strong>Kekerasan Verbal</strong></td>
-                            <td>Gedung B - Ruang 302</td>
-                            <td>05 Juni 2026</td>
-                            <td><span class="status-badge status-process">Diproses</span></td>
-                        </tr>
-                        <tr>
-                            <td class="id-case">#KS-2026-001</td>
-                            <td><strong>Pelecehan Seksual</strong></td>
-                            <td>Area Parkir Timur</td>
-                            <td>01 Juni 2026</td>
-                            <td><span class="status-badge status-done">Selesai</span></td>
-                        </tr>
+                        <?php if(mysqli_num_rows($query_terbaru) > 0): ?>
+                            <?php while($l = mysqli_fetch_assoc($query_terbaru)):
+                                $kode = $l['kode_laporan'] ?? ('KS-'.$l['id_laporan']);
+                                $tgl  = !empty($l['tanggal_laporan']) ? date('d M Y', strtotime($l['tanggal_laporan'])) : '-';
+                                list($label, $class) = getStatusBadge($l['status_laporan']);
+                            ?>
+                            <tr>
+                                <td class="id-case">#<?php echo htmlspecialchars($kode); ?></td>
+                                <td><strong><?php echo htmlspecialchars($l['jenis_kekerasan'] ?? '-'); ?></strong></td>
+                                <td><?php echo htmlspecialchars($l['lokasi_kejadian'] ?? '-'); ?></td>
+                                <td><?php echo $tgl; ?></td>
+                                <td><span class="status-badge <?php echo $class; ?>"><?php echo $label; ?></span></td>
+                            </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" style="text-align:center; color:#94a3b8; padding:32px 8px;">Belum ada laporan yang dibuat</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
