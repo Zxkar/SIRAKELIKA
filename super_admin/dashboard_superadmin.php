@@ -148,7 +148,7 @@ $count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
                             <td><strong>".htmlspecialchars($row['judul_laporan'])."</strong></td>
                             <td>".htmlspecialchars($row['jenis_kekerasan'])."</td>
                             <td>".date('d M Y', strtotime($row['tanggal_laporan']))."</td>
-                            <td><button class='btn-verif' onclick=\"location.href='/admin/verifikasi_laporan.php?id=".$row['id_laporan']."'\">Verifikasi</button></td>
+                            <td><button class='btn-verif' onclick=\"location.href='/SIRAKELIKA/admin/verifikasi_laporan.php?id=".$row['id_laporan']."'\">Verifikasi</button></td>
                         </tr>";
                     }
                 } else {
