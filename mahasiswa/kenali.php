@@ -130,26 +130,26 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
 
                 <!-- 3 Kategori -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div class="kategori-card bg-red-50 border border-red-100">
-                        <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fa fa-person-circle-exclamation text-red-500 text-lg"></i>
+                    <div class="kategori-card bg-blue-50 border border-blue-200">
+                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fa fa-person-circle-exclamation text-blue-700 text-lg"></i>
                         </div>
-                        <h4 class="text-xs font-bold text-red-700 mb-2">Kekerasan Seksual</h4>
-                        <p class="text-[11px] text-red-500 leading-relaxed">Catcalling, rabaan tanpa izin, ancaman seksual, hingga penyebaran konten intim oleh civitas kampus.</p>
+                        <h4 class="text-xs font-bold text-blue-800 mb-2">Kekerasan Seksual</h4>
+                        <p class="text-[11px] text-blue-600 leading-relaxed">Catcalling, rabaan tanpa izin, ancaman seksual, hingga penyebaran konten intim oleh civitas kampus.</p>
                     </div>
-                    <div class="kategori-card bg-amber-50 border border-amber-100">
-                        <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fa fa-users-viewfinder text-amber-500 text-lg"></i>
+                    <div class="kategori-card bg-sky-50 border border-sky-100">
+                        <div class="w-10 h-10 bg-sky-100 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fa fa-users-viewfinder text-sky-600 text-lg"></i>
                         </div>
-                        <h4 class="text-xs font-bold text-amber-700 mb-2">Perundungan / Bullying</h4>
-                        <p class="text-[11px] text-amber-500 leading-relaxed">Ancaman fisik, pengucilan paksa, body shaming, atau dipermalukan berulang oleh mahasiswa maupun dosen.</p>
+                        <h4 class="text-xs font-bold text-sky-700 mb-2">Perundungan / Bullying</h4>
+                        <p class="text-[11px] text-sky-500 leading-relaxed">Ancaman fisik, pengucilan paksa, body shaming, atau dipermalukan berulang oleh mahasiswa maupun dosen.</p>
                     </div>
-                    <div class="kategori-card bg-purple-50 border border-purple-100">
-                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fa fa-gavel text-purple-500 text-lg"></i>
+                    <div class="kategori-card bg-indigo-50 border border-indigo-100">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fa fa-gavel text-indigo-600 text-lg"></i>
                         </div>
-                        <h4 class="text-xs font-bold text-purple-700 mb-2">Intimidasi & Penyalahgunaan Kuasa</h4>
-                        <p class="text-[11px] text-purple-500 leading-relaxed">Ancaman nilai, pemerasan finansial, atau sanksi akademis sepihak yang menekan kebebasanmu.</p>
+                        <h4 class="text-xs font-bold text-indigo-700 mb-2">Intimidasi & Penyalahgunaan Kuasa</h4>
+                        <p class="text-[11px] text-indigo-500 leading-relaxed">Ancaman nilai, pemerasan finansial, atau sanksi akademis sepihak yang menekan kebebasanmu.</p>
                     </div>
                 </div>
 
@@ -173,40 +173,40 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
 
                 <div class="space-y-4">
 
-                    <a href="kenali.php?step=3&jawaban=ppks" class="option-card red group flex items-start gap-4 p-5 rounded-2xl block">
-                        <div class="w-11 h-11 bg-red-50 text-red-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition">
+                    <a href="kenali.php?step=3&jawaban=ppks" class="option-card blue-dark group flex items-start gap-4 p-5 rounded-2xl block">
+                        <div class="w-11 h-11 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition">
                             <i class="fa fa-person-circle-exclamation text-lg"></i>
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-bold text-gray-800 group-hover:text-red-600 transition">Kekerasan Seksual / Catcalling / Pelecehan Fisik</span>
-                                <i class="fa fa-chevron-right text-xs text-gray-300 group-hover:text-red-400 transition"></i>
+                                <span class="text-sm font-bold text-gray-800 group-hover:text-blue-700 transition">Kekerasan Seksual / Catcalling / Pelecehan Fisik</span>
+                                <i class="fa fa-chevron-right text-xs text-gray-300 group-hover:text-blue-400 transition"></i>
                             </div>
                             <p class="text-xs text-gray-400 mt-1 leading-relaxed">Disentuh tanpa izin, dikirim konten asusila, dapat komentar bernada seksual, atau dipaksa dalam situasi intim oleh siapapun di lingkungan kampus.</p>
                         </div>
                     </a>
 
-                    <a href="kenali.php?step=3&jawaban=bullying" class="option-card amber group flex items-start gap-4 p-5 rounded-2xl block">
-                        <div class="w-11 h-11 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition">
+                    <a href="kenali.php?step=3&jawaban=bullying" class="option-card sky group flex items-start gap-4 p-5 rounded-2xl block">
+                        <div class="w-11 h-11 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-sky-100 transition">
                             <i class="fa fa-users-viewfinder text-lg"></i>
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-bold text-gray-800 group-hover:text-amber-600 transition">Perundungan / Bullying / Kekerasan Fisik</span>
-                                <i class="fa fa-chevron-right text-xs text-gray-300 group-hover:text-amber-400 transition"></i>
+                                <span class="text-sm font-bold text-gray-800 group-hover:text-sky-600 transition">Perundungan / Bullying / Kekerasan Fisik</span>
+                                <i class="fa fa-chevron-right text-xs text-gray-300 group-hover:text-sky-400 transition"></i>
                             </div>
                             <p class="text-xs text-gray-400 mt-1 leading-relaxed">Dipukul, ditampar, atau diancam secara fisik. Dikucilkan, dihina, dipermalukan di depan umum secara berulang oleh mahasiswa maupun oknum dosen.</p>
                         </div>
                     </a>
 
-                    <a href="kenali.php?step=3&jawaban=intimidasi" class="option-card purple group flex items-start gap-4 p-5 rounded-2xl block">
-                        <div class="w-11 h-11 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-purple-100 transition">
+                    <a href="kenali.php?step=3&jawaban=intimidasi" class="option-card indigo group flex items-start gap-4 p-5 rounded-2xl block">
+                        <div class="w-11 h-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-100 transition">
                             <i class="fa fa-gavel text-lg"></i>
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-bold text-gray-800 group-hover:text-purple-600 transition">Intimidasi Nilai / Pemerasan / Penyalahgunaan Wewenang</span>
-                                <i class="fa fa-chevron-right text-xs text-gray-300 group-hover:text-purple-400 transition"></i>
+                                <span class="text-sm font-bold text-gray-800 group-hover:text-indigo-600 transition">Intimidasi Nilai / Pemerasan / Penyalahgunaan Wewenang</span>
+                                <i class="fa fa-chevron-right text-xs text-gray-300 group-hover:text-indigo-400 transition"></i>
                             </div>
                             <p class="text-xs text-gray-400 mt-1 leading-relaxed">Diancam tidak diluluskan, dipaksa membayar di luar ketentuan, atau mendapat sanksi akademis sepihak yang terasa tidak adil dan menekan.</p>
                         </div>
@@ -227,14 +227,14 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
             if ($jawaban === 'ppks') {
                 $kategori     = "Satgas PPKS Kampus";
                 $judul        = "Kekerasan Seksual (Permendikbudristek No. 30/2021)";
-                $badge_class  = "bg-red-50 text-red-600";
+                $badge_class  = "bg-blue-50 text-blue-700";
                 $icon         = "fa-person-circle-exclamation";
-                $icon_color   = "text-red-500";
-                $icon_bg      = "bg-red-50";
-                $banner_bg    = "bg-gradient-to-br from-red-500 to-rose-600";
+                $icon_color   = "text-blue-700";
+                $icon_bg      = "bg-blue-50";
+                $banner_bg    = "bg-gradient-to-br from-blue-700 to-blue-800";
                 $banner_icon_bg = "bg-white/15";
-                $btn_color    = "bg-red-600 hover:bg-red-700";
-                $border_color = "border-red-100";
+                $btn_color    = "bg-blue-700 hover:bg-blue-800";
+                $border_color = "border-blue-100";
                 $tagline      = "Ini serius. Kamu berhak dilindungi dan identitasmu dijamin aman sepenuhnya.";
                 $prosedur     = "Kasus ini ditangani secara khusus dan rahasia oleh Satgas Pencegahan dan Penanganan Kekerasan Seksual (PPKS). Identitasmu tidak akan dibocorkan kepada siapapun, termasuk pelaku.";
                 $contoh_tindakan = [
@@ -246,14 +246,14 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
             } elseif ($jawaban === 'bullying') {
                 $kategori     = "Komisi Disiplin & Konseling";
                 $judul        = "Perundungan (Bullying) & Kekerasan Fisik";
-                $badge_class  = "bg-amber-50 text-amber-600";
+                $badge_class  = "bg-sky-50 text-sky-600";
                 $icon         = "fa-users-viewfinder";
-                $icon_color   = "text-amber-500";
-                $icon_bg      = "bg-amber-50";
-                $banner_bg    = "bg-gradient-to-br from-amber-500 to-orange-500";
+                $icon_color   = "text-sky-600";
+                $icon_bg      = "bg-sky-50";
+                $banner_bg    = "bg-gradient-to-br from-sky-500 to-cyan-600";
                 $banner_icon_bg = "bg-white/15";
-                $btn_color    = "bg-amber-500 hover:bg-amber-600";
-                $border_color = "border-amber-100";
+                $btn_color    = "bg-sky-500 hover:bg-sky-600";
+                $border_color = "border-sky-100";
                 $tagline      = "Kamu tidak harus menerimanya. Tindakan ini melanggar tata tertib dan bisa dilaporkan.";
                 $prosedur     = "Pelanggaran tata tertib kemahasiswaan. Laporanmu akan diteruskan ke Wakil Dekan Bidang Kemahasiswaan dan Unit Konseling untuk perlindungan psikis.";
                 $contoh_tindakan = [
@@ -264,14 +264,14 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
             } else {
                 $kategori     = "Biro Advokasi & Satgas Perlindungan";
                 $judul        = "Intimidasi Psikis & Penyalahgunaan Kekuasaan";
-                $badge_class  = "bg-purple-50 text-purple-600";
+                $badge_class  = "bg-indigo-50 text-indigo-600";
                 $icon         = "fa-gavel";
-                $icon_color   = "text-purple-500";
-                $icon_bg      = "bg-purple-50";
-                $banner_bg    = "bg-gradient-to-br from-purple-600 to-violet-700";
+                $icon_color   = "text-indigo-600";
+                $icon_bg      = "bg-indigo-50";
+                $banner_bg    = "bg-gradient-to-br from-indigo-600 to-indigo-700";
                 $banner_icon_bg = "bg-white/15";
-                $btn_color    = "bg-purple-600 hover:bg-purple-700";
-                $border_color = "border-purple-100";
+                $btn_color    = "bg-indigo-600 hover:bg-indigo-700";
+                $border_color = "border-indigo-100";
                 $tagline      = "Tekanan akademis yang disengaja adalah pelanggaran serius. Kamu berhak melawannya secara resmi.";
                 $prosedur     = "Tindakan pemerasan akademis atau intimidasi hak nilai. Aduanmu akan diteruskan langsung ke Ombudsman dan Biro Hukum Universitas untuk ditindaklanjuti.";
                 $contoh_tindakan = [
