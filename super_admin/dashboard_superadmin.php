@@ -37,7 +37,7 @@ $count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
         <a href="dashboard_superadmin.php" class="nav-link active">
     <span class="nav-text">Dashboard</span>
 </a>
-
+        <div class="nav-group">MANAJEMEN</div>
         <a href="../admin/verifikasi_laporan.php" class="nav-link">
             <span class="nav-text">Verifikasi Laporan Masuk</span>
         </a>
