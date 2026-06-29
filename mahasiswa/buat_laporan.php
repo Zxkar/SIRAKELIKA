@@ -230,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </svg>
                             </div>
                             <h3>Umum</h3>
-                            <p>Laporkan kejadian secara terbuka dengan identitas yang dapat diketahui pihak kampus.</p>
+                            <p>Laporkan secara anonim atau rahasia. Identitasmu terlindungi sepenuhnya.</p>
                         </div>
                         <div class="jenis-card khusus" id="cardKhusus" onclick="pilihJenis('KHUSUS')">
                             <div class="jenis-icon">
@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </svg>
                             </div>
                             <h3>Khusus</h3>
-                            <p>Laporkan secara anonim atau rahasia. Identitasmu terlindungi sepenuhnya.</p>
+                            <p>Laporkan kejadian secara terbuka dengan identitas yang dapat diketahui pihak kampus.</p>
                         </div>
                     </div>
                     <div class="jenis-note" id="jenisNote" style="display:none">
@@ -262,7 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="step-panel" id="step2">
                 <div class="modal-body">
                     
-                    <!-- Input Nama & NIM diletakkan paling atas khusus opsi KHUSUS -->
+                    <!-- Input Nama & NIM diletakkan paling atas  opsi  -->
                     <div id="fieldIdentitas" style="display: none; margin-bottom: 16px;">
                         <div class="form-row">
                             <div class="form-group">
