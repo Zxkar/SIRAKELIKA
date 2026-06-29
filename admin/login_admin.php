@@ -6,7 +6,7 @@ include '../config/conn.php';
 if (isset($_SESSION['admin_logged_in'])) {
     if (isset($_SESSION['admin_logged_in'])) {
         if ($_SESSION['role'] === 'superadmin') {
-            header("Location: ../super_admin/dashboard_superadmin.php");
+            header("Location: /SIRAKELIKA/super_admin/dashboard_superadmin.php");
             exit;
         } else if ($_SESSION['role'] === 'admin') {
             header("Location: /SIRAKELIKA/admin/dashboard_admin.php");
@@ -33,9 +33,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $_SESSION['admin_name'] = $user['username'];
 
         if($user['role'] === 'superadmin'){
-            header("Location: dashboard_superadmin.php");
+            header("Location: /SIRAKELIKA/super_admin/dashboard_superadmin.php");
         } else {
-            header("Location: dashboard_admin.php");
+            header("Location: /SIRAKELIKA/admin/dashboard_admin.php");
         }
         exit;
     } else {
