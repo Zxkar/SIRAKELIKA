@@ -47,7 +47,8 @@ $count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
         <a href="../admin/kelola_internal.php" class="nav-link">
             <span class="nav-text">Kelola Akun Pihak Internal</span>
         </a>
-        
+
+        <div class="nav-group">AKUN</div>
         <a href="../auth/logout.php" class="nav-link logout">
             <span class="nav-text">Keluar</span>
         </a>
