@@ -77,12 +77,38 @@ if($total > 0){
     }
 }
 
-// buat_laporan.php ada di mahasiswa/ dan upload ke 'uploads/bukti/' (relatif dari mahasiswa/)
-// Jadi file fisik ada di: SIRAKELIKA-1/mahasiswa/uploads/bukti/
-// admin/ dan mahasiswa/ setingkat, jadi dari admin/ → ../mahasiswa/uploads/bukti/
-define('BUKTI_BASE_PATH', '../mahasiswa/uploads/bukti/');
-define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/mahasiswa/uploads/bukti/');
+define('BUKTI_BASE_PATH', '../uploads/bukti/');
+define('BUKTI_SERVER_PATH', __DIR__ . '/../uploads/bukti/');
 ?>
+<!-- DEBUG SEMENTARA -->
+<pre style="background:#fff3cd;padding:10px;margin:10px;font-size:12px;">
+<?php
+echo '__DIR__ = ' . __DIR__ . "\n";
+echo 'dirname(__DIR__) = ' . dirname(__DIR__) . "\n\n";
+
+$paths = [
+    dirname(__DIR__) . '/uploads/bukti/',
+    dirname(__DIR__) . '/mahasiswa/uploads/bukti/',
+    __DIR__ . '/../uploads/bukti/',
+    __DIR__ . '/../../uploads/bukti/',
+];
+foreach($paths as $p){
+    echo $p . ' → ' . (is_dir(realpath($p) ?: $p) ? '✅ FOLDER ADA' : '❌ tidak ada') . "\n";
+}
+
+if(!empty($bukti_map)){
+    $first = array_values($bukti_map)[0][0]['file_bukti'];
+    echo "\nFile bukti di DB: " . $first . "\n";
+    foreach($paths as $p){
+        $full = $p . $first;
+        echo $full . ' → ' . (file_exists($full) ? '✅ FILE ADA' : '❌ tidak ada') . "\n";
+    }
+} else {
+    echo "\n⚠ Tidak ada data bukti di bukti_map (tabel bukti kosong atau id_laporan tidak cocok)\n";
+}
+?>
+</pre>
+<!-- AKHIR DEBUG -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
