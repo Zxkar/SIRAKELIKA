@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Handle upload bukti
         $bukti_nama = null;
-        $upload_dir = '../uploads/bukti/';
+        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/SIRAKELIKA/uploads/bukti/';
         if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
         $ext_allowed = ['jpg','jpeg','png','pdf','mp4','mov','avi'];
