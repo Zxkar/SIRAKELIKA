@@ -9,7 +9,7 @@ if (isset($_SESSION['admin_logged_in'])) {
             header("Location: ../super_admin/dashboard_superadmin.php");
             exit;
         } else if ($_SESSION['role'] === 'admin') {
-            header("Location: dashboard_admin.php");
+            header("Location: /SIRAKELIKA/admin/dashboard_admin.php");
             exit;
         }
     }
