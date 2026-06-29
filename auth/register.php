@@ -41,7 +41,7 @@ if(isset($_POST['register'])){
         $_SESSION['username']       = $nama;
         $_SESSION['role']           = 'mahasiswa';
         
-        header("Location: ../auth/dashboard.php");
+        header("Location: ../mahasiswa/dashboard.php");
         exit;
         
       } else {
