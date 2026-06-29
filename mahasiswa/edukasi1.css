@@ -75,6 +75,31 @@
 .flip-back-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-decoration: none; margin-top: auto; }
 .flip-back-btn:hover { background: rgba(255,255,255,.35); }
 
+/* ======================== FLIP CARD COLORS (BIRU) ======================== */
+/* Kartu 1 - Kekerasan Fisik */
+.flip-card-fisik .flip-front  { background: linear-gradient(135deg, #dbeafe, #bfdbfe) !important; border: 1.5px solid #93c5fd !important; }
+.flip-card-fisik .flip-icon   { background: #1d4ed8 !important; color: #fff !important; }
+.flip-card-fisik .flip-label  { color: #1e3a8a !important; }
+.flip-card-fisik .flip-back   { background: #1d4ed8 !important; }
+
+/* Kartu 2 - Kekerasan Verbal */
+.flip-card-verbal .flip-front { background: linear-gradient(135deg, #eff6ff, #dbeafe) !important; border: 1.5px solid #93c5fd !important; }
+.flip-card-verbal .flip-icon  { background: #2563eb !important; color: #fff !important; }
+.flip-card-verbal .flip-label { color: #1e40af !important; }
+.flip-card-verbal .flip-back  { background: #2563eb !important; }
+
+/* Kartu 3 - Pelecehan Seksual */
+.flip-card-seksual .flip-front { background: linear-gradient(135deg, #eff6ff, #bfdbfe) !important; border: 1.5px solid #93c5fd !important; }
+.flip-card-seksual .flip-icon  { background: #3b82f6 !important; color: #fff !important; }
+.flip-card-seksual .flip-label { color: #1d4ed8 !important; }
+.flip-card-seksual .flip-back  { background: #3b82f6 !important; }
+
+/* Kartu 4 - Perundungan */
+.flip-card-rundung .flip-front { background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important; border: 1.5px solid #7dd3fc !important; }
+.flip-card-rundung .flip-icon  { background: #0284c7 !important; color: #fff !important; }
+.flip-card-rundung .flip-label { color: #0c4a6e !important; }
+.flip-card-rundung .flip-back  { background: #0284c7 !important; }
+
 /* ======================== QUIZ CARDS ======================== */
 .quiz-card:hover { border-color: #bfdbfe; }
 .quiz-answer.hidden { display: none; }
