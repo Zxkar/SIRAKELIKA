@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $conn->query($sql_bukti);
 
-                header("Location: laporan_saya.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
+                header("Location: laporan.php?success=Laporan+berhasil+dikirim+dengan+kode+$kode");
                 exit;
             } else {
                 $error = 'Gagal menyimpan laporan: ' . $conn->error;
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan_saya.php" class="nav-link active">Laporan Saya</a>
+        <a href="laporan.php" class="nav-link active">Laporan Saya</a>
         <div class="nav-group">PENGELOLAAN</div>
         <a href="edukasi1.php" class="nav-link">Edukasi &amp; Informasi</a>
         <a href="kenali.php" class="nav-link">Kenali Situasi Anda</a>
