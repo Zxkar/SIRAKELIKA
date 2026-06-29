@@ -203,7 +203,7 @@ $faqs = [
         <nav class="nav-container">
             <div class="nav-group">MENU UTAMA</div>
             <a href="dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
-            <a href="laporan_saya.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
+            <a href="laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
             <div class="nav-group">PENGELOLAAN</div>
             
             <a href="edukasi1.php" class="nav-link active"><span class="nav-text">Edukasi & Informasi</span></a>
