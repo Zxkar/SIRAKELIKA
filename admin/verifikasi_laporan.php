@@ -77,10 +77,8 @@ if($total > 0){
     }
 }
 
-// File bukti disimpan di mahasiswa/uploads/bukti/ oleh buat_laporan.php
-// admin/ dan mahasiswa/ setingkat di bawah SIRAKELIKA-1/
-define('BUKTI_BASE_PATH', '../mahasiswa/uploads/bukti/');
-define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/mahasiswa/uploads/bukti/');
+define('BUKTI_BASE_PATH', '../uploads/bukti/');
+define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/uploads/bukti/');
 ?>
 <!DOCTYPE html>
 <html lang="id">
