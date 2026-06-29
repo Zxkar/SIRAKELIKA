@@ -123,7 +123,7 @@ $count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
                     <h3>Antrean Validasi Laporan Masuk</h3>
                     <p>Laporan berstatus "menunggu" yang perlu diverifikasi</p>
                 </div>
-                <a href="verifikasi_laporan.php" style="text-decoration:none;">
+                <a href="../admin/verifikasi_laporan.php" style="text-decoration:none;">
                     <button class="btn-view-all">Lihat Semua →</button>
                 </a>
             </div>
@@ -148,7 +148,7 @@ $count_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
                             <td><strong>".htmlspecialchars($row['judul_laporan'])."</strong></td>
                             <td>".htmlspecialchars($row['jenis_kekerasan'])."</td>
                             <td>".date('d M Y', strtotime($row['tanggal_laporan']))."</td>
-                            <td><button class='btn-verif' onclick=\"location.href='verifikasi_laporan.php?id=".$row['id_laporan']."'\">Verifikasi</button></td>
+                            <td><button class='btn-verif' onclick=\"location.href='/admin/verifikasi_laporan.php?id=".$row['id_laporan']."'\">Verifikasi</button></td>
                         </tr>";
                     }
                 } else {
