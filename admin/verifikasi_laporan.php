@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include '../config/conn.php';
 
 if(!isset($_SESSION['admin_logged_in']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])){
     header("Location: login_admin.php");
