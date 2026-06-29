@@ -343,7 +343,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan_saya.php" class="nav-link">Laporan Saya</a>
+        <a href="laporan.php" class="nav-link">Laporan Saya</a>
 
         <div class="nav-group">PENGELOLAAN</div>
  
