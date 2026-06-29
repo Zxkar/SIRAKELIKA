@@ -246,10 +246,10 @@ $faqs = [
 
         <!-- NAVIGASI SECTION (Tab) -->
         <div class="flex gap-2 mb-8 flex-wrap">
-            <button onclick="scrollToSection('kenali')" class="tab-btn active-tab px-5 py-2 rounded-full text-xs font-bold border border-blue-600 transition">🧠 Kenali Kekerasan</button>
-            <button onclick="scrollToSection('video')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50">🎥 Video</button>
-            <button onclick="scrollToSection('faq')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50">❓ FAQ</button>
-            <button onclick="scrollToSection('kontak')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50">📞 Kontak</button>
+            <button onclick="scrollToSection('kenali')" class="tab-btn active-tab px-5 py-2 rounded-full text-xs font-bold border border-blue-600 transition"> Kenali Kekerasan</button>
+            <button onclick="scrollToSection('video')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50"> Video</button>
+            <button onclick="scrollToSection('faq')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50"> FAQ</button>
+            <button onclick="scrollToSection('kontak')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50"> Kontak</button>
         </div>
 
         <!-- ======================== SECTION: KENALI JENIS KEKERASAN (Flip Cards) ======================== -->
@@ -263,12 +263,12 @@ $faqs = [
                 <!-- Kartu 1: Kekerasan Fisik -->
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front" style="background: linear-gradient(135deg,#dbeafe,#bfdbfe); border:1.5px solid #93c5fd;">
-                            <div class="flip-icon" style="background:#3b82f6;color:#fff;"><i class="fa fa-hand-fist"></i></div>
-                            <div class="flip-label" style="color:#1e40af;">Kekerasan Fisik</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
+                            <div class="flip-icon" style="background:#0284c7;color:#fff;"><i class="fa fa-hand-fist"></i></div>
+                            <div class="flip-label" style="color:#075985;">Kekerasan Fisik</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; cara lapor →</div>
                         </div>
-                        <div class="flip-back" style="background:#3b82f6;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
                             <ul class="flip-back-list">
                                 <li>Dipukul, ditampar, atau dianiaya</li>
@@ -283,12 +283,12 @@ $faqs = [
                 <!-- Kartu 2: Kekerasan Verbal -->
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front" style="background:linear-gradient(135deg,#bfdbfe,#93c5fd);border:1.5px solid #60a5fa;">
-                            <div class="flip-icon" style="background:#2563eb;color:#fff;"><i class="fa fa-comment-slash"></i></div>
-                            <div class="flip-label" style="color:#1e3a8a;">Kekerasan Verbal</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
+                            <div class="flip-icon" style="background:#0284c7;color:#fff;"><i class="fa fa-comment-slash"></i></div>
+                            <div class="flip-label" style="color:#075985;">Kekerasan Verbal</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; cara lapor →</div>
                         </div>
-                        <div class="flip-back" style="background:#2563eb;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
                             <ul class="flip-back-list">
                                 <li>Dihina, dicaci, atau diremehkan di depan umum</li>
@@ -303,12 +303,12 @@ $faqs = [
                 <!-- Kartu 3: Pelecehan Seksual -->
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front" style="background:linear-gradient(135deg,#c7d2fe,#a5b4fc);border:1.5px solid #818cf8;">
-                            <div class="flip-icon" style="background:#4f46e5;color:#fff;"><i class="fa fa-triangle-exclamation"></i></div>
-                            <div class="flip-label" style="color:#312e81;">Pelecehan Seksual</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
+                            <div class="flip-icon" style="background:#0284c7;color:#fff;"><i class="fa fa-triangle-exclamation"></i></div>
+                            <div class="flip-label" style="color:#075985;">Pelecehan Seksual</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; cara lapor →</div>
                         </div>
-                        <div class="flip-back" style="background:#4f46e5;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
                             <ul class="flip-back-list">
                                 <li>Disentuh, diraba, atau dicium tanpa persetujuan</li>
