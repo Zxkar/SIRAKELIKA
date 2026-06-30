@@ -468,7 +468,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
         </a>
 
         <div class="nav-group">AKUN SYSTEM</div>
-        <a href="../atuh/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
+        <a href="../auth/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">
             <span class="nav-text">Keluar</span>
         </a>
     </nav>
