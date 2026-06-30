@@ -85,7 +85,7 @@ function getStatusBadge($status){
             <a href="profil.php" class="nav-link">
                 <span class="nav-text">Profil</span>
             </a>
-            <a href="logout.php" class="nav-link logout">
+            <a href="../auth/logout.php" class="nav-link logout">
                 <span class="nav-text">Keluar</span>
             </a>
         </nav>
