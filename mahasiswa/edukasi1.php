@@ -211,7 +211,7 @@ $faqs = [
             <div class="nav-group">AKUN</div>
             <a href="profil.php" class="nav-link"><span class="nav-text">Profil</span></a>
          
-            <a href="logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
+            <a href="../auth/logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
         </nav>
     </aside>
 

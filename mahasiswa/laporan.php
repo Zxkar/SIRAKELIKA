@@ -122,7 +122,7 @@ if ($detail_id) {
         <div class="nav-group">AKUN</div>
         <a href="profil.php" class="nav-link">Profil</a>
   
-        <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">Keluar</a>
+        <a href="../auth/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">Keluar</a>
     </nav>
 </aside>
 

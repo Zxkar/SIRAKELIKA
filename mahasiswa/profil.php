@@ -353,7 +353,7 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
         <div class="nav-group">AKUN</div>
         <a href="profil.php" class="nav-link active">Profil</a>
      
-        <a href="logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">Keluar</a>
+        <a href="../auth/logout.php" class="nav-link logout" onclick="return confirm('Yakin ingin keluar?')">Keluar</a>
     </nav>
 </aside>
 
