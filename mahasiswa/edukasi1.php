@@ -237,7 +237,7 @@ $faqs = [
         <section class="welcome-banner mb-8">
             <div class="banner-text">
                 <h2>Edukasi & Informasi</h2>
-                <p>Sebelum melapor, kenali dulu apa yang sedang Anda atau orang di sekitar Anda alami. Semua artikel dan video di bawah bisa dibaca atau ditonton dalam hitungan menit.</p>
+                <p>Sebelum melapor, kenali dulu apa yang sedang Anda atau orang di sekitar Anda alami. Semua   informasi edukatif dan video di bawah bisa dibaca atau ditonton dalam hitungan menit.</p>
                 <a href="kenali.php" class="inline-flex items-center gap-2 bg-white text-blue-700 text-xs font-bold px-4 py-2.5 rounded-xl mt-4 hover:bg-blue-50 transition">
                     <i class="fa fa-compass"></i> Belum tahu harus mulai dari mana? Coba "Kenali Situasi Anda"
                 </a>
