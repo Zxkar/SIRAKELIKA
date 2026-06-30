@@ -30,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Tangkap nama dan nim dari form
     $nama_pelapor    = trim($_POST['nama_pelapor'] ?? '');
     $nim_pelapor     = trim($_POST['nim_pelapor'] ?? '');
+    if ($jenis_pelaporan === 'KHUSUS' && !empty($nim_pelapor) && !ctype_digit($nim_pelapor)) {
+    $error = 'NIM hanya boleh berisi angka.';
+    }
     
     $deskripsi       = trim($_POST['deskripsi'] ?? '');
     $jenis_kekerasan = $_POST['jenis_kekerasan'] ?? '';
@@ -271,7 +274,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="form-group">
                                 <label class="form-label">NIM <span class="req">*</span></label>
-                                <input type="text" name="nim_pelapor" id="inputNim" class="form-control" placeholder="Nomor Induk Mahasiswa">
+                                <input type="text" name="nim_pelapor" id="inputNim" class="form-control" placeholder="Nomor Induk Mahasiswa" inputmode="numeric" pattern="[0-9]*" maxlength="20" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
                             </div>
                         </div>
                     </div>
