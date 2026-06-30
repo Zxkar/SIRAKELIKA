@@ -115,12 +115,11 @@ if (isset($_POST['terbitkan_sk'])) {
                 <span class="nav-text">Laporan Tren Kasus</span>
             </a>
             
-            <div class="nav-group">EKSEKUTIF & KEBIJAKAN</div>
-            <a href="tinjau_hasil_investigasi.php" class="nav-link active">
+           <div class="nav-group">EKSEKUTIF & KEBIJAKAN</div>
+            <a href="tinjau_hasil_investigasi.php" class="nav-link">
                 <span class="nav-text">Tinjau Hasil Investigasi</span>
             </a>
-            <a href="surat_keputusan_sanksi.php" class="nav-link">
-                <span class="nav-text">Surat Keputusan Sanksi</span>
+            <a href="surat_keputusan_sanksi.php" class="nav-link active"> <span class="nav-text">Surat Keputusan Sanksi</span>
             </a>
             
 
