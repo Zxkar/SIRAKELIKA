@@ -264,7 +264,6 @@ $faqs = [
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
                         <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-icon" style="background:#0284c7;color:#fff;"><i class="fa fa-hand-fist"></i></div>
                             <div class="flip-label" style="color:#075985;">Kekerasan Fisik</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
                         </div>
@@ -284,7 +283,6 @@ $faqs = [
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
                         <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-icon" style="background:#0284c7;color:#fff;"><i class="fa fa-comment-slash"></i></div>
                             <div class="flip-label" style="color:#075985;">Kekerasan Verbal</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
                         </div>
@@ -304,7 +302,6 @@ $faqs = [
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
                         <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-icon" style="background:#0284c7;color:#fff;"><i class="fa fa-triangle-exclamation"></i></div>
                             <div class="flip-label" style="color:#075985;">Pelecehan Seksual</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
                         </div>
@@ -324,7 +321,6 @@ $faqs = [
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
                         <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-icon" style="background:#0284c7;color:#fff;"><i class="fa fa-users-slash"></i></div>
                             <div class="flip-label" style="color:#075985;">Perundungan</div>
                             <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
                         </div>
