@@ -263,9 +263,9 @@ $faqs = [
                 <!-- Kartu 1: Kekerasan Fisik -->
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-label" style="color:#075985;">Kekerasan Fisik</div>
-                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Kekerasan Fisik</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
                         </div>
                         <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
@@ -282,9 +282,9 @@ $faqs = [
                 <!-- Kartu 2: Kekerasan Verbal -->
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-label" style="color:#075985;">Kekerasan Verbal</div>
-                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Kekerasan Verbal</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
                         </div>
                         <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
@@ -301,9 +301,9 @@ $faqs = [
                 <!-- Kartu 3: Pelecehan Seksual -->
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-label" style="color:#075985;">Pelecehan Seksual</div>
-                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Pelecehan Seksual</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
                         </div>
                         <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>
@@ -320,9 +320,9 @@ $faqs = [
                 <!-- Kartu 4: Perundungan -->
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
-                        <div class="flip-front" style="background:linear-gradient(135deg,#bae6fd,#7dd3fc);border:1.5px solid #38bdf8;">
-                            <div class="flip-label" style="color:#075985;">Perundungan</div>
-                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan →</div>
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Perundungan</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
                         </div>
                         <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
                             <div class="flip-back-title">Tanda-tanda:</div>

@@ -131,23 +131,14 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                 <!-- 3 Kategori -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <div class="kategori-card bg-blue-50 border border-blue-200">
-                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fa fa-person-circle-exclamation text-blue-700 text-lg"></i>
-                        </div>
                         <h4 class="text-xs font-bold text-blue-800 mb-2">Kekerasan Seksual</h4>
                         <p class="text-[11px] text-blue-600 leading-relaxed">Catcalling, rabaan tanpa izin, ancaman seksual, hingga penyebaran konten intim oleh civitas kampus.</p>
                     </div>
                     <div class="kategori-card bg-sky-50 border border-sky-100">
-                        <div class="w-10 h-10 bg-sky-100 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fa fa-users-viewfinder text-sky-600 text-lg"></i>
-                        </div>
                         <h4 class="text-xs font-bold text-sky-700 mb-2">Perundungan / Bullying</h4>
                         <p class="text-[11px] text-sky-500 leading-relaxed">Ancaman fisik, pengucilan paksa, body shaming, atau dipermalukan berulang oleh mahasiswa maupun dosen.</p>
                     </div>
                     <div class="kategori-card bg-indigo-50 border border-indigo-100">
-                        <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fa fa-gavel text-indigo-600 text-lg"></i>
-                        </div>
                         <h4 class="text-xs font-bold text-indigo-700 mb-2">Intimidasi & Penyalahgunaan Kuasa</h4>
                         <p class="text-[11px] text-indigo-500 leading-relaxed">Ancaman nilai, pemerasan finansial, atau sanksi akademis sepihak yang menekan kebebasanmu.</p>
                     </div>
@@ -174,9 +165,6 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                 <div class="space-y-4">
 
                     <a href="kenali.php?step=3&jawaban=ppks" class="option-card blue-dark group flex items-start gap-4 p-5 rounded-2xl block">
-                        <div class="w-11 h-11 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition">
-                            <i class="fa fa-person-circle-exclamation text-lg"></i>
-                        </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-bold text-gray-800 group-hover:text-blue-700 transition">Kekerasan Seksual / Catcalling / Pelecehan Fisik</span>
@@ -187,9 +175,6 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                     </a>
 
                     <a href="kenali.php?step=3&jawaban=bullying" class="option-card sky group flex items-start gap-4 p-5 rounded-2xl block">
-                        <div class="w-11 h-11 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-sky-100 transition">
-                            <i class="fa fa-users-viewfinder text-lg"></i>
-                        </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-bold text-gray-800 group-hover:text-sky-600 transition">Perundungan / Bullying / Kekerasan Fisik</span>
@@ -200,9 +185,6 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                     </a>
 
                     <a href="kenali.php?step=3&jawaban=intimidasi" class="option-card indigo group flex items-start gap-4 p-5 rounded-2xl block">
-                        <div class="w-11 h-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-100 transition">
-                            <i class="fa fa-gavel text-lg"></i>
-                        </div>
                         <div class="flex-1">
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-bold text-gray-800 group-hover:text-indigo-600 transition">Intimidasi Nilai / Pemerasan / Penyalahgunaan Wewenang</span>

@@ -65,9 +65,8 @@
 }
 .flip-card.flipped .flip-front { opacity: 0; transform: scale(0.96); pointer-events: none; }
 .flip-card.flipped .flip-back  { opacity: 1; transform: scale(1);    pointer-events: auto; }
-.flip-label { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: #0c4a6e !important; }
-.flip-hint  { font-size: 11px; opacity: 1; font-weight: 700; color: #075985 !important; }
-.flip-hint  { font-size: 10px; opacity: .85; font-weight: 600; }
+.flip-label { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: #fff !important; }
+.flip-hint  { font-size: 11px; opacity: 1; font-weight: 700; color: #dbeafe !important; }
 .flip-back-title { font-size: 10px; font-weight: 800; opacity: .8; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
 .flip-back-list { list-style: none; padding: 0; margin: 0 0 10px; width: 100%; }
 .flip-back-list li { font-size: 10px; line-height: 1.6; padding: 2px 0; opacity: .95; }
