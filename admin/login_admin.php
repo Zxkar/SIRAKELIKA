@@ -2,17 +2,19 @@
 session_start();
 include 'conn.php';
 
+
 // 1. PERBAIKAN: Jika sudah login, alihkan ke dashboard masing-masing, BUKAN ke login_admin.php
 if (isset($_SESSION['admin_logged_in'])) {
-    if ($_SESSION['role'] === 'superadmin') {
-        header("Location: dashboard_superadmin.php");
-        exit;
-    } else if ($_SESSION['role'] === 'admin') {
-        header("Location: dashboard_admin.php");
-        exit;
+    if (isset($_SESSION['admin_logged_in'])) {
+        if ($_SESSION['role'] === 'superadmin') {
+            header("Location: /SIRAKELIKA/super_admin/dashboard_superadmin.php");
+            exit;
+        } else if ($_SESSION['role'] === 'admin') {
+            header("Location: /SIRAKELIKA/admin/dashboard_admin.php");
+            exit;
+        }
     }
 }
-
 $error = '';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -26,14 +28,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $user = mysqli_fetch_assoc($result);
 
     if($user && password_verify($password, $user['password'])){
+        session_regenerate_id(true);
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['role'] = $user['role']; //
         $_SESSION['admin_name'] = $user['username'];
 
         if($user['role'] === 'superadmin'){
-            header("Location: dashboard_superadmin.php");
+            header("Location: /SIRAKELIKA/super_admin/dashboard_superadmin.php");
         } else {
-            header("Location: dashboard_admin.php");
+            header("Location: /SIRAKELIKA/admin/dashboard_admin.php");
         }
         exit;
     } else {
@@ -404,3 +407,4 @@ function togglePw() {
 </script>
 </body>
 </html>
+

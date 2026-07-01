@@ -2,6 +2,7 @@
 session_start();
 include 'conn.php';
 
+
 if (!isset($_SESSION['admin_logged_in']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header("Location: login_admin.php");
     exit;
@@ -128,7 +129,7 @@ $total = mysqli_num_rows($query);
     </div>
     <nav class="nav-container">
         <div class="nav-group">SYSTEM CONTROL</div>
-        <a href="<?= $is_superadmin ? 'dashboard_superadmin.php' : 'dashboard_admin.php' ?>" class="nav-link">
+        <a href="<?= $is_superadmin ? '../super_admin/dashboard_superadmin.php' : 'dashboard_admin.php' ?>" class="nav-link">
             <span class="nav-text">Dashboard</span>
         </a>
         <div class="nav-group">MANAJEMEN</div>
@@ -367,3 +368,4 @@ document.getElementById('modalEdit').addEventListener('click', function(e){
 </script>
 </body>
 </html>
+

@@ -6,21 +6,21 @@
 .filter-btn:hover,
 .filter-btn.active { background:#dc2626; color:#fff; border-color:#dc2626; }
 
-/* Modal */
-.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; align-items:center; justify-content:center; }
-.modal-overlay.show { display:flex; }
-.modal { background:#fff; border-radius:16px; padding:32px; width:460px; max-width:95vw; }
-.modal h3 { font-size:18px; font-weight:700; margin-bottom:4px; }
-.modal p.sub { font-size:13px; color:#64748b; margin-bottom:20px; }
-.form-group { margin-bottom:16px; }
+/* Form umum (dipakai di dalam panel detail) */
+.form-group { margin-bottom:14px; }
 .form-group label { font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:6px; }
 .form-group select,
-.form-group textarea { width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px; font-size:13px; color:#1e293b; font-family:inherit; outline:none; }
+.form-group textarea { width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px; font-size:13px; color:#1e293b; font-family:inherit; outline:none; background:#fff; }
 .form-group select:focus,
 .form-group textarea:focus { border-color:#dc2626; }
-.form-group textarea { resize:vertical; min-height:80px; }
-.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+.form-group textarea { resize:vertical; min-height:70px; }
+
+.form-row-inline { display:flex; gap:16px; }
+.form-row-inline .form-group:first-child { flex:0 0 200px; }
+
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:16px; }
 .btn-cancel { padding:9px 20px; border-radius:8px; border:1px solid #e2e8f0; background:#fff; font-size:13px; font-weight:600; cursor:pointer; color:#64748b; }
+.btn-cancel:hover { background:#f8fafc; }
 .btn-submit { padding:9px 20px; border-radius:8px; border:none; background:#dc2626; font-size:13px; font-weight:600; cursor:pointer; color:#fff; }
 .btn-submit:hover { background:#b91c1c; }
 
@@ -38,3 +38,60 @@
 
 /* Misc */
 .btn-view-all { background:#f0f5ff; color:#2563eb; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; }
+
+/* ===== Baris Detail Inline (expand di bawah baris laporan) ===== */
+.detail-row { display:none; }
+.detail-row.show { display:table-row; }
+.detail-row td { padding:0 !important; }
+
+.detail-panel {
+    background:#fafbfc;
+    border-top:2px solid #fecaca;
+    border-bottom:1px solid #f1f5f9;
+    padding:24px 28px;
+    animation: detailIn 0.18s ease;
+}
+
+@keyframes detailIn {
+    from { opacity:0; }
+    to   { opacity:1; }
+}
+
+.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+.detail-item { display:flex; flex-direction:column; gap:3px; }
+.detail-span2 { grid-column: 1 / -1; }
+.detail-label { font-size:11px; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.3px; }
+.detail-value { font-size:13px; color:#1e293b; font-weight:600; }
+
+.detail-block { margin-bottom:18px; }
+.detail-block .detail-label { display:block; margin-bottom:6px; }
+.detail-text { font-size:13px; color:#334155; line-height:1.6; background:#fff; border:1px solid #f1f5f9; border-radius:8px; padding:12px 14px; white-space:pre-wrap; }
+
+.modal-divider { border:none; border-top:1px solid #e2e8f0; margin:4px 0 18px; }
+
+.badge-pelaporan { font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; display:inline-block; }
+.badge-umum   { background:#f1f5f9; color:#475569; }
+.badge-khusus { background:#eff6ff; color:#2563eb; }
+
+.no-bukti { font-size:13px; color:#94a3b8; font-style:italic; }
+
+.bukti-grid { display:flex; flex-wrap:wrap; gap:12px; }
+.bukti-item { max-width:220px; }
+
+.bukti-img   { max-width:220px; max-height:180px; border-radius:8px; border:1px solid #e2e8f0; display:block; object-fit:cover; }
+.bukti-video { max-width:220px; max-height:180px; border-radius:8px; border:1px solid #e2e8f0; display:block; }
+.bukti-audio { width:220px; }
+
+.bukti-file-link {
+    display:inline-flex; align-items:center; gap:6px;
+    background:#fef2f2; color:#dc2626; border:1px solid #fecaca;
+    padding:9px 14px; border-radius:8px; font-size:13px; font-weight:600;
+    text-decoration:none;
+}
+.bukti-file-link:hover { background:#fee2e2; }
+
+@media (max-width: 700px){
+    .detail-grid { grid-template-columns:1fr; }
+    .form-row-inline { flex-direction:column; }
+    .form-row-inline .form-group:first-child { flex:none; }
+}
