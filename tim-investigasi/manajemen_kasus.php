@@ -623,21 +623,33 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
                         <?php endif; ?>
                     </td>
                     <td>
-                        <div class="btn-group">
-                            <?php if ($canKelola): ?>
-                            <button class="btn-kelola" onclick='bukaModal(<?= $detailJson ?>)'>
-                                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                Kelola
-                            </button>
-                            <?php endif; ?>
+    <div class="btn-group">
+        <?php if ($canKelola): ?>
+        <button class="btn-kelola" onclick='bukaModal(<?= $detailJson ?>)'>
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Kelola
+        </button>
+        <?php endif; ?>
 
-                            <button class="btn-kirim-mgmt" <?= !$canKirim ? 'disabled title="Ubah status ke Ditindaklanjuti terlebih dahulu"' : '' ?>
-                                onclick='<?= $canKirim ? "bukaModalKirim(".$l['id_laporan'].", '".htmlspecialchars($kode, ENT_QUOTES)."')" : "" ?>'>
-                                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
-                                Kirim ke Manajemen
-                            </button>
-                        </div>
-                    </td>
+        <button class="btn-kirim-mgmt" <?= !$canKirim ? 'disabled title="Ubah status ke Ditindaklanjuti terlebih dahulu"' : '' ?>
+            onclick='<?= $canKirim ? "bukaModalKirim(".$l['id_laporan'].", \"".htmlspecialchars($kode, ENT_QUOTES)."\")" : "" ?>'>
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+            Kirim ke Manajemen
+        </button>
+
+        <!-- TAMBAHKAN KODE INI DI SINI -->
+        <?php if ($status === 'selesai' && !empty($l['file_sk'])): ?>
+            <a href="../manajemen_kampus/uploads/sk_sanksi/<?= htmlspecialchars($l['file_sk']) ?>" 
+               class="btn-kelola" 
+               style="background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; text-decoration:none; margin-top:5px;" 
+               download>
+               📥 Download SK
+              
+            </a>
+        <?php endif; ?>
+        <!-- SELESAI PENAMBAHAN -->
+    </div>
+</td>
                 </tr>
                 <?php endforeach; endif; ?>
             </tbody>
