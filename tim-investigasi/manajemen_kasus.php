@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kirim_manajemen'])) {
     $catatan_kirim = trim($_POST['catatan_kirim'] ?? '');
 
     // Tandai laporan sudah dikirim ke manajemen dengan status 'mediasi'
-    $conn->query("UPDATE laporan SET status_laporan = 'mediasi' WHERE id_laporan = $id_laporan");
+    $conn->query("UPDATE laporan SET status_laporan = 'ditindaklanjuti' WHERE id_laporan = $id_laporan");
 
     // Catat ke log
     @$conn->query("INSERT INTO status_laporan_log (id_laporan, status_lama, status_baru, catatan, tanggal_update)

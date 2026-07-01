@@ -206,7 +206,7 @@ $kasus_putus     = mysqli_fetch_assoc($q_kasus_putus)['selesai'];
                     <tbody>
                         <?php
                         // DIUBAH: Mengambil data baik status 'ditindaklanjuti' maupun 'selesai'
-                        $query_manajemen = mysqli_query($conn, "SELECT * FROM laporan WHERE status_laporan IN ('ditindaklanjuti', 'selesai') ORDER BY status_laporan ASC, id_laporan DESC LIMIT 10");
+                       $query_manajemen = mysqli_query($conn, "SELECT * FROM laporan WHERE status_laporan IN ('ditindaklanjuti', 'selesai', 'mediasi') ORDER BY status_laporan ASC, id_laporan DESC LIMIT 10");
                         
                         if(mysqli_num_rows($query_manajemen) > 0) {
                             while($row = mysqli_fetch_assoc($query_manajemen)) {
