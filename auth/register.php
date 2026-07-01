@@ -37,7 +37,7 @@ if(isset($_POST['register'])){
         $new_user_id = mysqli_insert_id($conn);
         
         $_SESSION['user_logged_in'] = true;
-        $_SESSION['user_id']        = $new_user_id;
+        $_SESSION['id_user']        = $new_user_id;
         $_SESSION['username']       = $nama;
         $_SESSION['role']           = 'mahasiswa';
         
@@ -162,4 +162,3 @@ document.getElementById('cpw').addEventListener('input', function(){
 </script>
 </body>
 </html>
-
