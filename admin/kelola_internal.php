@@ -128,7 +128,7 @@ $total = mysqli_num_rows($query);
     </div>
     <nav class="nav-container">
         <div class="nav-group">SYSTEM CONTROL</div>
-        <a href="<?= $is_superadmin ? 'dashboard_superadmin.php' : 'dashboard_admin.php' ?>" class="nav-link">
+        <a href="<?= $is_superadmin ? '../super_admin/dashboard_superadmin.php' : 'dashboard_admin.php' ?>" class="nav-link">
             <span class="nav-text">Dashboard</span>
         </a>
         <div class="nav-group">MANAJEMEN</div>
