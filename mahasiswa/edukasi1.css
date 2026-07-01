@@ -71,8 +71,7 @@
 .flip-back-list { list-style: none; padding: 0; margin: 0 0 10px; width: 100%; }
 .flip-back-list li { font-size: 10px; line-height: 1.6; padding: 2px 0; opacity: .95; }
 .flip-back-list li::before { content: "✓ "; font-weight: 800; }
-.flip-back-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-decoration: none; margin-top: auto; }
-.flip-back-btn:hover { background: rgba(255,255,255,.35); }
+
 
 /* ======================== QUIZ CARDS ======================== */
 .quiz-card:hover { border-color: #bfdbfe; }
