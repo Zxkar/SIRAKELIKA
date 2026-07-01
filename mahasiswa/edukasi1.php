@@ -274,7 +274,6 @@ $faqs = [
                                 <li>Diancam akan disakiti jika melawan</li>
                                 <li>Diintimidasi hingga merasa terancam dan tidak aman berada di dekat pelaku</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -293,7 +292,6 @@ $faqs = [
                                 <li>Kata-katanya terus terngiang dan menyakiti</li>
                                 <li>Diancam lewat ucapan agar kamu diam dan patuh</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -312,7 +310,6 @@ $faqs = [
                                 <li>Dikirim konten atau ucapan seksual yang tidak kamu minta</li>
                                 <li>Merasa trauma atau takut, sehingga cenderung menghindari pelaku</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -331,7 +328,6 @@ $faqs = [
                                 <li>Dipermalukan terus-menerus sampai kamu malu untuk hadir</li>
                                 <li>Takut masuk kampus karena tahu pelaku ada di sana</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -420,7 +416,7 @@ $faqs = [
 
         <!-- ======================== SECTION: VIDEO ======================== -->
         <section id="video" class="section-anchor mb-10">
-            <h2 class="text-base font-bold text-gray-800 mb-4">🎥 Video Edukasi</h2>
+            <h2 class="text-base font-bold text-gray-800 mb-4"> Video Edukasi</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
                     <iframe class="w-full h-48" src="https://www.youtube.com/embed/OQU48FWHlkM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
