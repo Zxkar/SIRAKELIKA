@@ -374,9 +374,9 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
                     <path d="M13.73 21a2 2 0 01-3.46 0"/>
                 </svg>
             </div>
-            <div class="avatar"><?= htmlspecialchars($inisial) ?></div>
+            <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
             <div class="user-info">
-                <span class="user-name"><?= htmlspecialchars($nama_mhs) ?></span>
+                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 <span class="user-role">Mahasiswa</span>
             </div>
         </div>

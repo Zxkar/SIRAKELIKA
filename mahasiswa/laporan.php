@@ -143,9 +143,9 @@ if ($detail_id) {
                     <path d="M13.73 21a2 2 0 01-3.46 0"/>
                 </svg>
             </div>
-            <div class="avatar"><?= htmlspecialchars($inisial_user) ?></div>
+           <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
             <div class="user-info">
-                <span class="user-name"><?= htmlspecialchars($nama_user) ?></span>
+                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 <span class="user-role">Mahasiswa</span>
             </div>
         </div>
