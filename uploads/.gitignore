@@ -1,3 +1,0 @@
-# Abaikan file upload dari user
-uploads/*
-!uploads/.gitkeep
