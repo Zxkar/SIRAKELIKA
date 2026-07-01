@@ -479,9 +479,9 @@ if ($res) while ($row = $res->fetch_assoc()) $laporan_list[] = $row;
     <header class="topbar">
         <div></div>
         <div class="user-profile">
-            <div class="avatar"><?= htmlspecialchars($inisial) ?></div>
-            <div class="user-info">
-                <span class="user-name"><?= htmlspecialchars($username_aktif) ?></span>
+            <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
+                <div class="user-info">
+                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 <span class="user-role">Tim Investigasi</span>
             </div>
         </div>

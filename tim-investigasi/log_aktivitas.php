@@ -332,6 +332,14 @@ function statusBadgeClass($status) {
 <main class="main-content">
 
     <header class="topbar">
+         <div></div>
+        <div class="user-profile">
+            <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
+                <div class="user-info">
+                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <span class="user-role">Tim Investigasi</span>
+            </div>
+        </div>
     </header>
 
     <div class="page-header-investigasi">
