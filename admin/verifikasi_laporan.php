@@ -163,10 +163,28 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/uploads/bukti/');
             <?php if($total > 0): foreach($laporan_list as $row): 
                 $id_lap  = $row['id_laporan'];
                 $kode    = htmlspecialchars($row['kode_laporan'] ?? '#KS-'.$id_lap);
-                $pelapor = $row['id_user'] ? htmlspecialchars($row['username']) : '<em style="color:#94a3b8">Anonim</em>';
-                
-                // FIX: Tetap membaca kolom jenis_pelaporan sesuai database
+
+                // FIX: Deklarasi $kategori DULU sebelum dipakai
                 $kategori = isset($row['jenis_pelaporan']) ? strtolower($row['jenis_pelaporan']) : 'umum';
+
+                // Sembunyikan identitas jika laporan UMUM
+                if($kategori === 'umum'){
+                    $pelapor = '<em style="color:#94a3b8">Tersembunyi</em>';
+                } else {
+                    $pelapor = $row['id_user'] ? htmlspecialchars($row['username']) : '<em style="color:#94a3b8">Anonim</em>';
+                }
+
+                // Untuk KHUSUS: ekstrak nama/NIM dari deskripsi, pisahkan kronologi
+                $identitas_nama = ''; $identitas_nim = ''; $kronologi_bersih = $row['deskripsi'] ?? '';
+                if($kategori === 'khusus' && strpos($row['deskripsi'] ?? '', '--- IDENTITAS PELAPOR (KHUSUS) ---') !== false){
+                    preg_match('/Nama:\s*(.+)/u', $row['deskripsi'], $mNama);
+                    preg_match('/NIM:\s*(.+)/u', $row['deskripsi'], $mNim);
+                    $identitas_nama = trim($mNama[1] ?? '');
+                    $identitas_nim  = trim($mNim[1] ?? '');
+                    $posCronologi = strpos($row['deskripsi'], '--- KRONOLOGI KEJADIAN ---');
+                    $kronologi_bersih = $posCronologi !== false ? trim(substr($row['deskripsi'], $posCronologi + strlen('--- KRONOLOGI KEJADIAN ---'))) : $row['deskripsi'];
+                }
+                
             ?>
             <tr>
                 <td class="id-case"><?= $kode ?></td>
@@ -187,6 +205,28 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/uploads/bukti/');
             <tr class="detail-row" id="detailRow<?= $id_lap ?>">
                 <td colspan="8">
                     <div class="detail-panel">
+                        <!-- IDENTITAS PELAPOR -->
+                        <?php if($kategori === 'khusus'): ?>
+                        <div class="detail-block" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
+                            <span class="detail-label" style="color:#1d4ed8;">Identitas Pelapor (Laporan Khusus)</span>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+                                <div>
+                                    <span class="detail-label">Nama</span>
+                                    <span class="detail-value"><?= htmlspecialchars($identitas_nama ?: '-') ?></span>
+                                </div>
+                                <div>
+                                    <span class="detail-label">NIM</span>
+                                    <span class="detail-value"><?= htmlspecialchars($identitas_nim ?: '-') ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <?php else: ?>
+                        <div class="detail-block" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
+                            <span class="detail-label">Identitas Pelapor</span>
+                            <p style="font-size:13px;color:#94a3b8;margin-top:6px;font-style:italic;">Identitas disembunyikan — pelapor memilih laporan umum/anonim.</p>
+                        </div>
+                        <?php endif; ?>
+
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <span class="detail-label">Waktu & Lokasi Kejadian</span>
@@ -200,7 +240,7 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/uploads/bukti/');
 
                         <div class="detail-block">
                             <span class="detail-label">Kronologi / Deskripsi Kejadian</span>
-                            <p class="detail-text"><?= nl2br(htmlspecialchars($row['deskripsi'] ?: '-')) ?></p>
+                            <p class="detail-text"><?= nl2br(htmlspecialchars($kronologi_bersih ?: '-')) ?></p>
                         </div>
 
                         <div class="detail-block">

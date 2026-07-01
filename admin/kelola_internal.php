@@ -17,7 +17,7 @@ if(isset($_POST['tambah_akun'])){
     $allowed_roles = $is_superadmin ? ['investigasi','manajemen','admin'] : ['investigasi','manajemen'];
     $role     = in_array($_POST['role'], $allowed_roles) ? $_POST['role'] : 'investigasi';
 
-    // Cek duplikat
+    // Cek duplikatt
     $cek = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_user FROM users WHERE email='$email' OR username='$username'"));
     if($cek){
         header("Location: kelola_internal.php?error=duplikat");
@@ -128,7 +128,7 @@ $total = mysqli_num_rows($query);
     </div>
     <nav class="nav-container">
         <div class="nav-group">SYSTEM CONTROL</div>
-        <a href="<?= $is_superadmin ? 'dashboard_superadmin.php' : 'dashboard_admin.php' ?>" class="nav-link">
+        <a href="<?= $is_superadmin ? '../super_admin/dashboard_superadmin.php' : 'dashboard_admin.php' ?>" class="nav-link">
             <span class="nav-text">Dashboard</span>
         </a>
         <div class="nav-group">MANAJEMEN</div>

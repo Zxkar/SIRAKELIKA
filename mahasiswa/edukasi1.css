@@ -11,46 +11,6 @@
     color: #fff;
 }
 
-/* ======================== ARTICLE MODAL ======================== */
-.article-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.55);
-    z-index: 60;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-.article-modal-overlay.open { display: flex; }
-.article-modal-box {
-    background: #fff;
-    border-radius: 20px;
-    max-width: 640px;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 32px;
-    position: relative;
-}
-.article-modal-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-    background: #f1f5f9;
-    color: #475569;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
-    border: none;
-    cursor: pointer;
-}
-.article-modal-close:hover { background: #e2e8f0; }
-
 /* ======================== FLIP CARDS (fade swap) ======================== */
 .flip-card { position: relative; height: 150px; cursor: pointer; border-radius: 18px; overflow: hidden; }
 .flip-front, .flip-back {
@@ -71,8 +31,7 @@
 .flip-back-list { list-style: none; padding: 0; margin: 0 0 10px; width: 100%; }
 .flip-back-list li { font-size: 10px; line-height: 1.6; padding: 2px 0; opacity: .95; }
 .flip-back-list li::before { content: "✓ "; font-weight: 800; }
-.flip-back-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-decoration: none; margin-top: auto; }
-.flip-back-btn:hover { background: rgba(255,255,255,.35); }
+
 
 /* ======================== QUIZ CARDS ======================== */
 .quiz-card:hover { border-color: #bfdbfe; }

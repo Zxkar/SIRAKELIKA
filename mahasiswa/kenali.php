@@ -48,7 +48,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
             <div class="nav-group">AKUN</div>
             <a href="profil.php" class="nav-link"><span class="nav-text">Profil</span></a>
           
-            <a href="logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
+            <a href="../auth/logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
         </nav>
     </aside>
 
@@ -62,9 +62,9 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                 <div class="notif-btn">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 </div>
-                <div class="avatar">MA</div>
-                <div class="user-info">
-                    <span class="user-name"><?= htmlspecialchars($_SESSION['nama'] ?? 'M. Alif') ?></span>
+                <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
+            <div class="user-info">
+                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     <span class="user-role">Mahasiswa</span>
                 </div>
             </div>
@@ -116,9 +116,6 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
 
                 <!-- Visual banner pengganti gambar -->
                 <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 mb-7 text-white flex items-center gap-5">
-                    <div class="w-16 h-16 bg-white/15 rounded-2xl flex items-center justify-center flex-shrink-0">
-                        <i class="fa fa-user-shield text-3xl text-white"></i>
-                    </div>
                     <div>
                         <h3 class="text-base font-bold mb-1">Kamu Tidak Sendiri</h3>
                         <p class="text-sm text-blue-100 leading-relaxed">Banyak korban tidak menyadari bahwa yang mereka alami adalah kekerasan. Jawab beberapa pertanyaan singkat — kami bantu identifikasi situasimu.</p>
@@ -126,7 +123,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                 </div>
 
                 <h2 class="text-base font-bold text-gray-800 mb-1 text-center">Apa yang Bisa Kamu Kenali di Sini?</h2>
-                <p class="text-xs text-gray-400 text-center mb-6">Sistem ini mencakup tiga kategori pelanggaran di lingkungan kampus ITH.</p>
+                <p class="text-xs text-gray-400 text-center mb-6">Sistem ini mencakup tiga kategori pelanggaran di lingkungan kampus.</p>
 
                 <!-- 3 Kategori -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -149,7 +146,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl text-sm font-bold shadow-sm transition">
                         <i class="fa fa-arrow-right"></i> Mulai Identifikasi Sekarang
                     </a>
-                    <p class="text-[11px] text-gray-400 mt-3"><i class="fa fa-lock mr-1"></i>Jawabanmu bersifat rahasia dan tidak tersimpan di tahap ini.</p>
+                    <p class="text-[11px] text-gray-400 mt-3">Jawabanmu bersifat rahasia </p>
                 </div>
             </div>
 
@@ -268,9 +265,6 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
 
                 <!-- Visual banner pengganti gambar -->
                 <div class="<?= $banner_bg ?> rounded-2xl p-6 mb-6 text-white flex items-center gap-5">
-                    <div class="w-14 h-14 <?= $banner_icon_bg ?> rounded-2xl flex items-center justify-center flex-shrink-0">
-                        <i class="fa <?= $icon ?> text-2xl text-white"></i>
-                    </div>
                     <div>
                         <span class="inline-block text-[10px] font-bold bg-white/20 px-2 py-1 rounded-md mb-2 uppercase tracking-wide">
                             Ranah Penanganan: <?= $kategori ?>
@@ -282,14 +276,14 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
 
                 <!-- Prosedur -->
                 <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-5 flex gap-3">
-                    <i class="fa fa-circle-info text-blue-500 mt-0.5 flex-shrink-0"></i>
+                    
                     <p class="text-xs text-blue-700 leading-relaxed"><?= $prosedur ?></p>
                 </div>
 
                 <!-- Bentuk Tindakan -->
                 <div class="border border-gray-100 rounded-xl p-4 mb-5">
                     <h3 class="text-xs font-bold text-gray-700 mb-3 flex items-center gap-2">
-                        <i class="fa fa-list-check text-blue-600"></i> Kenali Bentuk Tindakannya:
+                        Kenali Bentuk Tindakannya:
                     </h3>
                     <ul class="space-y-3">
                         <?php foreach ($contoh_tindakan as $item): ?>
@@ -304,7 +298,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                 <!-- Protokol Perlindungan -->
                 <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 mb-6">
                     <p class="text-xs font-bold text-gray-700 mb-3 flex items-center gap-2">
-                        <i class="fa fa-shield-halved text-blue-600"></i> Protokol Perlindungan Pelapor:
+                        Protokol Perlindungan Pelapor:
                     </p>
                     <div class="space-y-2.5">
                         <div class="flex items-start gap-3 text-xs text-gray-600">
@@ -338,9 +332,6 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
         <!-- Info kerahasiaan (step 1 saja) -->
         <?php if ($step === 1): ?>
         <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 mb-8 flex items-start gap-4">
-            <div class="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                <i class="fa fa-lock text-green-500"></i>
-            </div>
             <div>
                 <h4 class="text-sm font-semibold text-gray-700 mb-1">Kerahasiaan Terjamin</h4>
                 <p class="text-xs text-gray-400 leading-relaxed">Semua informasi yang kamu berikan dijaga ketat dan hanya dapat diakses oleh pihak yang berwenang. Kamu juga bisa memilih mode anonim saat melaporkan — tanpa nama, tetap diproses.</p>

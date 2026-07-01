@@ -30,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Tangkap nama dan nim dari form
     $nama_pelapor    = trim($_POST['nama_pelapor'] ?? '');
     $nim_pelapor     = trim($_POST['nim_pelapor'] ?? '');
+    if ($jenis_pelaporan === 'KHUSUS' && !empty($nim_pelapor) && !ctype_digit($nim_pelapor)) {
+    $error = 'NIM hanya boleh berisi angka.';
+    }
     
     $deskripsi       = trim($_POST['deskripsi'] ?? '');
     $jenis_kekerasan = $_POST['jenis_kekerasan'] ?? '';
@@ -149,21 +152,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- MAIN -->
 <main class="main-content">
     <header class="topbar">
-        <div></div>
-        <div class="user-profile">
-            <div class="notif-btn">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 01-3.46 0"/>
-                </svg>
+            <div></div> 
+            <div class="user-profile">
+                <div class="notif-btn">
+                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+                <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
+                <div class="user-info">
+                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                    <span class="user-role">Mahasiswa</span>
+                </div>
             </div>
-            <div class="avatar">MA</div>
-            <div class="user-info">
-                <span class="user-name">M. Alif</span>
-                <span class="user-role">Mahasiswa</span>
-            </div>
-        </div>
-    </header>
+        </header>
 
     <div style="filter: blur(2px); pointer-events:none; opacity:0.4;">
         <section class="welcome-banner">
@@ -271,7 +271,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="form-group">
                                 <label class="form-label">NIM <span class="req">*</span></label>
-                                <input type="text" name="nim_pelapor" id="inputNim" class="form-control" placeholder="Nomor Induk Mahasiswa">
+                                <input type="text" name="nim_pelapor" id="inputNim" class="form-control" placeholder="Nomor Induk Mahasiswa" inputmode="numeric" pattern="[0-9]*" maxlength="20" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
                             </div>
                         </div>
                     </div>

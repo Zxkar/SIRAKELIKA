@@ -10,132 +10,6 @@ header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
 include '../config/conn.php';
 
 
-$all_articles = [
-    [
-        "id" => 1,
-        "icon" => "fa-scale-balanced",
-        "color" => "indigo",
-        "time" => "6 menit",
-        "tag" => "Hukum & Hak",
-        "slug" => "hukum-hak",
-        "date" => "08 Mei 2026",
-        "views" => "1200",
-        "title" => "Memahami Permendikbudristek No. 30/2021: Hak dan Perlindungan Korban Kekerasan Seksual di Kampus",
-        "desc" => "Peraturan Menteri ini menjadi landasan hukum penting yang mengatur mekanisme pencegahan dan penanganan kekerasan seksual di lingkungan perguruan tinggi. Pelajari hak-hak yang dimiliki korban.",
-        "author" => "Tim Hukum SIRAKELIKA",
-        "url" => "https://repositori.kemendikdasmen.go.id/24916/1/Buku%20Saku%20Permendikbudristek%20No.%2030%20Tahun%202021.pdf",
-        "content" => [
-            "Permendikbudristek No. 30 Tahun 2021 lahir karena kekerasan seksual di kampus sering tidak tertangani dengan baik. Aturan ini mewajibkan setiap perguruan tinggi membentuk Satuan Tugas Pencegahan dan Penanganan Kekerasan Seksual (Satgas PPKS) yang bertugas menerima, memeriksa, dan menindaklanjuti laporan.",
-            "Sebagai korban, kamu punya beberapa hak yang dijamin: didampingi selama proses pelaporan, identitas dirahasiakan, tidak dipaksa berdamai atau bermediasi dengan pelaku, serta mendapat akses ke layanan kesehatan dan psikologis bila dibutuhkan.",
-            "Proses penanganan juga tidak boleh menyalahkan korban (victim blaming) dan harus berjalan tanpa diskriminasi, baik pelapor maupun korban adalah mahasiswa, dosen, atau tenaga kependidikan.",
-            "Melalui SIRAKELIKA, kamu bisa melaporkan kejadian secara umum (anonim) maupun khusus, dan seluruh hak di atas tetap berlaku terlepas dari metode pelaporan yang kamu pilih."
-        ],
-        "extra" => ["type" => "source", "label" => "Lihat dokumen resmi (PDF)", "icon" => "fa-file-pdf"]
-    ],
-    [
-        "id" => 2,
-        "icon" => "fa-heart-pulse",
-        "color" => "rose",
-        "time" => "5 menit",
-        "tag" => "Psikologi & Kesehatan",
-        "slug" => "psikologi-kesehatan",
-        "date" => "06 Mei 2026",
-        "views" => "842",
-        "title" => "Dampak Psikologis: Perundungan pada Mahasiswa dan Cara Pemulihannya",
-        "desc" => "Perundungan dapat meninggalkan luka psikologis yang mendalam. Artikel ini membahas gejala trauma dan langkah pemulihan yang efektif bagi korban perundungan di lingkungan akademis.",
-        "author" => "Dr. Psikologi",
-        "url" => "https://shariajournal.com/index.php/IERJ/article/view/745",
-        "content" => [
-            "Perundungan tidak selalu meninggalkan bekas fisik, tapi dampaknya pada psikologis bisa berlangsung lama. Korban sering mengalami kecemasan berlebih, sulit berkonsentrasi saat kuliah, gangguan tidur, hingga menarik diri dari pergaulan.",
-            "Pada beberapa kasus, rasa percaya diri menurun drastis dan muncul perasaan malu atau bersalah — padahal kesalahan ada pada pelaku, bukan pada korban.",
-            "Langkah pemulihan bisa dimulai dari hal sederhana: mengakui bahwa apa yang dialami itu nyata dan valid, bercerita pada orang yang dipercaya, lalu jika diperlukan menemui psikolog atau konselor kampus untuk pendampingan lebih lanjut.",
-            "Kamu tidak harus menghadapi ini sendirian. Tim SIRAKELIKA menyediakan layanan konsultasi bagi mahasiswa yang ingin bercerita atau butuh arahan sebelum memutuskan melapor."
-        ],
-        "extra" => ["type" => "action", "label" => "Hubungi Tim Konsultasi", "target" => "kontak", "icon" => "fa-comments"]
-    ],
-    [
-        "id" => 3,
-        "icon" => "fa-comment-slash",
-        "color" => "amber",
-        "time" => "3 menit",
-        "tag" => "Kekerasan Verbal",
-        "slug" => "kekerasan-verbal",
-        "date" => "04 Mei 2026",
-        "views" => "915",
-        "title" => "Mengenali Kekerasan Verbal: Dari Candaan hingga Ujaran Kebencian",
-        "desc" => "Kekerasan verbal sering dianggap sepele. Kenali bentuk-bentuknya agar Anda bisa melindungi diri dan orang sekitar dari dampak buruk manipulasi kata-kata.",
-        "author" => "Satgas Kampus",
-        "url" => "https://www.halodoc.com/artikel/verbal-abuse-pengertian-ciri-ciri-dan-dampaknya",
-        "content" => [
-            "Kekerasan verbal sering dianggap 'cuma bercanda', padahal mencakup ejekan berulang, hinaan di depan umum, ancaman, hingga sindiran yang menjatuhkan mental seseorang.",
-            "Ciri yang membedakannya dari candaan biasa adalah pola yang berulang, terasa menyakitkan bagi penerimanya, dan biasanya ada ketimpangan posisi atau kekuasaan antara pelaku dan korban.",
-            "Kalau dibiarkan, kekerasan verbal bisa meningkat menjadi bentuk kekerasan lain — mulai dari intimidasi sosial hingga kekerasan fisik.",
-            "Yang bisa kamu lakukan: tegaskan batasanmu, simpan bukti seperti tangkapan layar chat atau rekaman jika ada, dan jangan ragu melapor lewat SIRAKELIKA meski tanpa bukti fisik — laporan tetap akan ditinjau oleh tim terkait."
-        ],
-        "extra" => ["type" => "source", "label" => "Baca referensi tambahan", "icon" => "fa-arrow-up-right-from-square"]
-    ],
-    [
-        "id" => 4,
-        "icon" => "fa-route",
-        "color" => "emerald",
-        "time" => "4 menit",
-        "tag" => "Panduan",
-        "slug" => "panduan",
-        "date" => "02 Mei 2026",
-        "views" => "1500",
-        "title" => "Panduan Lengkap: Cara Melaporkan Kekerasan di Lingkungan Kampus",
-        "desc" => "Langkah-langkah praktis yang perlu dilakukan saat menghadapi atau menyaksikan kekerasan di kampus, termasuk cara menggunakan sistem pelaporan SIRAKELIKA.",
-        "author" => "Tim SIRAKELIKA",
-        "url" => "kenali.php",
-        "content" => [
-            "Melaporkan kejadian kekerasan lewat SIRAKELIKA hanya butuh beberapa langkah sederhana."
-        ],
-        "steps" => [
-            "Masuk ke menu Dashboard, lalu pilih jenis pelaporan: Umum (anonim) atau Khusus (mencantumkan identitas).",
-            "Isi kronologi kejadian selengkap mungkin: jenis kekerasan, waktu, dan lokasi kejadian.",
-            "Lampirkan bukti pendukung jika ada, seperti foto, dokumen, atau tangkapan layar percakapan.",
-            "Tinjau kembali isian laporan sebelum mengirim — pastikan tidak ada bagian penting yang kosong.",
-            "Setelah terkirim, pantau perkembangannya kapan saja lewat menu \"Laporan Saya\"."
-        ],
-        "content_after" => [
-            "Kamu bisa berhenti dan lanjut mengisi nanti — laporan tidak harus selesai dalam sekali duduk."
-        ],
-        "extra" => ["type" => "action", "label" => "Coba \"Kenali Situasi Anda\"", "url" => "kenali.php", "icon" => "fa-compass"]
-    ]
-];
-
-// Artikel dengan jumlah pembaca terbanyak, ditonjolkan di bagian atas
-$featured_article = $all_articles[0];
-foreach ($all_articles as $art_cek) {
-    if ((int)$art_cek['views'] > (int)$featured_article['views']) {
-        $featured_article = $art_cek;
-    }
-}
-
-// Data artikel untuk modal baca-di-tempat (dipakai oleh JavaScript)
-$articles_json = json_encode($all_articles, JSON_UNESCAPED_UNICODE);
-
-$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
-$category_filter = isset($_GET['kategori']) ? $_GET['kategori'] : 'semua';
-
-$filtered_articles = [];
-foreach ($all_articles as $article) {
-    $match_search = true;
-    $match_category = true;
-    if (!empty($search_query)) {
-        if (stripos($article['title'], $search_query) === false && stripos($article['desc'], $search_query) === false) {
-            $match_search = false;
-        }
-    }
-    if ($category_filter !== 'semua') {
-        if ($article['slug'] !== $category_filter) {
-            $match_category = false;
-        }
-    }
-    if ($match_search && $match_category) {
-        $filtered_articles[] = $article;
-    }
-}
 
 $faqs = [
     [
@@ -211,7 +85,7 @@ $faqs = [
             <div class="nav-group">AKUN</div>
             <a href="profil.php" class="nav-link"><span class="nav-text">Profil</span></a>
          
-            <a href="logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
+            <a href="../auth/logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
         </nav>
     </aside>
 
@@ -225,9 +99,9 @@ $faqs = [
                 <div class="notif-btn">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 </div>
-                <div class="avatar">MA</div>
-                <div class="user-info">
-                    <span class="user-name"><?= htmlspecialchars($_SESSION['nama'] ?? 'M. Alif') ?></span>
+               <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
+            <div class="user-info">
+                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     <span class="user-role">Mahasiswa</span>
                 </div>
             </div>
@@ -274,7 +148,6 @@ $faqs = [
                                 <li>Diancam akan disakiti jika melawan</li>
                                 <li>Diintimidasi hingga merasa terancam dan tidak aman berada di dekat pelaku</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -293,7 +166,6 @@ $faqs = [
                                 <li>Kata-katanya terus terngiang dan menyakiti</li>
                                 <li>Diancam lewat ucapan agar kamu diam dan patuh</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -312,7 +184,6 @@ $faqs = [
                                 <li>Dikirim konten atau ucapan seksual yang tidak kamu minta</li>
                                 <li>Merasa trauma atau takut, sehingga cenderung menghindari pelaku</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -331,7 +202,6 @@ $faqs = [
                                 <li>Dipermalukan terus-menerus sampai kamu malu untuk hadir</li>
                                 <li>Takut masuk kampus karena tahu pelaku ada di sana</li>
                             </ul>
-                            <a href="buat_laporan.php" class="flip-back-btn" style="margin-top:auto;">Lapor Sekarang <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -355,7 +225,7 @@ $faqs = [
                         ["q" => "Seseorang mengambil foto dirimu secara diam-diam lalu menyebarkannya ke grup tanpa izin, disertai komentar yang merendahkan.", "verdict" => "ya", "label" => "Ya, ini kekerasan digital.", "explain" => "Menyebarkan foto tanpa izin disertai konten merendahkan adalah bentuk Kekerasan Berbasis Gender Online (KBGO) yang dapat diproses secara hukum."],
                         ["q" => "Dosen sering mengomentari penampilan fisikmu di depan kelas, bukan membahas hal yang berkaitan dengan akademik.", "verdict" => "ya", "label" => "Ya, ini termasuk pelecehan.", "explain" => "Komentar berulang soal tubuh atau penampilan dari seseorang yang memiliki otoritas adalah bentuk pelecehan yang tidak dapat dibenarkan."],
                         ["q" => "Kamu tidak lolos seleksi kepanitiaan karena dinilai kurang berpengalaman, dan kamu merasa keputusan itu tidak adil.", "verdict" => "bukan", "label" => "Bukan kekerasan.", "explain" => "Keputusan seleksi yang didasarkan pada kriteria objektif bukan termasuk kekerasan, meskipun hasilnya terasa mengecewakan."],
-                        ["q" => "Teman satu asrama terus meminjam barangmu tanpa izin dan bersikap kasar setiap kali kamu memintanya dikembalikan.", "verdict" => "ya", "label" => "Ya, ini bisa termasuk intimidasi.", "explain" => "Perilaku yang berulang disertai respons agresif saat dikonfrontasi adalah pola intimidasi yang perlu segera diwaspadai dan dilaporkan."],
+                        ["q" => "Sekelompok mahasiswa secara terbuka menolak bekerja sama denganmu dalam tugas kelompok karena latar belakang daerah atau sukumu, dan hal ini terjadi berulang kali.", "verdict" => "ya", "label" => "Ya, ini termasuk diskriminasi.", "explain" => "Penolakan berulang berdasarkan suku atau asal daerah adalah bentuk diskriminasi yang melanggar hak setiap mahasiswa untuk diperlakukan setara di lingkungan kampus."],
                     ];
                     foreach ($quiz_items as $qi => $quiz):
                     ?>
@@ -364,7 +234,7 @@ $faqs = [
                             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">Skenario <?= $qi+1 ?></span>
                             <p class="text-sm text-gray-700 leading-relaxed font-medium">"<?= $quiz['q'] ?>"</p>
                             <div class="quiz-tap-hint mt-3 text-xs text-blue-500 font-semibold flex items-center gap-1.5">
-                                <i class="fa fa-hand-pointer text-[11px]"></i> Tap untuk lihat jawaban
+                                Tap untuk lihat jawaban
                             </div>
                         </div>
                         <div class="quiz-answer hidden mt-4 pt-4 border-t border-gray-100">
@@ -373,11 +243,6 @@ $faqs = [
                                 <?= $quiz['label'] ?>
                             </div>
                             <p class="text-xs text-gray-500 leading-relaxed"><?= $quiz['explain'] ?></p>
-                            <?php if ($quiz['verdict'] === 'ya'): ?>
-                            <a href="buat_laporan.php" class="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-red-600 hover:underline">
-                                <i class="fa fa-flag"></i> Buat laporan →
-                            </a>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <?php endforeach; ?>
@@ -425,7 +290,7 @@ $faqs = [
 
         <!-- ======================== SECTION: VIDEO ======================== -->
         <section id="video" class="section-anchor mb-10">
-            <h2 class="text-base font-bold text-gray-800 mb-4">🎥 Video Edukasi</h2>
+            <h2 class="text-base font-bold text-gray-800 mb-4"> Video Edukasi</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
                     <iframe class="w-full h-48" src="https://www.youtube.com/embed/OQU48FWHlkM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
