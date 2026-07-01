@@ -355,7 +355,7 @@ $faqs = [
                         ["q" => "Seseorang mengambil foto dirimu secara diam-diam lalu menyebarkannya ke grup tanpa izin, disertai komentar yang merendahkan.", "verdict" => "ya", "label" => "Ya, ini kekerasan digital.", "explain" => "Menyebarkan foto tanpa izin disertai konten merendahkan adalah bentuk Kekerasan Berbasis Gender Online (KBGO) yang dapat diproses secara hukum."],
                         ["q" => "Dosen sering mengomentari penampilan fisikmu di depan kelas, bukan membahas hal yang berkaitan dengan akademik.", "verdict" => "ya", "label" => "Ya, ini termasuk pelecehan.", "explain" => "Komentar berulang soal tubuh atau penampilan dari seseorang yang memiliki otoritas adalah bentuk pelecehan yang tidak dapat dibenarkan."],
                         ["q" => "Kamu tidak lolos seleksi kepanitiaan karena dinilai kurang berpengalaman, dan kamu merasa keputusan itu tidak adil.", "verdict" => "bukan", "label" => "Bukan kekerasan.", "explain" => "Keputusan seleksi yang didasarkan pada kriteria objektif bukan termasuk kekerasan, meskipun hasilnya terasa mengecewakan."],
-                        ["q" => "Teman satu asrama terus meminjam barangmu tanpa izin dan bersikap kasar setiap kali kamu memintanya dikembalikan.", "verdict" => "ya", "label" => "Ya, ini bisa termasuk intimidasi.", "explain" => "Perilaku yang berulang disertai respons agresif saat dikonfrontasi adalah pola intimidasi yang perlu segera diwaspadai dan dilaporkan."],
+                        ["q" => "Sekelompok mahasiswa secara terbuka menolak bekerja sama denganmu dalam tugas kelompok karena latar belakang daerah atau sukumu, dan hal ini terjadi berulang kali.", "verdict" => "ya", "label" => "Ya, ini termasuk diskriminasi.", "explain" => "Penolakan berulang berdasarkan suku atau asal daerah adalah bentuk diskriminasi yang melanggar hak setiap mahasiswa untuk diperlakukan setara di lingkungan kampus."],
                     ];
                     foreach ($quiz_items as $qi => $quiz):
                     ?>
@@ -364,7 +364,7 @@ $faqs = [
                             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">Skenario <?= $qi+1 ?></span>
                             <p class="text-sm text-gray-700 leading-relaxed font-medium">"<?= $quiz['q'] ?>"</p>
                             <div class="quiz-tap-hint mt-3 text-xs text-blue-500 font-semibold flex items-center gap-1.5">
-                                <i class="fa fa-hand-pointer text-[11px]"></i> Tap untuk lihat jawaban
+                                Tap untuk lihat jawaban
                             </div>
                         </div>
                         <div class="quiz-answer hidden mt-4 pt-4 border-t border-gray-100">
@@ -373,11 +373,6 @@ $faqs = [
                                 <?= $quiz['label'] ?>
                             </div>
                             <p class="text-xs text-gray-500 leading-relaxed"><?= $quiz['explain'] ?></p>
-                            <?php if ($quiz['verdict'] === 'ya'): ?>
-                            <a href="buat_laporan.php" class="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-red-600 hover:underline">
-                                <i class="fa fa-flag"></i> Buat laporan →
-                            </a>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <?php endforeach; ?>

@@ -126,7 +126,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                 </div>
 
                 <h2 class="text-base font-bold text-gray-800 mb-1 text-center">Apa yang Bisa Kamu Kenali di Sini?</h2>
-                <p class="text-xs text-gray-400 text-center mb-6">Sistem ini mencakup tiga kategori pelanggaran di lingkungan kampus ITH.</p>
+                <p class="text-xs text-gray-400 text-center mb-6">Sistem ini mencakup tiga kategori pelanggaran di lingkungan kampus.</p>
 
                 <!-- 3 Kategori -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -149,7 +149,7 @@ $jawaban = isset($_GET['jawaban']) ? $_GET['jawaban'] : '';
                        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl text-sm font-bold shadow-sm transition">
                         <i class="fa fa-arrow-right"></i> Mulai Identifikasi Sekarang
                     </a>
-                    <p class="text-[11px] text-gray-400 mt-3"><i class="fa fa-lock mr-1"></i>Jawabanmu bersifat rahasia dan tidak tersimpan di tahap ini.</p>
+                    <p class="text-[11px] text-gray-400 mt-3"><i class="fa fa-lock mr-1"></i>Jawabanmu bersifat rahasia </p>
                 </div>
             </div>
 
