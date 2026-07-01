@@ -52,7 +52,7 @@
 .article-modal-close:hover { background: #e2e8f0; }
 
 /* ======================== FLIP CARDS (fade swap) ======================== */
-.flip-card { position: relative; height: 190px; cursor: pointer; border-radius: 18px; overflow: hidden; }
+.flip-card { position: relative; height: 150px; cursor: pointer; border-radius: 18px; overflow: hidden; }
 .flip-front, .flip-back {
     position: absolute; inset: 0; border-radius: 18px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -65,15 +65,13 @@
 }
 .flip-card.flipped .flip-front { opacity: 0; transform: scale(0.96); pointer-events: none; }
 .flip-card.flipped .flip-back  { opacity: 1; transform: scale(1);    pointer-events: auto; }
-.flip-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
-.flip-label { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
-.flip-hint  { font-size: 10px; opacity: .6; }
+.flip-label { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: #fff !important; }
+.flip-hint  { font-size: 11px; opacity: 1; font-weight: 700; color: #dbeafe !important; }
 .flip-back-title { font-size: 10px; font-weight: 800; opacity: .8; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
 .flip-back-list { list-style: none; padding: 0; margin: 0 0 10px; width: 100%; }
 .flip-back-list li { font-size: 10px; line-height: 1.6; padding: 2px 0; opacity: .95; }
 .flip-back-list li::before { content: "✓ "; font-weight: 800; }
-.flip-back-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 20px; text-decoration: none; margin-top: auto; }
-.flip-back-btn:hover { background: rgba(255,255,255,.35); }
+
 
 /* ======================== QUIZ CARDS ======================== */
 .quiz-card:hover { border-color: #bfdbfe; }

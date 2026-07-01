@@ -46,9 +46,9 @@ a { text-decoration: none !important; }
     color: inherit !important;
 }
 .option-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.10); }
-.option-card.red:hover   { border-color: #f87171; background: #fff5f5; }
-.option-card.amber:hover { border-color: #fbbf24; background: #fffbeb; }
-.option-card.purple:hover{ border-color: #a78bfa; background: #f5f3ff; }
+.option-card.blue-dark:hover { border-color: #3b82f6; background: #eff6ff; }
+.option-card.sky:hover       { border-color: #38bdf8; background: #f0f9ff; }
+.option-card.indigo:hover    { border-color: #818cf8; background: #eef2ff; }
 .option-card * { text-decoration: none !important; }
 
 /* Progress */
