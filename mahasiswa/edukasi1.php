@@ -1,0 +1,418 @@
+<?php
+session_start();
+
+// Prevent browser caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: Sat, 01 Jan 2000 00:00:00 GMT");
+
+include '../config/conn.php';
+
+
+
+$faqs = [
+    [
+        "q" => "Apakah laporan yang saya buat bersifat rahasia?",
+        "a" => "Ya, setiap laporan yang masuk ke sistem SIRAKELIKA dijaga kerahasiaannya. Data pelapor hanya dapat diakses oleh pihak yang berwenang, yaitu Admin dan Tim Investigasi yang telah ditunjuk oleh kampus."
+    ],
+    [
+        "q" => "Bisakah saya melapor secara anonim?",
+        "a" => "Bisa. SIRAKELIKA menyediakan dua mode pelaporan: pelaporan umum (anonim) di mana identitas Anda tidak dicantumkan, dan pelaporan khusus (non-anonim) di mana identitas Anda tersimpan namun tetap dijaga kerahasiaannya."
+    ],
+    [
+        "q" => "Berapa lama proses penanganan laporan?",
+        "a" => "Setiap laporan akan diverifikasi dalam 1x24 jam oleh Admin. Setelah diverifikasi, Tim Investigasi akan menindaklanjuti laporan sesuai prosedur kampus, biasanya dalam 3-7 hari kerja tergantung kompleksitas kasus."
+    ],
+    [
+        "q" => "Apa saja jenis kekerasan yang bisa dilaporkan melalui SIRAKELIKA?",
+        "a" => "SIRAKELIKA menerima laporan terkait kekerasan fisik, kekerasan verbal, pelecehan seksual, kekerasan psikologis, dan perundungan (bullying) yang terjadi di lingkungan kampus Institut Teknologi B.J. Habibie."
+    ],
+    [
+        "q" => "Apakah saya bisa memantau perkembangan laporan saya?",
+        "a" => "Ya. Setelah login, Anda dapat memantau status laporan melalui menu 'Laporan Saya'. Status akan diperbarui secara real-time saat ada perubahan dari Admin atau Tim Investigasi."
+    ],
+    [
+        "q" => "Bagaimana jika saya tidak tahu termasuk jenis kekerasan apa yang saya alami?",
+        "a" => "Gunakan fitur 'Kenali Situasi Anda' di menu sidebar. Fitur ini akan memandu Anda melalui serangkaian pertanyaan sederhana untuk membantu mengidentifikasi jenis kekerasan yang Anda alami dan merekomendasikan langkah selanjutnya."
+    ],
+];
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edukasi & Informasi - SIRAKELIKA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    // Cegah back button setelah logout
+    window.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            window.location.reload();
+        }
+    });
+</script>
+    <script>
+        tailwind.config = { corePlugins: { preflight: false } }
+    </script>
+    <style>a { text-decoration: none !important; }</style>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="edukasi1.css">
+</head>
+<body class="bg-[#F8FAFC] font-sans">
+
+<div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="logo-icon"></div>
+            <div>
+                <h1 class="logo-title">SIRAKELIKA</h1>
+                <p class="logo-sub">PELAPORAN KEKERASAN KAMPUS</p>
+            </div>
+        </div>
+        <nav class="nav-container">
+            <div class="nav-group">MENU UTAMA</div>
+            <a href="dashboard.php" class="nav-link"><span class="nav-text">Dashboard</span></a>
+            <a href="laporan.php" class="nav-link"><span class="nav-text">Laporan Saya</span></a>
+            <div class="nav-group">PENGELOLAAN</div>
+            
+            <a href="edukasi1.php" class="nav-link active"><span class="nav-text">Edukasi & Informasi</span></a>
+            <a href="kenali.php" class="nav-link"><span class="nav-text">Kenali Situasi Anda</span></a>
+            <div class="nav-group">AKUN</div>
+            <a href="profil.php" class="nav-link"><span class="nav-text">Profil</span></a>
+         
+            <a href="../auth/logout.php" class="nav-link logout"><span class="nav-text">Keluar</span></a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content" style="padding-top: 0;">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div></div>
+            <div class="user-profile">
+                <div class="notif-btn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+               <div class="avatar"><?php echo strtoupper(substr($_SESSION['username'], 0, 2)); ?></div>
+            <div class="user-info">
+                 <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                    <span class="user-role">Mahasiswa</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO BANNER -->
+        <section class="welcome-banner mb-8">
+            <div class="banner-text">
+                <h2>Edukasi & Informasi</h2>
+                <p>Sebelum melapor, kenali dulu apa yang sedang Anda atau orang di sekitar Anda alami. Semua   informasi edukatif dan video di bawah bisa dibaca atau ditonton dalam hitungan menit.</p>
+                <a href="kenali.php" class="inline-flex items-center gap-2 bg-white text-blue-700 text-xs font-bold px-4 py-2.5 rounded-xl mt-4 hover:bg-blue-50 transition">
+                    <i class="fa fa-compass"></i> Belum tahu harus mulai dari mana? Coba "Kenali Situasi Anda"
+                </a>
+            </div>
+        </section>
+
+        <!-- NAVIGASI SECTION (Tab) -->
+        <div class="flex gap-2 mb-8 flex-wrap">
+            <button onclick="scrollToSection('kenali')" class="tab-btn active-tab px-5 py-2 rounded-full text-xs font-bold border border-blue-600 transition"> Kenali Kekerasan</button>
+            <button onclick="scrollToSection('video')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50"> Video</button>
+            <button onclick="scrollToSection('faq')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50"> FAQ</button>
+            <button onclick="scrollToSection('kontak')" class="tab-btn px-5 py-2 rounded-full text-xs font-bold bg-white border text-gray-500 transition hover:bg-blue-50"> Kontak</button>
+        </div>
+
+        <!-- ======================== SECTION: KENALI JENIS KEKERASAN (Flip Cards) ======================== -->
+        <section id="kenali" class="section-anchor mb-10">
+            <div class="mb-5">
+                <h2 class="text-base font-bold text-gray-800 mb-1"> Kenali Jenis Kekerasan</h2>
+                <p class="text-xs text-gray-400">Tap kartu untuk lihat apa yang bisa kamu lakukan.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+
+                <!-- Kartu 1: Kekerasan Fisik -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Kekerasan Fisik</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
+                        </div>
+                        <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                            <div class="flip-back-title">Tanda-tanda:</div>
+                            <ul class="flip-back-list">
+                                <li>Dipukul, ditampar, atau dianiaya</li>
+                                <li>Diancam akan disakiti jika melawan</li>
+                                <li>Diintimidasi hingga merasa terancam dan tidak aman berada di dekat pelaku</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kartu 2: Kekerasan Verbal -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Kekerasan Verbal</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
+                        </div>
+                        <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                            <div class="flip-back-title">Tanda-tanda:</div>
+                            <ul class="flip-back-list">
+                                <li>Dihina, dicaci, atau diremehkan di depan umum</li>
+                                <li>Kata-katanya terus terngiang dan menyakiti</li>
+                                <li>Diancam lewat ucapan agar kamu diam dan patuh</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kartu 3: Pelecehan Seksual -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Pelecehan Seksual</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
+                        </div>
+                        <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                            <div class="flip-back-title">Tanda-tanda:</div>
+                            <ul class="flip-back-list">
+                                <li>Disentuh, diraba, atau dicium tanpa persetujuan</li>
+                                <li>Dikirim konten atau ucapan seksual yang tidak kamu minta</li>
+                                <li>Merasa trauma atau takut, sehingga cenderung menghindari pelaku</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kartu 4: Perundungan -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid #1d4ed8;">
+                            <div class="flip-label">Perundungan</div>
+                            <div class="flip-hint">Tap untuk lihat tanda &amp; laporkan </div>
+                        </div>
+                        <div class="flip-back" style="background:#0284c7;; display:flex; flex-direction:column; justify-content:space-between; height:100%">
+                            <div class="flip-back-title">Tanda-tanda:</div>
+                            <ul class="flip-back-list">
+                                <li>Dijauhi, dikucilkan, dan sengaja diabaikan banyak orang</li>
+                                <li>Dipermalukan terus-menerus sampai kamu malu untuk hadir</li>
+                                <li>Takut masuk kampus karena tahu pelaku ada di sana</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ======================== QUIZ SINGKAT ======================== -->
+            <div class="mb-10">
+                <h2 class="text-base font-bold text-gray-800 mb-1"> Apakah Ini Termasuk Kekerasan?</h2>
+                <p class="text-xs text-gray-400 mb-5">Pilih salah satu skenario — kamu akan langsung tahu jawabannya.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="quizGrid">
+
+                    <?php
+                    $quiz_items = [
+                        ["q" => "Teman satu kelas sering memanggilmu dengan julukan yang merendahkan di depan banyak orang, dan tidak berhenti meski kamu sudah memintanya.", "verdict" => "ya", "label" => "Ya, ini kekerasan verbal.", "explain" => "Ejekan berulang yang disengaja dan menyakitkan termasuk kekerasan verbal — bukan sekadar candaan biasa."],
+                        ["q" => "Dosen memberikan nilai rendah karena kamu sering tidak hadir tanpa keterangan, dan itu membuatmu kecewa.", "verdict" => "bukan", "label" => "Bukan kekerasan.", "explain" => "Sanksi akademis yang sesuai aturan kampus adalah kebijakan yang sah, bukan bentuk kekerasan."],
+                        ["q" => "Seseorang terus-menerus mengirimkan pesan bernada seksual kepadamu meskipun kamu sudah memintanya untuk berhenti.", "verdict" => "ya", "label" => "Ya, ini pelecehan seksual.", "explain" => "Pesan seksual yang tidak diinginkan dan tetap dilanjutkan meski sudah ditolak adalah pelecehan seksual, termasuk secara online."],
+                        ["q" => "Kamu dikeluarkan dari grup chat tugas kelompok tanpa alasan yang jelas, lalu semua anggota kelompok kompak mengabaikanmu.", "verdict" => "ya", "label" => "Ya, ini bisa termasuk perundungan.", "explain" => "Pengucilan sosial yang disengaja dan terorganisir adalah bentuk perundungan — tidak harus ada kontak fisik untuk disebut kekerasan."],
+                        ["q" => "Senior mengancam akan mempermalukanmu di depan seluruh angkatan jika kamu tidak mau mengerjakan tugas miliknya.", "verdict" => "ya", "label" => "Ya, ini kekerasan psikologis.", "explain" => "Ancaman dan paksaan yang memanfaatkan rasa takut adalah bentuk kekerasan psikologis, terlepas dari ada atau tidaknya kontak fisik."],
+                        ["q" => "Temanmu tidak sengaja menyenggol bahumu saat berpapasan di lorong kampus yang sempit.", "verdict" => "bukan", "label" => "Bukan kekerasan.", "explain" => "Kontak fisik yang tidak disengaja dan tidak berulang bukan termasuk kekerasan. Niat dan pola perilaku adalah faktor yang menentukan."],
+                        ["q" => "Seseorang mengambil foto dirimu secara diam-diam lalu menyebarkannya ke grup tanpa izin, disertai komentar yang merendahkan.", "verdict" => "ya", "label" => "Ya, ini kekerasan digital.", "explain" => "Menyebarkan foto tanpa izin disertai konten merendahkan adalah bentuk Kekerasan Berbasis Gender Online (KBGO) yang dapat diproses secara hukum."],
+                        ["q" => "Dosen sering mengomentari penampilan fisikmu di depan kelas, bukan membahas hal yang berkaitan dengan akademik.", "verdict" => "ya", "label" => "Ya, ini termasuk pelecehan.", "explain" => "Komentar berulang soal tubuh atau penampilan dari seseorang yang memiliki otoritas adalah bentuk pelecehan yang tidak dapat dibenarkan."],
+                        ["q" => "Kamu tidak lolos seleksi kepanitiaan karena dinilai kurang berpengalaman, dan kamu merasa keputusan itu tidak adil.", "verdict" => "bukan", "label" => "Bukan kekerasan.", "explain" => "Keputusan seleksi yang didasarkan pada kriteria objektif bukan termasuk kekerasan, meskipun hasilnya terasa mengecewakan."],
+                        ["q" => "Sekelompok mahasiswa secara terbuka menolak bekerja sama denganmu dalam tugas kelompok karena latar belakang daerah atau sukumu, dan hal ini terjadi berulang kali.", "verdict" => "ya", "label" => "Ya, ini termasuk diskriminasi.", "explain" => "Penolakan berulang berdasarkan suku atau asal daerah adalah bentuk diskriminasi yang melanggar hak setiap mahasiswa untuk diperlakukan setara di lingkungan kampus."],
+                    ];
+                    foreach ($quiz_items as $qi => $quiz):
+                    ?>
+                    <div class="quiz-card bg-white border border-gray-100 rounded-2xl shadow-sm p-5 cursor-pointer select-none" onclick="revealQuiz(this)" data-verdict="<?= $quiz['verdict'] ?>">
+                        <div class="quiz-question">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2 block">Skenario <?= $qi+1 ?></span>
+                            <p class="text-sm text-gray-700 leading-relaxed font-medium">"<?= $quiz['q'] ?>"</p>
+                            <div class="quiz-tap-hint mt-3 text-xs text-blue-500 font-semibold flex items-center gap-1.5">
+                                Tap untuk lihat jawaban
+                            </div>
+                        </div>
+                        <div class="quiz-answer hidden mt-4 pt-4 border-t border-gray-100">
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold mb-2 <?= $quiz['verdict'] === 'ya' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600' ?>">
+                                <i class="fa <?= $quiz['verdict'] === 'ya' ? 'fa-circle-exclamation' : 'fa-circle-check' ?>"></i>
+                                <?= $quiz['label'] ?>
+                            </div>
+                            <p class="text-xs text-gray-500 leading-relaxed"><?= $quiz['explain'] ?></p>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+
+                </div>
+            </div>
+
+            <!-- ======================== CARA LAPOR: STEPS VISUAL ======================== -->
+            <div class="mb-2">
+                <h2 class="text-base font-bold text-gray-800 mb-1">📋 Cara Lapor di SIRAKELIKA</h2>
+                <p class="text-xs text-gray-400 mb-5">5 langkah, selesai dalam hitungan menit.</p>
+                <div class="flex flex-col gap-3">
+                    <?php
+                    $steps = [
+                        ["icon" => "fa-right-to-bracket", "color" => "blue",    "num" => "1", "title" => "Login ke Dashboard",         "desc" => "Masuk menggunakan akun yang telah kamu buat."],
+                        ["icon" => "fa-list-check",        "color" => "indigo",  "num" => "2", "title" => "Pilih Jenis Pelaporan",       "desc" => "Laporan Umum (anonim) atau Laporan Khusus (dengan identitas)."],
+                        ["icon" => "fa-pen-to-square",     "color" => "violet",  "num" => "3", "title" => "Isi Kronologi Kejadian",      "desc" => "Ceritakan apa yang terjadi: jenis kekerasan, waktu, dan lokasi."],
+                        ["icon" => "fa-paperclip",         "color" => "purple",  "num" => "4", "title" => "Lampirkan Bukti ", "desc" => " Upload foto, dokumen,audio, atau video."],
+                        ["icon" => "fa-paper-plane",       "color" => "fuchsia", "num" => "5", "title" => "Kirim & Pantau Status",       "desc" => "Setelah terkirim, pantau perkembangannya di menu \"Laporan Saya\"."],
+                    ];
+                    foreach ($steps as $step):
+                    ?>
+                    <div class="flex items-start gap-4 bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                        <div class="flex-shrink-0 w-9 h-9 rounded-xl bg-<?= $step['color'] ?>-50 text-<?= $step['color'] ?>-600 flex items-center justify-center text-sm font-black"><?= $step['num'] ?></div>
+                        <div class="flex items-center gap-3 flex-1">
+                            <div class="w-8 h-8 rounded-lg bg-<?= $step['color'] ?>-50 text-<?= $step['color'] ?>-500 flex items-center justify-center text-sm flex-shrink-0">
+                                <i class="fa <?= $step['icon'] ?>"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-gray-800"><?= $step['title'] ?></div>
+                                <div class="text-xs text-gray-500 mt-0.5"><?= $step['desc'] ?></div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <a href="buat_laporan.php" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition">
+                        <i class="fa fa-flag"></i> Buat Laporan Sekarang
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================== SECTION: VIDEO ======================== -->
+        <section id="video" class="section-anchor mb-10">
+            <h2 class="text-base font-bold text-gray-800 mb-4"> Video Edukasi</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+                    <iframe class="w-full h-48" src="https://www.youtube.com/embed/OQU48FWHlkM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="p-4">
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Mengenali Kekerasan Seksual Berdasarkan Gender</h4>
+                        <span class="text-[11px] text-gray-400"><i class="fa fa-clock mr-1"></i>8:32 Menit</span>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+                    <iframe class="w-full h-48" src="https://www.youtube.com/embed/Pz797_hCeRc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="p-4">
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Cara Memberikan Dukungan Psikologis ke Korban</h4>
+                        <span class="text-[11px] text-gray-400"><i class="fa fa-clock mr-1"></i>12:15 Menit</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================== SECTION: FAQ ======================== -->
+        <section id="faq" class="section-anchor mb-10">
+            <h2 class="text-base font-bold text-gray-800 mb-2">❓ Pertanyaan yang Sering Diajukan (FAQ)</h2>
+            <p class="text-xs text-gray-400 mb-6">Temukan jawaban atas pertanyaan umum seputar sistem pelaporan SIRAKELIKA.</p>
+
+            <div class="space-y-3">
+                <?php foreach ($faqs as $i => $faq): ?>
+                <div class="faq-item bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden <?= $i === 0 ? 'open' : '' ?>">
+                    <button onclick="toggleFAQ(this)" class="w-full flex justify-between items-center p-5 text-left">
+                        <span class="text-sm font-semibold text-gray-800 pr-4"><?= $faq['q'] ?></span>
+                        <span class="faq-icon text-blue-600 text-lg font-bold flex-shrink-0">+</span>
+                    </button>
+                    <div class="faq-answer px-5 pb-5">
+                        <p class="text-xs text-gray-600 leading-relaxed border-t border-gray-50 pt-4"><?= $faq['a'] ?></p>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
+    <section id="kontak" class="section-anchor mb-10">
+            <h2 class="text-base font-bold text-gray-800 mb-2">📞 Kontak & Hubungan Bantuan</h2>
+            <p class="text-xs text-gray-400 mb-6">Butuh bantuan atau layanan konsultasi? Silakan hubungi tim SIRAKELIKA langsung melalui saluran di bawah ini.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="flex flex-col gap-3">
+                        <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                            <i class="fa fa-envelope text-base"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800 mb-1">Layanan Email Support</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Kirimkan pertanyaan, kendala teknis akun, atau berkas pengaduan Anda secara formal. Tim kami akan merespon dalam waktu maksimal 1x24 jam.</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-50">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sirakelika@gmail.com&su=Kendala%20Sistem%20SIRAKELIKA&body=Halo%20Tim%20Support%20SIRAKELIKA,%0A%0Asaya%20membutuhkan%20bantuan%20terkait..." 
+                    target="_blank" 
+                    class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition w-full justify-center">
+                        <i class="fa fa-paper-plane"></i> Hubungi via Email
+                    </a>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 flex flex-col justify-between hover:shadow-md transition">
+                <div class="flex flex-col gap-3">
+                    <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Hotline WhatsApp (Fast Response)</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Hubungi pusat bantuan tanggap cepat untuk konsultasi langsung via chat teks bersama operator posko pengaduan kampus pada jam kerja operasional.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-gray-50">
+                    <!-- Tautan WA Resmi yang Sudah Dibersihkan dari Spasi dan Karakter Spesial -->
+                    <a href="https://wa.me/6285179614915?text=Halo%20Admin%20SIRAKELIKA,%20saya%20butuh%20bantuan%20terkait..." 
+                    target="_blank" 
+                    class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition w-full justify-center">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            </div>
+        </section>
+        
+
+            
+
+    </main>
+</div>
+
+<script>
+    function toggleFAQ(btn) {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+    }
+
+    function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab', 'bg-blue-600', 'text-white'));
+        event.currentTarget.classList.add('active-tab');
+    }
+
+    function revealQuiz(card) {
+        const hint = card.querySelector('.quiz-tap-hint');
+        const answer = card.querySelector('.quiz-answer');
+        if (answer.classList.contains('hidden')) {
+            answer.classList.remove('hidden');
+            if (hint) hint.style.display = 'none';
+            card.style.cursor = 'default';
+        }
+    }
+
+    // Pastikan semua flip card mulai dari sisi depan
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.flip-card').forEach(c => c.classList.remove('flipped'));
+    });
+</script>
+
+</body>
+</html>
