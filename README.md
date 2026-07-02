@@ -9,9 +9,9 @@ Institut Teknologi Bacharuddin Jusuf Habibie — 2026
 | Nama | NIM | Peran | Branch |
 |---|---|---|---|
 | Alexander Zulfakar | 241011064 | Ketua / Git Master | `develop` + review semua |
-| Christiano Samuel Sapan | 241011063 | Developer | `feature/auth` + `feature/admin-panel` |
-| Muhammad Alif Al Fathir | 241011075 | Developer | `feature/pelaporan` + `feature/status-riwayat` |
-| Abrar Basri | 241011048 | Developer | `feature/dashboard` + `feature/faq-kontak` |
+| Muhammad Alif Al Fathir | 241011075 | Developer | `feature/auth` + `feature/admin-panel` + `feature/dashboard`|
+| Abrar Basri  | 241011048 | Developer | `feature/pelaporan` + `feature/status-riwayat` |
+| Christiano Samuel Sapan  | 241011063 | Developer | `feature/admin-panel` + `feature/faq-kontak` |
 | Gad | 241011015 | Developer | `feature/edukasi-informasi` + `feature/kenali-situasi` |
 
 ---
@@ -19,7 +19,7 @@ Institut Teknologi Bacharuddin Jusuf Habibie — 2026
 ## 🛠️ Tech Stack
 
 - **Frontend:** HTML, CSS, JavaScript
-- **Backend:** PHP (native, migrasi ke Laravel di tahap final)
+- **Backend:** PHP (native)
 - **Database:** MySQL
 - **Server lokal:** XAMPP
 
