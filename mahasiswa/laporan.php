@@ -112,7 +112,7 @@ if ($detail_id) {
     <nav class="nav-container">
         <div class="nav-group">MENU UTAMA</div>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="laporan_saya.php" class="nav-link active">Laporan Saya</a>
+        <a href="laporan.php" class="nav-link active">Laporan Saya</a>
 
         <div class="nav-group">PENGELOLAAN</div>
         
