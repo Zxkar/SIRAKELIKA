@@ -256,19 +256,33 @@ define('BUKTI_SERVER_PATH', dirname(__DIR__) . '/uploads/bukti/');
                                 <div class="bukti-grid">
                                     <?php foreach($list_bukti as $b): 
                                         $nama_file = $b['file_bukti']; 
+                                        $nama_asli = $b['nama_asli'] ?: $nama_file;
                                         $url       = BUKTI_BASE_PATH . $nama_file;
                                         $srv_path  = BUKTI_SERVER_PATH . $nama_file;
                                         $ext       = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
+                                        $mime      = strtolower($b['tipe_file'] ?? '');
+
+                                        $ext_gambar = ['jpg','jpeg','png','gif','webp','bmp'];
+                                        $ext_video  = ['mp4','mov','avi','webm','mkv'];
+
+                                        $is_gambar = in_array($ext, $ext_gambar) || str_starts_with($mime, 'image/');
+                                        $is_video  = in_array($ext, $ext_video)  || str_starts_with($mime, 'video/');
+                                        $is_pdf    = $ext === 'pdf' || $mime === 'application/pdf';
                                         
                                         if (file_exists($srv_path)):
                                     ?>
                                         <div class="bukti-item" style="margin-bottom:10px;">
-                                        <?php if(in_array($ext, ['jpg','jpeg','png'])): ?>
+                                        <?php if($is_gambar): ?>
                                             <a href="<?= htmlspecialchars($url) ?>" target="_blank"><img src="<?= htmlspecialchars($url) ?>" class="bukti-img" style="max-width:200px; border-radius:6px;" alt="Bukti"></a>
-                                        <?php elseif(in_array($ext, ['mp4','mov','avi'])): ?>
+                                        <?php elseif($is_video): ?>
                                             <video src="<?= htmlspecialchars($url) ?>" controls class="bukti-video" style="max-width:300px;"></video>
+                                        <?php elseif($is_pdf): ?>
+                                            <div class="bukti-pdf" style="max-width:220px;">
+                                                <embed src="<?= htmlspecialchars($url) ?>" type="application/pdf" style="width:100%; height:180px; border-radius:6px; border:1px solid #e2e8f0;">
+                                                <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link" style="display:block; margin-top:4px;">📄 <?= htmlspecialchars($nama_asli) ?></a>
+                                            </div>
                                         <?php else: ?>
-                                            <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📄 <?= htmlspecialchars($b['nama_asli'] ?: $nama_file) ?></a>
+                                            <a href="<?= htmlspecialchars($url) ?>" target="_blank" class="bukti-file-link">📎 <?= htmlspecialchars($nama_asli) ?></a>
                                         <?php endif; ?>
                                         </div>
                                     <?php else: ?>
